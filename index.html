@@ -105,6 +105,10 @@
       background: #dc2626;
     }
 
+    .botao-cinza {
+      background: #6b7280;
+    }
+
     .resultado {
       display: none;
     }
@@ -265,6 +269,27 @@
       line-height: 1.5;
     }
 
+    .configuracao {
+      background: #f8fafc;
+      border-radius: 14px;
+      padding: 15px;
+      margin-bottom: 12px;
+    }
+
+    .configuracao label {
+      margin-top: 0;
+    }
+
+    .info {
+      background: #eff6ff;
+      color: #1e40af;
+      padding: 13px;
+      border-radius: 12px;
+      font-size: 13px;
+      line-height: 1.5;
+      margin-top: 12px;
+    }
+
     .aviso {
       margin-top: 15px;
       font-size: 13px;
@@ -291,21 +316,112 @@
   </div>
 
 
+  <!-- CONFIGURAÇÕES -->
+
+  <div class="card">
+
+    <h2>⚙️ Configurações</h2>
+
+    <div class="configuracao">
+
+      <label>
+        🎯 Meta diária (R$)
+      </label>
+
+      <input
+        type="number"
+        id="meta"
+        value="300"
+        step="0.01"
+      >
+
+    </div>
+
+
+    <div class="configuracao">
+
+      <label>
+        📍 R$/km mínimo para corrida boa
+      </label>
+
+      <input
+        type="number"
+        id="minPorKm"
+        value="2.00"
+        step="0.01"
+      >
+
+    </div>
+
+
+    <div class="configuracao">
+
+      <label>
+        ⏱️ R$/hora mínimo para corrida boa
+      </label>
+
+      <input
+        type="number"
+        id="minPorHora"
+        value="40"
+        step="0.01"
+      >
+
+    </div>
+
+
+    <div class="configuracao">
+
+      <label>
+        ⛽ Gasolina (R$/litro)
+      </label>
+
+      <input
+        type="number"
+        id="gasolinaPadrao"
+        value="6.95"
+        step="0.01"
+      >
+
+    </div>
+
+
+    <div class="configuracao">
+
+      <label>
+        🚗 Consumo do carro (km/l)
+      </label>
+
+      <input
+        type="number"
+        id="consumoPadrao"
+        value="9"
+        step="0.1"
+      >
+
+    </div>
+
+
+    <button
+      onclick="salvarConfiguracoes()"
+    >
+      💾 SALVAR CONFIGURAÇÕES
+    </button>
+
+
+    <div class="info">
+      O aplicativo usará esses valores automaticamente
+      nas próximas análises.
+    </div>
+
+  </div>
+
+
   <!-- META -->
 
   <div class="card">
 
     <h2>🎯 Meta do dia</h2>
-
-    <label>Meta diária (R$)</label>
-
-    <input
-      type="number"
-      id="meta"
-      value="300"
-      step="0.01"
-      onchange="salvarMeta()"
-    >
 
     <div class="meta-box">
 
@@ -321,10 +437,12 @@
       </div>
 
       <div class="barra">
+
         <div
           class="progresso"
           id="progresso"
         ></div>
+
       </div>
 
       <div id="mensagemMeta">
@@ -333,17 +451,21 @@
 
     </div>
 
+
     <div class="grid">
 
       <div class="mini">
         Corridas
+
         <strong id="quantidade">
           0
         </strong>
       </div>
 
+
       <div class="mini">
         Média
+
         <strong id="media">
           R$ 0,00
         </strong>
@@ -354,13 +476,16 @@
   </div>
 
 
-  <!-- NOVA CORRIDA -->
+  <!-- ANALISAR CORRIDA -->
 
   <div class="card">
 
     <h2>📋 Analisar corrida</h2>
 
-    <label>Aplicativo</label>
+
+    <label>
+      Aplicativo
+    </label>
 
     <select id="plataforma">
 
@@ -383,7 +508,9 @@
     </select>
 
 
-    <label>Valor da corrida (R$)</label>
+    <label>
+      Valor da corrida (R$)
+    </label>
 
     <input
       type="number"
@@ -393,7 +520,9 @@
     >
 
 
-    <label>Distância (km)</label>
+    <label>
+      Distância (km)
+    </label>
 
     <input
       type="number"
@@ -403,33 +532,15 @@
     >
 
 
-    <label>Tempo da corrida (minutos)</label>
+    <label>
+      Tempo da corrida (minutos)
+    </label>
 
     <input
       type="number"
       id="tempo"
       placeholder="Ex: 25"
       step="1"
-    >
-
-
-    <label>Preço da gasolina (R$/litro)</label>
-
-    <input
-      type="number"
-      id="gasolina"
-      value="6.95"
-      step="0.01"
-    >
-
-
-    <label>Consumo do carro (km/l)</label>
-
-    <input
-      type="number"
-      id="consumo"
-      value="9"
-      step="0.1"
     >
 
 
@@ -463,7 +574,9 @@
     </div>
 
 
-    <h2>📊 Análise</h2>
+    <h2>
+      📊 Análise
+    </h2>
 
 
     <div class="linha">
@@ -608,7 +721,9 @@
 
   <div class="card">
 
-    <h2>📚 Histórico de hoje</h2>
+    <h2>
+      📚 Histórico de hoje
+    </h2>
 
     <div id="historico">
 
@@ -625,7 +740,9 @@
 
   <div class="card">
 
-    <h2>🔄 Controle do dia</h2>
+    <h2>
+      🔄 Controle do dia
+    </h2>
 
     <button
       class="botao-vermelho"
@@ -638,7 +755,7 @@
 
 
   <div class="rodape">
-    Calculador de Corridas — versão 4
+    Calculador de Corridas — versão 5
   </div>
 
 </div>
@@ -646,30 +763,64 @@
 
 <script>
 
+/* =========================
+   CONFIGURAÇÕES
+========================= */
+
+let configuracoes =
+  JSON.parse(
+    localStorage.getItem(
+      "configuracoes"
+    )
+  ) || {
+
+    meta: 300,
+
+    minPorKm: 2,
+
+    minPorHora: 40,
+
+    gasolina: 6.95,
+
+    consumo: 9
+
+  };
+
+
+/* =========================
+   DADOS DO DIA
+========================= */
+
 let totalDia =
   parseFloat(
-    localStorage.getItem("totalDia")
+    localStorage.getItem(
+      "totalDia"
+    )
   ) || 0;
+
 
 let quantidade =
   parseInt(
-    localStorage.getItem("quantidade")
+    localStorage.getItem(
+      "quantidade"
+    )
   ) || 0;
 
-let meta =
-  parseFloat(
-    localStorage.getItem("meta")
-  ) || 300;
 
 let historico =
   JSON.parse(
-    localStorage.getItem("historico")
+    localStorage.getItem(
+      "historico"
+    )
   ) || [];
+
 
 let ultimaCorrida = null;
 
 
-/* DINHEIRO */
+/* =========================
+   FORMATA DINHEIRO
+========================= */
 
 function dinheiro(valor) {
 
@@ -684,7 +835,158 @@ function dinheiro(valor) {
 }
 
 
-/* SALVAR */
+/* =========================
+   CARREGAR CONFIGURAÇÕES
+========================= */
+
+function carregarConfiguracoes() {
+
+  document.getElementById(
+    "meta"
+  ).value =
+    configuracoes.meta;
+
+
+  document.getElementById(
+    "minPorKm"
+  ).value =
+    configuracoes.minPorKm;
+
+
+  document.getElementById(
+    "minPorHora"
+  ).value =
+    configuracoes.minPorHora;
+
+
+  document.getElementById(
+    "gasolinaPadrao"
+  ).value =
+    configuracoes.gasolina;
+
+
+  document.getElementById(
+    "consumoPadrao"
+  ).value =
+    configuracoes.consumo;
+
+}
+
+
+/* =========================
+   SALVAR CONFIGURAÇÕES
+========================= */
+
+function salvarConfiguracoes() {
+
+  const meta =
+    parseFloat(
+      document.getElementById(
+        "meta"
+      ).value
+    );
+
+
+  const minPorKm =
+    parseFloat(
+      document.getElementById(
+        "minPorKm"
+      ).value
+    );
+
+
+  const minPorHora =
+    parseFloat(
+      document.getElementById(
+        "minPorHora"
+      ).value
+    );
+
+
+  const gasolina =
+    parseFloat(
+      document.getElementById(
+        "gasolinaPadrao"
+      ).value
+    );
+
+
+  const consumo =
+    parseFloat(
+      document.getElementById(
+        "consumoPadrao"
+      ).value
+    );
+
+
+  if (
+
+    isNaN(meta) ||
+    isNaN(minPorKm) ||
+    isNaN(minPorHora) ||
+    isNaN(gasolina) ||
+    isNaN(consumo) ||
+
+    meta <= 0 ||
+    minPorKm <= 0 ||
+    minPorHora <= 0 ||
+    gasolina <= 0 ||
+    consumo <= 0
+
+  ) {
+
+    alert(
+      "Preencha todas as configurações corretamente."
+    );
+
+    return;
+
+  }
+
+
+  configuracoes = {
+
+    meta:
+      meta,
+
+    minPorKm:
+      minPorKm,
+
+    minPorHora:
+      minPorHora,
+
+    gasolina:
+      gasolina,
+
+    consumo:
+      consumo
+
+  };
+
+
+  localStorage.setItem(
+    "configuracoes",
+    JSON.stringify(
+      configuracoes
+    )
+  );
+
+
+  carregarConfiguracoes();
+
+  atualizarTela();
+
+
+  alert(
+    "✅ Configurações salvas!"
+  );
+
+}
+
+
+/* =========================
+   SALVAR DADOS
+========================= */
 
 function salvarDados() {
 
@@ -693,63 +995,36 @@ function salvarDados() {
     totalDia
   );
 
+
   localStorage.setItem(
     "quantidade",
     quantidade
   );
 
-  localStorage.setItem(
-    "meta",
-    meta
-  );
 
   localStorage.setItem(
     "historico",
-    JSON.stringify(historico)
+    JSON.stringify(
+      historico
+    )
   );
 
 }
 
 
-/* META */
-
-function salvarMeta() {
-
-  const novaMeta =
-    parseFloat(
-      document.getElementById(
-        "meta"
-      ).value
-    );
-
-  if (
-    !isNaN(novaMeta) &&
-    novaMeta > 0
-  ) {
-
-    meta = novaMeta;
-
-    salvarDados();
-
-    atualizarTela();
-
-  }
-
-}
-
-
-/* ATUALIZAR */
+/* =========================
+   ATUALIZAR TELA
+========================= */
 
 function atualizarTela() {
 
   document.getElementById(
-    "meta"
-  ).value = meta;
-
-  document.getElementById(
     "totalDia"
   ).textContent =
-    dinheiro(totalDia);
+    dinheiro(
+      totalDia
+    );
+
 
   document.getElementById(
     "quantidade"
@@ -759,12 +1034,14 @@ function atualizarTela() {
 
   let media = 0;
 
+
   if (
     quantidade > 0
   ) {
 
     media =
-      totalDia / quantidade;
+      totalDia /
+      quantidade;
 
   }
 
@@ -772,11 +1049,16 @@ function atualizarTela() {
   document.getElementById(
     "media"
   ).textContent =
-    dinheiro(media);
+    dinheiro(
+      media
+    );
 
 
   let percentual =
-    (totalDia / meta) * 100;
+    (
+      totalDia /
+      configuracoes.meta
+    ) * 100;
 
 
   if (
@@ -801,20 +1083,27 @@ function atualizarTela() {
 
 
   if (
-    totalDia >= meta
+    totalDia >=
+    configuracoes.meta
   ) {
 
     mensagem.textContent =
       "🎉 META ATINGIDA!";
 
-  } else {
+  }
+
+  else {
 
     const falta =
-      meta - totalDia;
+      configuracoes.meta -
+      totalDia;
+
 
     mensagem.textContent =
       "Falta " +
-      dinheiro(falta) +
+      dinheiro(
+        falta
+      ) +
       " para sua meta.";
 
   }
@@ -825,7 +1114,9 @@ function atualizarTela() {
 }
 
 
-/* ANALISAR CORRIDA */
+/* =========================
+   ANALISAR CORRIDA
+========================= */
 
 function calcular() {
 
@@ -860,19 +1151,11 @@ function calcular() {
 
 
   const gasolina =
-    parseFloat(
-      document.getElementById(
-        "gasolina"
-      ).value
-    );
+    configuracoes.gasolina;
 
 
   const consumo =
-    parseFloat(
-      document.getElementById(
-        "consumo"
-      ).value
-    );
+    configuracoes.consumo;
 
 
   if (
@@ -880,19 +1163,15 @@ function calcular() {
     isNaN(valor) ||
     isNaN(km) ||
     isNaN(tempo) ||
-    isNaN(gasolina) ||
-    isNaN(consumo) ||
 
     valor <= 0 ||
     km <= 0 ||
-    tempo <= 0 ||
-    gasolina <= 0 ||
-    consumo <= 0
+    tempo <= 0
 
   ) {
 
     alert(
-      "Preencha todos os campos corretamente."
+      "Preencha valor, distância e tempo corretamente."
     );
 
     return;
@@ -901,48 +1180,58 @@ function calcular() {
 
 
   const litros =
-    km / consumo;
+    km /
+    consumo;
 
 
   const custoCombustivel =
-    litros * gasolina;
+    litros *
+    gasolina;
 
 
   const lucro =
-    valor - custoCombustivel;
+    valor -
+    custoCombustivel;
 
 
   const ganhoPorKm =
-    valor / km;
+    valor /
+    km;
 
 
   const horas =
-    tempo / 60;
+    tempo /
+    60;
 
 
   const ganhoPorHora =
-    valor / horas;
+    valor /
+    horas;
 
 
-  /*
-    CRITÉRIO DE DECISÃO
-
-    EXCELENTE:
-    R$/km >= 2,00
-    E R$/hora >= 40
-
-    RAZOÁVEL:
-    R$/km >= 1,50
-    OU R$/hora >= 30
-
-    FRACA:
-    abaixo desses valores
-  */
+  const minKm =
+    configuracoes.minPorKm;
 
 
-  let decisao =
+  const minHora =
+    configuracoes.minPorHora;
+
+
+  const decisao =
     document.getElementById(
       "decisao"
+    );
+
+
+  const texto =
+    document.getElementById(
+      "textoDecisao"
+    );
+
+
+  const motivo =
+    document.getElementById(
+      "motivoDecisao"
     );
 
 
@@ -953,51 +1242,67 @@ function calcular() {
   );
 
 
-  let texto =
-    document.getElementById(
-      "textoDecisao"
-    );
+  /*
+    CORRIDA EXCELENTE
 
-
-  let motivo =
-    document.getElementById(
-      "motivoDecisao"
-    );
-
+    Precisa atingir os dois
+    critérios configurados.
+  */
 
   if (
-    ganhoPorKm >= 2 &&
-    ganhoPorHora >= 40
+
+    ganhoPorKm >= minKm &&
+    ganhoPorHora >= minHora
+
   ) {
 
     decisao.classList.add(
       "excelente"
     );
 
+
     texto.textContent =
       "🟢 ACEITAR";
 
+
     motivo.textContent =
-      "Boa relação entre valor, distância e tempo.";
+      "A corrida atingiu seus dois critérios mínimos.";
 
   }
 
+
+  /*
+    CORRIDA RAZOÁVEL
+
+    Atingiu pelo menos um
+    dos critérios.
+  */
+
   else if (
-    ganhoPorKm >= 1.5 ||
-    ganhoPorHora >= 30
+
+    ganhoPorKm >= minKm ||
+    ganhoPorHora >= minHora
+
   ) {
 
     decisao.classList.add(
       "razoavel"
     );
 
+
     texto.textContent =
       "🟡 AVALIAR";
 
+
     motivo.textContent =
-      "Corrida razoável. Analise o trânsito e o destino.";
+      "A corrida atingiu apenas um dos critérios. Observe trânsito e destino.";
 
   }
+
+
+  /*
+    CORRIDA FRACA
+  */
 
   else {
 
@@ -1005,11 +1310,13 @@ function calcular() {
       "fraca"
     );
 
+
     texto.textContent =
       "🔴 RECUSAR";
 
+
     motivo.textContent =
-      "Baixo retorno em relação à distância ou ao tempo.";
+      "A corrida ficou abaixo dos seus critérios mínimos.";
 
   }
 
@@ -1053,8 +1360,11 @@ function calcular() {
       new Date().toLocaleTimeString(
         "pt-BR",
         {
-          hour: "2-digit",
-          minute: "2-digit"
+          hour:
+            "2-digit",
+
+          minute:
+            "2-digit"
         }
       )
 
@@ -1070,13 +1380,17 @@ function calcular() {
   document.getElementById(
     "rValor"
   ).textContent =
-    dinheiro(valor);
+    dinheiro(
+      valor
+    );
 
 
   document.getElementById(
     "rKm"
   ).textContent =
-    km.toFixed(1) +
+    km.toFixed(
+      1
+    ) +
     " km";
 
 
@@ -1098,20 +1412,26 @@ function calcular() {
   document.getElementById(
     "rLucro"
   ).textContent =
-    dinheiro(lucro);
+    dinheiro(
+      lucro
+    );
 
 
   document.getElementById(
     "rPorKm"
   ).textContent =
-    dinheiro(ganhoPorKm) +
+    dinheiro(
+      ganhoPorKm
+    ) +
     "/km";
 
 
   document.getElementById(
     "rPorHora"
   ).textContent =
-    dinheiro(ganhoPorHora) +
+    dinheiro(
+      ganhoPorHora
+    ) +
     "/h";
 
 
@@ -1124,13 +1444,16 @@ function calcular() {
   document.getElementById(
     "resultado"
   ).scrollIntoView({
-    behavior: "smooth"
+    behavior:
+      "smooth"
   });
 
 }
 
 
-/* ADICIONAR */
+/* =========================
+   ADICIONAR CORRIDA
+========================= */
 
 function adicionarCorrida() {
 
@@ -1152,7 +1475,8 @@ function adicionarCorrida() {
     ...ultimaCorrida,
 
     numero:
-      historico.length + 1
+      historico.length +
+      1
 
   };
 
@@ -1180,7 +1504,8 @@ function adicionarCorrida() {
   );
 
 
-  ultimaCorrida = null;
+  ultimaCorrida =
+    null;
 
 
   document.getElementById(
@@ -1193,9 +1518,11 @@ function adicionarCorrida() {
     "valor"
   ).value = "";
 
+
   document.getElementById(
     "km"
   ).value = "";
+
 
   document.getElementById(
     "tempo"
@@ -1204,7 +1531,9 @@ function adicionarCorrida() {
 }
 
 
-/* HISTÓRICO */
+/* =========================
+   HISTÓRICO
+========================= */
 
 function mostrarHistorico() {
 
@@ -1229,7 +1558,8 @@ function mostrarHistorico() {
   }
 
 
-  elemento.innerHTML = "";
+  elemento.innerHTML =
+    "";
 
 
   historico
@@ -1253,17 +1583,21 @@ function mostrarHistorico() {
           <div class="historico-topo">
 
             <span class="corrida-numero">
-              🚗 Corrida ${corrida.numero}
+              🚗 Corrida
+              ${corrida.numero}
             </span>
 
             <span class="corrida-valor">
-              ${dinheiro(corrida.valor)}
+              ${dinheiro(
+                corrida.valor
+              )}
             </span>
 
           </div>
 
           <div class="historico-linha">
             <span>📱 Aplicativo</span>
+
             <strong>
               ${corrida.plataforma}
             </strong>
@@ -1271,6 +1605,7 @@ function mostrarHistorico() {
 
           <div class="historico-linha">
             <span>🕐 Horário</span>
+
             <strong>
               ${corrida.horario}
             </strong>
@@ -1278,48 +1613,65 @@ function mostrarHistorico() {
 
           <div class="historico-linha">
             <span>📍 Distância</span>
+
             <strong>
-              ${corrida.km.toFixed(1)} km
+              ${corrida.km.toFixed(1)}
+              km
             </strong>
           </div>
 
           <div class="historico-linha">
             <span>⏱️ Tempo</span>
+
             <strong>
-              ${corrida.tempo} min
+              ${corrida.tempo}
+              min
             </strong>
           </div>
 
           <div class="historico-linha">
             <span>⛽ Combustível</span>
+
             <strong>
-              ${dinheiro(corrida.combustivel)}
+              ${dinheiro(
+                corrida.combustivel
+              )}
             </strong>
           </div>
 
           <div class="historico-linha">
             <span>💰 Lucro</span>
+
             <strong class="lucro">
-              ${dinheiro(corrida.lucro)}
+              ${dinheiro(
+                corrida.lucro
+              )}
             </strong>
           </div>
 
           <div class="historico-linha">
             <span>📊 R$/km</span>
+
             <strong>
-              ${dinheiro(corrida.porKm)}
+              ${dinheiro(
+                corrida.porKm
+              )}
             </strong>
           </div>
 
           <div class="historico-linha">
             <span>⏱️ R$/hora</span>
+
             <strong>
-              ${dinheiro(corrida.porHora)}
+              ${dinheiro(
+                corrida.porHora
+              )}
             </strong>
           </div>
 
           <div class="historico-linha">
             <span>🎯 Decisão</span>
+
             <strong>
               ${corrida.decisao}
             </strong>
@@ -1338,7 +1690,9 @@ function mostrarHistorico() {
 }
 
 
-/* ZERAR */
+/* =========================
+   ZERAR DIA
+========================= */
 
 function zerarDia() {
 
@@ -1357,13 +1711,20 @@ function zerarDia() {
   }
 
 
-  totalDia = 0;
+  totalDia =
+    0;
 
-  quantidade = 0;
 
-  historico = [];
+  quantidade =
+    0;
 
-  ultimaCorrida = null;
+
+  historico =
+    [];
+
+
+  ultimaCorrida =
+    null;
 
 
   salvarDados();
@@ -1385,7 +1746,11 @@ function zerarDia() {
 }
 
 
-/* INICIAR */
+/* =========================
+   INICIAR
+========================= */
+
+carregarConfiguracoes();
 
 atualizarTela();
 
