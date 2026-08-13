@@ -3,14 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Analisador de Corridas</title>
+<title>Meu Ganho - Motorista</title>
 
 <style>
-
-*{
-box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
 margin:0;
@@ -22,7 +18,7 @@ color:#222;
 header{
 background:#111827;
 color:white;
-padding:22px 15px;
+padding:20px 15px;
 text-align:center;
 }
 
@@ -32,11 +28,11 @@ font-size:25px;
 }
 
 header p{
-margin:7px 0 0;
+margin:6px 0 0;
 }
 
 .container{
-max-width:520px;
+max-width:550px;
 margin:auto;
 padding:15px;
 }
@@ -54,10 +50,29 @@ margin-top:0;
 font-size:20px;
 }
 
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+}
+
+.box{
+background:#f3f4f6;
+border-radius:10px;
+padding:12px;
+text-align:center;
+}
+
+.box strong{
+display:block;
+font-size:20px;
+margin-top:5px;
+}
+
 label{
 display:block;
 font-weight:bold;
-margin-top:13px;
+margin-top:12px;
 }
 
 input{
@@ -66,31 +81,49 @@ padding:13px;
 margin-top:6px;
 border:1px solid #ccc;
 border-radius:9px;
-font-size:17px;
+font-size:16px;
 }
 
 button{
 width:100%;
-padding:15px;
-margin-top:20px;
+padding:14px;
+margin-top:15px;
 border:0;
 border-radius:9px;
 background:#16a34a;
 color:white;
-font-size:18px;
+font-size:17px;
 font-weight:bold;
 }
 
-.resultado{
-line-height:1.8;
-font-size:17px;
+button.secundario{
+background:#374151;
+}
+
+button.perigo{
+background:#dc2626;
+}
+
+.progresso{
+height:15px;
+background:#e5e7eb;
+border-radius:20px;
+overflow:hidden;
+margin-top:10px;
+}
+
+.barra{
+height:100%;
+width:0%;
+background:#16a34a;
+transition:.3s;
 }
 
 .veredito{
 text-align:center;
-font-size:25px;
+font-size:24px;
 font-weight:bold;
-padding:15px;
+padding:14px;
 border-radius:10px;
 margin-bottom:15px;
 }
@@ -111,42 +144,109 @@ color:#dc2626;
 }
 
 .numero{
-font-size:22px;
+font-size:21px;
 font-weight:bold;
+}
+
+.corrida{
+border:1px solid #ddd;
+border-radius:10px;
+padding:12px;
+margin-top:10px;
+background:#fafafa;
 }
 
 .pequeno{
 font-size:13px;
 color:#666;
-margin-top:12px;
+margin-top:10px;
 }
-
 </style>
-
 </head>
 
 <body>
 
 <header>
-
-<h1>🚗 Analisador de Corridas</h1>
-
-<p>Descubra se a corrida vale a pena</p>
-
+<h1>🚗 Meu Ganho</h1>
+<p>Painel do motorista</p>
 </header>
 
 <div class="container">
 
 <div class="card">
 
-<h2>📊 Dados da corrida</h2>
+<h2>🎯 Meta do dia</h2>
+
+<label>Meta diária (R$)</label>
+
+<input
+type="number"
+id="meta"
+value="200"
+step="0.01"
+oninput="salvarConfiguracoes()"
+>
+
+<div class="progresso">
+<div class="barra" id="barra"></div>
+</div>
+
+<p id="progressoTexto">R$ 0,00 de R$ 200,00</p>
+
+</div>
+
+
+<div class="card">
+
+<h2>📊 Resumo de hoje</h2>
+
+<div class="grid">
+
+<div class="box">
+💰 Ganhos
+<strong id="totalGanhos">R$ 0,00</strong>
+</div>
+
+<div class="box">
+🚗 Corridas
+<strong id="totalCorridas">0</strong>
+</div>
+
+<div class="box">
+📍 KM
+<strong id="totalKm">0,00</strong>
+</div>
+
+<div class="box">
+⛽ Combustível
+<strong id="totalCombustivel">R$ 0,00</strong>
+</div>
+
+<div class="box">
+💵 Lucro
+<strong id="totalLucro">R$ 0,00</strong>
+</div>
+
+<div class="box">
+📈 R$/hora
+<strong id="mediaHora">R$ 0,00</strong>
+</div>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>🔎 Analisar corrida</h2>
 
 <label>Valor da corrida (R$)</label>
 
 <input
 type="number"
 id="valor"
-placeholder="Ex: 12.00"
+placeholder="Ex: 15.00"
 step="0.01"
 >
 
@@ -155,7 +255,7 @@ step="0.01"
 <input
 type="number"
 id="distancia"
-placeholder="Ex: 5"
+placeholder="Ex: 6"
 step="0.1"
 >
 
@@ -167,12 +267,6 @@ id="tempo"
 placeholder="Ex: 15"
 >
 
-</div>
-
-<div class="card">
-
-<h2>⛽ Dados do carro</h2>
-
 <label>Preço da gasolina (R$/L)</label>
 
 <input
@@ -182,7 +276,7 @@ value="6.95"
 step="0.01"
 >
 
-<label>Consumo do carro (km/L)</label>
+<label>Consumo (km/L)</label>
 
 <input
 type="number"
@@ -192,22 +286,61 @@ step="0.1"
 >
 
 <button onclick="analisar()">
-
 ANALISAR CORRIDA
+</button>
 
+<div id="resultado" style="margin-top:15px">
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>📋 Histórico de hoje</h2>
+
+<div id="historico">
+Nenhuma corrida registrada.
+</div>
+
+<button class="perigo" onclick="limparHistorico()">
+LIMPAR HISTÓRICO
 </button>
 
 </div>
 
-<div class="card resultado" id="resultado">
-
-Preencha os dados da corrida e toque em analisar.
-
 </div>
 
-</div>
 
 <script>
+
+let historico =
+JSON.parse(localStorage.getItem("historicoCorridas") || "[]");
+
+let metaSalva =
+localStorage.getItem("metaMotorista");
+
+if(metaSalva){
+
+document.getElementById("meta").value =
+metaSalva;
+
+}
+
+function salvarConfiguracoes(){
+
+let meta =
+Number(document.getElementById("meta").value);
+
+localStorage.setItem(
+"metaMotorista",
+meta
+);
+
+atualizarPainel();
+
+}
+
 
 function analisar(){
 
@@ -236,8 +369,7 @@ if(
 ){
 
 document.getElementById("resultado").innerHTML =
-
-"<div class='ruim veredito'>⚠️ Preencha todos os campos</div>";
+"<div class='veredito ruim'>⚠️ Preencha todos os campos</div>";
 
 return;
 
@@ -247,33 +379,23 @@ return;
 let litros =
 distancia / consumo;
 
-
-let custoCombustivel =
+let combustivel =
 litros * gasolina;
 
-
 let lucro =
-valor - custoCombustivel;
-
+valor - combustivel;
 
 let reaisKm =
 valor / distancia;
 
-
 let horas =
 tempo / 60;
-
 
 let reaisHora =
 valor / horas;
 
-
 let lucroHora =
 lucro / horas;
-
-
-let percentualCombustivel =
-(custoCombustivel / valor) * 100;
 
 
 let classe;
@@ -283,7 +405,6 @@ let mensagem;
 if(lucroHora >= 40){
 
 classe = "bom";
-
 mensagem = "🟢 VALE A PENA";
 
 }
@@ -291,7 +412,6 @@ mensagem = "🟢 VALE A PENA";
 else if(lucroHora >= 25){
 
 classe = "atencao";
-
 mensagem = "🟡 ATENÇÃO";
 
 }
@@ -299,7 +419,6 @@ mensagem = "🟡 ATENÇÃO";
 else{
 
 classe = "ruim";
-
 mensagem = "🔴 NÃO VALE A PENA";
 
 }
@@ -308,90 +427,235 @@ mensagem = "🔴 NÃO VALE A PENA";
 document.getElementById("resultado").innerHTML = `
 
 <div class="veredito ${classe}">
-
 ${mensagem}
-
 </div>
 
-<strong>💰 Valor da corrida</strong><br>
-
+<strong>💰 Valor:</strong>
 <span class="numero">
-
 R$ ${valor.toFixed(2)}
-
 </span>
 
 <br><br>
 
-<strong>📍 Valor por km</strong><br>
+<strong>📍 R$/km:</strong>
+${reaisKm.toFixed(2)}
 
+<br>
+
+<strong>⏰ R$/hora:</strong>
+${reaisHora.toFixed(2)}
+
+<br>
+
+<strong>⛽ Combustível:</strong>
+R$ ${combustivel.toFixed(2)}
+
+<br>
+
+<strong>💵 Lucro:</strong>
 <span class="numero">
-
-R$ ${reaisKm.toFixed(2)}/km
-
-</span>
-
-<br><br>
-
-<strong>⏰ Faturamento por hora</strong><br>
-
-<span class="numero">
-
-R$ ${reaisHora.toFixed(2)}/hora
-
-</span>
-
-<br><br>
-
-<strong>⛽ Combustível estimado</strong><br>
-
-${litros.toFixed(2)} litros
-
-<br><br>
-
-<strong>💵 Custo do combustível</strong><br>
-
-R$ ${custoCombustivel.toFixed(2)}
-
-<br><br>
-
-<strong>💰 Lucro estimado</strong><br>
-
-<span class="numero">
-
 R$ ${lucro.toFixed(2)}
-
 </span>
+
+<br>
+
+<strong>📈 Lucro/hora:</strong>
+R$ ${lucroHora.toFixed(2)}
 
 <br><br>
 
-<strong>📈 Lucro por hora</strong><br>
-
-<span class="numero">
-
-R$ ${lucroHora.toFixed(2)}/hora
-
-</span>
-
-<br><br>
-
-<strong>⛽ Combustível consumindo:</strong><br>
-
-${percentualCombustivel.toFixed(1)}% do valor da corrida
-
-<div class="pequeno">
-
-A análise considera somente o combustível.
-Outros custos do veículo não estão incluídos.
-
-</div>
+<button onclick="adicionarCorrida(${valor},${distancia},${tempo},${combustivel},${lucro})">
+ADICIONAR AO MEU DIA
+</button>
 
 `;
 
 }
 
+
+function adicionarCorrida(
+valor,
+distancia,
+tempo,
+combustivel,
+lucro
+){
+
+historico.push({
+
+valor:valor,
+distancia:distancia,
+tempo:tempo,
+combustivel:combustivel,
+lucro:lucro
+
+});
+
+
+localStorage.setItem(
+"historicoCorridas",
+JSON.stringify(historico)
+);
+
+
+document.getElementById("resultado").innerHTML =
+
+"<div class='veredito bom'>✅ Corrida adicionada!</div>";
+
+atualizarPainel();
+
+}
+
+
+function atualizarPainel(){
+
+let ganhos = 0;
+let km = 0;
+let combustivel = 0;
+let lucro = 0;
+let minutos = 0;
+
+
+historico.forEach(c => {
+
+ganhos += c.valor;
+km += c.distancia;
+combustivel += c.combustivel;
+lucro += c.lucro;
+minutos += c.tempo;
+
+});
+
+
+let horas =
+minutos / 60;
+
+let mediaHora =
+horas > 0 ? ganhos / horas : 0;
+
+let meta =
+Number(document.getElementById("meta").value) || 200;
+
+let percentual =
+meta > 0 ? (ganhos / meta) * 100 : 0;
+
+if(percentual > 100){
+
+percentual = 100;
+
+}
+
+
+document.getElementById("totalGanhos").innerText =
+"R$ " + ganhos.toFixed(2);
+
+document.getElementById("totalCorridas").innerText =
+historico.length;
+
+document.getElementById("totalKm").innerText =
+km.toFixed(2);
+
+document.getElementById("totalCombustivel").innerText =
+"R$ " + combustivel.toFixed(2);
+
+document.getElementById("totalLucro").innerText =
+"R$ " + lucro.toFixed(2);
+
+document.getElementById("mediaHora").innerText =
+"R$ " + mediaHora.toFixed(2);
+
+document.getElementById("barra").style.width =
+percentual + "%";
+
+document.getElementById("progressoTexto").innerText =
+
+"R$ " + ganhos.toFixed(2) +
+" de R$ " + meta.toFixed(2);
+
+
+mostrarHistorico();
+
+}
+
+
+function mostrarHistorico(){
+
+let div =
+document.getElementById("historico");
+
+
+if(historico.length === 0){
+
+div.innerHTML =
+"Nenhuma corrida registrada.";
+
+return;
+
+}
+
+
+div.innerHTML = "";
+
+
+historico.forEach((c,index)=>{
+
+div.innerHTML += `
+
+<div class="corrida">
+
+<strong>Corrida ${index + 1}</strong>
+
+<br>
+
+💰 R$ ${c.valor.toFixed(2)}
+
+<br>
+
+📍 ${c.distancia.toFixed(1)} km
+
+<br>
+
+⏰ ${c.tempo} minutos
+
+<br>
+
+⛽ Combustível:
+R$ ${c.combustivel.toFixed(2)}
+
+<br>
+
+💵 Lucro:
+<strong>R$ ${c.lucro.toFixed(2)}</strong>
+
+</div>
+
+`;
+
+});
+
+}
+
+
+function limparHistorico(){
+
+if(confirm("Deseja realmente apagar o histórico de hoje?")){
+
+historico = [];
+
+localStorage.removeItem(
+"historicoCorridas"
+);
+
+atualizarPainel();
+
+}
+
+}
+
+
+atualizarPainel();
+
 </script>
 
 </body>
-
 </html>
