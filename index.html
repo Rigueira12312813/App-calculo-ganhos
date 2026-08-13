@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Calculador de Corridas V14</title>
+<title>Calculador de Corridas V15</title>
 
 <style>
 *{
@@ -20,7 +20,7 @@ padding:12px
 }
 
 .app{
-max-width:500px;
+max-width:520px;
 margin:auto
 }
 
@@ -261,7 +261,8 @@ background:#eff6ff;
 border:1px solid #bfdbfe;
 padding:14px;
 border-radius:14px;
-margin-top:10px
+margin-top:10px;
+line-height:1.5
 }
 
 .projecao strong{
@@ -466,9 +467,9 @@ line-height:1.5;
 margin-top:10px
 }
 
-/* ==============================
-PAINEL INTELIGENTE V14
-============================== */
+/* ===========================
+V15 - INTELIGÊNCIA
+=========================== */
 
 .inteligente{
 background:#111827;
@@ -516,7 +517,7 @@ overflow:hidden
 
 .criterio-progresso{
 height:100%;
-width:0%;
+width:0;
 background:#22c55e;
 border-radius:10px
 }
@@ -555,16 +556,138 @@ line-height:1.5;
 font-size:13px
 }
 
-.comparacao{
-background:#f8fafc;
-border:1px solid #e5e7eb;
-border-radius:13px;
-padding:14px;
-margin-top:10px
+/* ===========================
+V15 - PROJEÇÃO AVANÇADA
+=========================== */
+
+.projecao-avancada{
+background:#f5f3ff;
+border:1px solid #ddd6fe;
+border-radius:15px;
+padding:15px;
+margin-top:12px
 }
 
-.comparacao strong{
-font-size:18px
+.projecao-avancada h3{
+font-size:16px;
+margin-bottom:10px
+}
+
+.proj-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:8px
+}
+
+.proj-box{
+background:white;
+border-radius:11px;
+padding:11px;
+border:1px solid #e5e7eb
+}
+
+.proj-box span{
+display:block;
+font-size:11px;
+color:#666
+}
+
+.proj-box strong{
+display:block;
+font-size:18px;
+margin-top:5px
+}
+
+/* ===========================
+V15 - SEMÁFORO
+=========================== */
+
+.semaforo{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:7px;
+margin-top:12px
+}
+
+.semaforo-item{
+padding:11px 5px;
+border-radius:11px;
+text-align:center;
+font-size:11px;
+font-weight:bold;
+background:#f3f4f6;
+color:#666;
+border:1px solid #e5e7eb
+}
+
+.semaforo-item.ativo-verde{
+background:#dcfce7;
+color:#166534;
+border-color:#86efac
+}
+
+.semaforo-item.ativo-amarelo{
+background:#fef3c7;
+color:#92400e;
+border-color:#fcd34d
+}
+
+.semaforo-item.ativo-vermelho{
+background:#fee2e2;
+color:#991b1b;
+border-color:#fca5a5
+}
+
+/* ===========================
+V15 - ALERTA META
+=========================== */
+
+.meta-alerta{
+padding:13px;
+border-radius:13px;
+margin-top:12px;
+font-size:13px;
+line-height:1.5;
+display:none
+}
+
+.meta-ok{
+background:#dcfce7;
+color:#166534
+}
+
+.meta-atencao{
+background:#fef3c7;
+color:#92400e
+}
+
+.meta-perigo{
+background:#fee2e2;
+color:#991b1b
+}
+
+/* ===========================
+V15 - MELHOR ROTA
+=========================== */
+
+.destaque-rota{
+background:#ecfdf5;
+border:1px solid #86efac;
+border-radius:15px;
+padding:15px;
+margin-bottom:12px
+}
+
+.destaque-rota h3{
+font-size:16px;
+margin-bottom:7px;
+color:#166534
+}
+
+.destaque-rota p{
+font-size:13px;
+line-height:1.6;
+color:#166534
 }
 
 .rodape{
@@ -582,13 +705,11 @@ margin:20px 0
 
 <div class="header">
 <h1>🚗 Calculador de Corridas</h1>
-<p>Controle inteligente dos seus ganhos — V14</p>
+<p>Controle inteligente dos seus ganhos — V15</p>
 </div>
 
 
-<!-- ==========================
-SUPER RÁPIDO
-========================== -->
+<!-- SUPER RÁPIDO -->
 
 <div class="card super">
 
@@ -668,9 +789,7 @@ Digite valor, quilômetros e tempo para saber imediatamente se vale a pena.
 </div>
 
 
-<!-- ==========================
-PAINEL PRINCIPAL
-========================== -->
+<!-- PAINEL -->
 
 <div class="card">
 
@@ -742,16 +861,55 @@ Registre corridas para calcular.
 </div>
 
 
-<!-- ==========================
-PAINEL INTELIGENTE
-========================== -->
+<!-- PROJEÇÃO AVANÇADA -->
+
+<div class="card">
+
+<h2>🔮 Projeção até o fim do dia</h2>
+
+<div class="desc" style="color:#555">
+A projeção usa seu ritmo atual para estimar quanto você poderá faturar e lucrar.
+</div>
+
+<div class="proj-grid">
+
+<div class="proj-box">
+<span>💰 Atual</span>
+<strong id="projAtual">R$ 0,00</strong>
+</div>
+
+<div class="proj-box">
+<span>📈 Estimativa</span>
+<strong id="projFuturo">R$ 0,00</strong>
+</div>
+
+<div class="proj-box">
+<span>💵 Lucro estimado</span>
+<strong id="projLucro">R$ 0,00</strong>
+</div>
+
+<div class="proj-box">
+<span>🎯 Para meta</span>
+<strong id="projMeta">R$ 0,00</strong>
+</div>
+
+</div>
+
+<div class="info">
+A estimativa é baseada no ritmo registrado no dia. Quanto mais corridas você registrar, mais útil ela fica.
+</div>
+
+</div>
+
+
+<!-- INTELIGÊNCIA -->
 
 <div class="card inteligente">
 
-<h2>🧠 Decisão Inteligente V14</h2>
+<h2>🧠 Decisão Inteligente V15</h2>
 
 <div class="desc">
-A nota usa R$/km, R$/hora, lucro, tempo e o histórico das suas regiões e rotas registradas.
+A nota combina R$/km, R$/hora, lucro, combustível e histórico do destino.
 </div>
 
 <div class="nota" id="notaInteligente">
@@ -796,6 +954,22 @@ Analise uma corrida para receber uma recomendação.
 
 </div>
 
+<div class="semaforo">
+
+<div id="semVerde" class="semaforo-item">
+🟢 ACEITAR
+</div>
+
+<div id="semAmarelo" class="semaforo-item">
+🟡 AVALIAR
+</div>
+
+<div id="semVermelho" class="semaforo-item">
+🔴 RECUSAR
+</div>
+
+</div>
+
 <div id="analiseDestino">
 </div>
 
@@ -805,74 +979,7 @@ Analise uma corrida para receber uma recomendação.
 </div>
 
 
-<!-- ==========================
-PERÍODOS
-========================== -->
-
-<div class="card">
-
-<h2>🕐 Controle por período</h2>
-
-<div class="desc" style="color:#555">
-Veja em qual período você está produzindo mais dinheiro.
-</div>
-
-<div id="periodos">
-
-<div class="vazio">
-Registre corridas para analisar os períodos.
-</div>
-
-</div>
-
-</div>
-
-
-<!-- ==========================
-REGIÕES
-========================== -->
-
-<div class="card">
-
-<h2>📍 Análise de regiões</h2>
-
-<div class="desc" style="color:#555">
-Veja quais regiões estão trazendo melhores resultados.
-</div>
-
-<div id="resumoRegioes">
-
-<div class="vazio">
-Registre corridas com origem e destino.
-</div>
-
-</div>
-
-</div>
-
-
-<!-- ==========================
-ROTAS
-========================== -->
-
-<div class="card">
-
-<h2>🛣️ Melhores rotas</h2>
-
-<div id="rotas">
-
-<div class="vazio">
-As melhores combinações aparecerão aqui.
-</div>
-
-</div>
-
-</div>
-
-
-<!-- ==========================
-META
-========================== -->
+<!-- META -->
 
 <div class="card">
 
@@ -912,12 +1019,13 @@ Você ainda não iniciou o dia.
 
 </div>
 
+<div id="metaAlerta" class="meta-alerta">
+</div>
+
 </div>
 
 
-<!-- ==========================
-NOVA CORRIDA
-========================== -->
+<!-- NOVA CORRIDA -->
 
 <div class="card">
 
@@ -959,9 +1067,7 @@ NOVA CORRIDA
 </div>
 
 
-<!-- ==========================
-RESULTADO
-========================== -->
+<!-- RESULTADO -->
 
 <div id="resultado" class="card" style="display:none">
 
@@ -1035,9 +1141,83 @@ RESULTADO
 </div>
 
 
-<!-- ==========================
-RANKING
-========================== -->
+<!-- MELHOR ROTA -->
+
+<div class="card">
+
+<h2>🏆 Melhor rota do dia</h2>
+
+<div id="melhorRota">
+
+<div class="vazio">
+Registre corridas para descobrir sua melhor rota.
+</div>
+
+</div>
+
+</div>
+
+
+<!-- PERÍODOS -->
+
+<div class="card">
+
+<h2>🕐 Controle por período</h2>
+
+<div class="desc" style="color:#555">
+Veja em qual período você está produzindo mais dinheiro.
+</div>
+
+<div id="periodos">
+
+<div class="vazio">
+Registre corridas para analisar os períodos.
+</div>
+
+</div>
+
+</div>
+
+
+<!-- REGIÕES -->
+
+<div class="card">
+
+<h2>📍 Análise de regiões</h2>
+
+<div class="desc" style="color:#555">
+Veja quais regiões estão trazendo melhores resultados.
+</div>
+
+<div id="resumoRegioes">
+
+<div class="vazio">
+Registre corridas com origem e destino.
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ROTAS -->
+
+<div class="card">
+
+<h2>🛣️ Melhores rotas</h2>
+
+<div id="rotas">
+
+<div class="vazio">
+As melhores combinações aparecerão aqui.
+</div>
+
+</div>
+
+</div>
+
+
+<!-- RANKING -->
 
 <div class="card">
 
@@ -1054,9 +1234,7 @@ Registre corridas para comparar.
 </div>
 
 
-<!-- ==========================
-HISTÓRICO
-========================== -->
+<!-- HISTÓRICO -->
 
 <div class="card">
 
@@ -1073,9 +1251,7 @@ Nenhuma corrida registrada.
 </div>
 
 
-<!-- ==========================
-CONFIGURAÇÕES
-========================== -->
+<!-- CONFIG -->
 
 <div class="card">
 
@@ -1119,7 +1295,7 @@ Os dados ficam salvos no armazenamento do navegador.
 
 
 <div class="rodape">
-Calculador de Corridas V14
+Calculador de Corridas V15
 </div>
 
 </div>
@@ -1132,11 +1308,11 @@ CONFIGURAÇÃO
 ========================================== */
 
 let cfg =
+JSON.parse(localStorage.getItem("cfgV15"))
+||
 JSON.parse(localStorage.getItem("cfgV14"))
 ||
 JSON.parse(localStorage.getItem("cfgV13"))
-||
-JSON.parse(localStorage.getItem("cfgV12"))
 ||
 {
 meta:300,
@@ -1152,14 +1328,13 @@ HISTÓRICO
 ========================================== */
 
 let hist =
+JSON.parse(localStorage.getItem("histV15"))
+||
 JSON.parse(localStorage.getItem("histV14"))
 ||
 JSON.parse(localStorage.getItem("histV13"))
 ||
-JSON.parse(localStorage.getItem("histV12"))
-||
 [];
-
 
 hist=hist.map(function(c){
 
@@ -1179,17 +1354,27 @@ destino:c.destino||"Não informado"
 let ultima=null;
 
 let trabalhando=
+localStorage.getItem("trabalhandoV15")==="1"
+||
 localStorage.getItem("trabalhandoV14")==="1";
 
 let inicio=
-Number(localStorage.getItem("inicioV14"))||0;
+Number(localStorage.getItem("inicioV15"))
+||
+Number(localStorage.getItem("inicioV14"))
+||
+0;
 
 let tempoAcumulado=
-Number(localStorage.getItem("tempoV14"))||0;
+Number(localStorage.getItem("tempoV15"))
+||
+Number(localStorage.getItem("tempoV14"))
+||
+0;
 
 
 /* ==========================================
-FORMATAÇÃO
+DINHEIRO
 ========================================== */
 
 function dinheiro(n){
@@ -1212,12 +1397,12 @@ SALVAR
 function salvar(){
 
 localStorage.setItem(
-"histV14",
+"histV15",
 JSON.stringify(hist)
 );
 
 localStorage.setItem(
-"cfgV14",
+"cfgV15",
 JSON.stringify(cfg)
 );
 
@@ -1225,7 +1410,7 @@ JSON.stringify(cfg)
 
 
 /* ==========================================
-CONFIGURAÇÃO
+CONFIG
 ========================================== */
 
 function carregarConfig(){
@@ -1257,7 +1442,7 @@ alert("✅ Configurações salvas!");
 
 
 /* ==========================================
-DADOS
+DADOS DO DIA
 ========================================== */
 
 function dadosDia(){
@@ -1310,11 +1495,8 @@ return;
 }
 
 let comb=(km/cfg.cons)*cfg.gas;
-
 let lucro=valor-comb;
-
 let pk=valor/km;
-
 let ph=valor/(min/60);
 
 sd.className="decisao";
@@ -1400,7 +1582,11 @@ Math.max(cfg.meta-d.bruto,0);
 falta.textContent=dinheiro(faltaValor);
 
 let pct=
-Math.min((d.bruto/cfg.meta)*100,100);
+cfg.meta>0
+?
+Math.min((d.bruto/cfg.meta)*100,100)
+:
+0;
 
 prog.style.width=pct+"%";
 
@@ -1416,7 +1602,11 @@ metaMsg.textContent=
 
 }
 
+atualizarAlertaMeta(d);
+
 projecaoDia(d);
+
+projecaoAvancada(d);
 
 mostrarPeriodos();
 
@@ -1424,9 +1614,72 @@ mostrarRegioes();
 
 mostrarRotas();
 
+mostrarMelhorRota();
+
 ranking();
 
 mostrarHistorico();
+
+}
+
+
+/* ==========================================
+ALERTA DA META
+========================================== */
+
+function atualizarAlertaMeta(d){
+
+let el=document.getElementById("metaAlerta");
+
+let percentual=
+cfg.meta>0
+?
+(d.bruto/cfg.meta)*100
+:
+0;
+
+el.style.display="block";
+
+if(percentual>=100){
+
+el.className="meta-alerta meta-ok";
+
+el.innerHTML=
+"🎉 <strong>Meta atingida!</strong> Você já passou de "+
+dinheiro(cfg.meta)+
+" de faturamento.";
+
+}
+else if(percentual>=70){
+
+el.className="meta-alerta meta-ok";
+
+el.innerHTML=
+"🟢 <strong>Você está perto!</strong> Já atingiu "+
+percentual.toFixed(0)+
+"% da sua meta.";
+
+}
+else if(percentual>=40){
+
+el.className="meta-alerta meta-atencao";
+
+el.innerHTML=
+"🟡 <strong>Continue firme.</strong> Você está em "+
+percentual.toFixed(0)+
+"% da meta.";
+
+}
+else{
+
+el.className="meta-alerta meta-perigo";
+
+el.innerHTML=
+"🔴 <strong>Atenção:</strong> ainda está no começo da meta. Faltam "+
+dinheiro(Math.max(cfg.meta-d.bruto,0))+
+".";
+
+}
 
 }
 
@@ -1447,7 +1700,6 @@ return;
 }
 
 let horas=d.min/60;
-
 let ph=d.bruto/horas;
 
 if(trabalhando){
@@ -1493,7 +1745,77 @@ horasNecessarias.toFixed(1)+
 
 
 /* ==========================================
-PERÍODOS
+PROJEÇÃO AVANÇADA V15
+========================================== */
+
+function projecaoAvancada(d){
+
+projAtual.textContent=dinheiro(d.bruto);
+
+if(!d.min){
+
+projFuturo.textContent="R$ 0,00";
+projLucro.textContent="R$ 0,00";
+projMeta.textContent=dinheiro(cfg.meta);
+
+return;
+
+}
+
+let horas=d.min/60;
+
+let ritmoBruto=d.bruto/horas;
+
+let ritmoLucro=d.lucro/horas;
+
+
+/*
+Estimativa para 6 horas
+de trabalho efetivo.
+*/
+
+let horasReferencia=6;
+
+let estimativa=d.bruto;
+
+let estimativaLucro=d.lucro;
+
+if(ritmoBruto>0){
+
+estimativa=
+Math.max(
+d.bruto,
+ritmoBruto*horasReferencia
+);
+
+}
+
+if(ritmoLucro>0){
+
+estimativaLucro=
+Math.max(
+d.lucro,
+ritmoLucro*horasReferencia
+);
+
+}
+
+projFuturo.textContent=
+dinheiro(estimativa);
+
+projLucro.textContent=
+dinheiro(estimativaLucro);
+
+projMeta.textContent=
+dinheiro(
+Math.max(cfg.meta-d.bruto,0)
+);
+
+}
+
+
+/* ==========================================
+PERÍODO
 ========================================== */
 
 function periodoDaHora(hora){
@@ -1647,7 +1969,7 @@ elemento.appendChild(div);
 
 
 /* ==========================================
-NORMALIZAÇÃO
+NORMALIZAR
 ========================================== */
 
 function normalizarNome(nome){
@@ -1817,20 +2139,7 @@ elemento.appendChild(div);
 ROTAS
 ========================================== */
 
-function mostrarRotas(){
-
-const elemento=document.getElementById("rotas");
-
-if(!hist.length){
-
-elemento.innerHTML=
-`<div class="vazio">
-As melhores combinações aparecerão aqui.
-</div>`;
-
-return;
-
-}
+function montarRotas(){
 
 let rotas={};
 
@@ -1867,7 +2176,7 @@ r.min+=Number(c.tempo)||0;
 
 });
 
-let lista=Object.keys(rotas)
+return Object.keys(rotas)
 .map(function(chave){
 
 let r=rotas[chave];
@@ -1885,8 +2194,27 @@ pk:r.km?r.bruto/r.km:0
 
 return b.ph-a.ph;
 
-})
-.slice(0,10);
+});
+
+}
+
+
+function mostrarRotas(){
+
+const elemento=document.getElementById("rotas");
+
+if(!hist.length){
+
+elemento.innerHTML=
+`<div class="vazio">
+As melhores combinações aparecerão aqui.
+</div>`;
+
+return;
+
+}
+
+let lista=montarRotas().slice(0,10);
 
 elemento.innerHTML=
 `
@@ -1941,15 +2269,71 @@ elemento.appendChild(div);
 
 
 /* ==========================================
-ANÁLISE DA CORRIDA
+MELHOR ROTA V15
+========================================== */
+
+function mostrarMelhorRota(){
+
+let el=document.getElementById("melhorRota");
+
+let lista=montarRotas();
+
+if(!lista.length){
+
+el.innerHTML=
+`
+<div class="vazio">
+Registre corridas para descobrir sua melhor rota.
+</div>
+`;
+
+return;
+
+}
+
+let melhor=lista[0];
+let r=melhor.r;
+
+el.innerHTML=
+`
+<div class="destaque-rota">
+
+<h3>🏆 ${nomeBonito(r.origem)} → ${nomeBonito(r.destino)}</h3>
+
+<p>
+
+Essa é sua melhor rota registrada pelo critério de R$/hora.<br><br>
+
+🚗 <strong>${r.corridas}</strong> corrida(s)<br>
+
+💰 Faturamento:
+<strong>${dinheiro(r.bruto)}</strong><br>
+
+💵 Lucro:
+<strong>${dinheiro(r.lucro)}</strong><br>
+
+📍 R$/km:
+<strong>${dinheiro(melhor.pk)}</strong><br>
+
+⏱️ R$/hora:
+<strong>${dinheiro(melhor.ph)}</strong>
+
+</p>
+
+</div>
+`;
+
+}
+
+
+/* ==========================================
+ANALISAR CORRIDA
 ========================================== */
 
 function analisar(){
 
 let plataforma=app.value;
-
 let origemTexto=origem.value.trim();
-
 let destinoTexto=destino.value.trim();
 
 let valor=Number(v.value);
@@ -1973,11 +2357,8 @@ return;
 }
 
 let comb=(km/cfg.cons)*cfg.gas;
-
 let lucro=valor-comb;
-
 let pk=valor/km;
-
 let ph=valor/(tempo/60);
 
 dec.className="decisao";
@@ -2049,11 +2430,7 @@ minute:"2-digit"
 
 };
 
-
-/* NOVO V14 */
-
 gerarDecisaoInteligente(ultima);
-
 
 resultado.style.display="block";
 
@@ -2065,17 +2442,10 @@ behavior:"smooth"
 
 
 /* ==========================================
-DECISÃO INTELIGENTE V14
+DECISÃO INTELIGENTE
 ========================================== */
 
 function gerarDecisaoInteligente(c){
-
-let nota=0;
-
-
-/*
-R$/km
-*/
 
 let notaKm=
 Math.min(
@@ -2083,21 +2453,11 @@ Math.min(
 30
 );
 
-
-/*
-R$/hora
-*/
-
 let notaHora=
 Math.min(
 (c.ph/cfg.minHora)*35,
 35
 );
-
-
-/*
-Lucro da corrida
-*/
 
 let lucroPercentual=
 c.valor>0
@@ -2111,18 +2471,10 @@ Math.max(lucroPercentual*35,0),
 35
 );
 
-nota=
+let nota=
 notaKm+
 notaHora+
 notaLucro;
-
-nota=Math.round(nota);
-
-
-/*
-Bônus ou penalidade baseada
-no histórico da região de destino.
-*/
 
 let destino=
 normalizarNome(c.destino);
@@ -2134,9 +2486,7 @@ return normalizarNome(item.destino)===destino;
 
 });
 
-
 let bonusDestino=0;
-
 let destinoPh=0;
 
 if(historicoDestino.length>=2){
@@ -2169,13 +2519,7 @@ nota+=bonusDestino;
 
 }
 
-
-/*
-Limite
-*/
-
-nota=Math.max(0,Math.min(100,nota));
-
+nota=Math.max(0,Math.min(100,Math.round(nota)));
 
 let titulo="";
 let classe="";
@@ -2183,32 +2527,27 @@ let classe="";
 if(nota>=80){
 
 titulo="🟢 EXCELENTE";
-
 classe="excelente";
 
 }
 else if(nota>=60){
 
 titulo="🟡 BOA";
-
 classe="razoavel";
 
 }
 else if(nota>=40){
 
 titulo="🟠 ATENÇÃO";
-
 classe="razoavel";
 
 }
 else{
 
 titulo="🔴 FRACA";
-
 classe="fraca";
 
 }
-
 
 notaInteligente.textContent=
 nota+"/100";
@@ -2221,9 +2560,7 @@ notaInteligente.className=
 "nota "+classe;
 
 
-/*
-Barras
-*/
+/* BARRAS */
 
 let criterios=
 document.querySelectorAll(
@@ -2241,7 +2578,6 @@ dinheiro(c.pk)+"/km",
 dinheiro(c.ph)+"/hora",
 dinheiro(c.lucro)
 ];
-
 
 for(let i=0;i<3;i++){
 
@@ -2262,9 +2598,36 @@ textos[i];
 }
 
 
-/*
-Análise do destino
-*/
+/* SEMÁFORO */
+
+semVerde.className="semaforo-item";
+semAmarelo.className="semaforo-item";
+semVermelho.className="semaforo-item";
+
+if(nota>=70){
+
+semVerde.classList.add(
+"ativo-verde"
+);
+
+}
+else if(nota>=45){
+
+semAmarelo.classList.add(
+"ativo-amarelo"
+);
+
+}
+else{
+
+semVermelho.classList.add(
+"ativo-vermelho"
+);
+
+}
+
+
+/* DESTINO */
 
 let destinoHTML="";
 
@@ -2276,7 +2639,7 @@ destinoHTML=
 
 📍 <strong>Destino ainda sem histórico suficiente.</strong><br>
 
-O aplicativo precisa de pelo menos 2 corridas anteriores para avaliar se essa região costuma render bem.
+O aplicativo precisa de pelo menos 2 corridas anteriores para avaliar essa região.
 
 </div>
 `;
@@ -2324,56 +2687,50 @@ destinoHTML=
 
 📍 <strong>Destino neutro.</strong><br>
 
-O histórico de
-<strong>${nomeBonito(destino)}</strong>
-não mostra vantagem ou desvantagem forte até agora.
+O histórico dessa região ainda não mostra uma vantagem forte.
 
 </div>
 `;
 
 }
 
-analiseDestino.innerHTML=
-destinoHTML;
+analiseDestino.innerHTML=destinoHTML;
 
 
-/*
-Recomendação
-*/
+/* RECOMENDAÇÃO */
 
 let recomendacao="";
 
 if(nota>=80){
 
 recomendacao=
-"🔥 Essa corrida tem um perfil muito bom. Se o trânsito e o local de destino forem tranquilos, é uma forte candidata para aceitar.";
+"🔥 Essa corrida tem um perfil muito bom. Se o trânsito e o destino forem tranquilos, é uma forte candidata para aceitar.";
 
 }
 else if(nota>=60){
 
 recomendacao=
-"👍 A corrida parece interessante. Confira principalmente o trânsito e se o destino deixa você próximo de uma região com bastante demanda.";
+"👍 A corrida parece interessante. Confira principalmente se o destino deixa você perto de uma região com boa demanda.";
 
 }
 else if(nota>=40){
 
 recomendacao=
-"⚠️ Essa corrida precisa ser analisada com cuidado. O valor pode parecer bom, mas o tempo, distância ou lucro estão reduzindo a qualidade.";
+"⚠️ Essa corrida precisa ser analisada com cuidado. Tempo, distância ou lucro estão reduzindo a qualidade.";
 
 }
 else{
 
 recomendacao=
-"🛑 Essa corrida está fraca pelos seus critérios atuais. Só faria sentido aceitar se houver algum motivo estratégico, como reposicionamento para uma região muito melhor.";
+"🛑 Essa corrida está fraca pelos seus critérios atuais. Só vale considerar se o destino for estrategicamente muito bom.";
 
 }
-
 
 recomendacaoInteligente.innerHTML=
 `
 <div class="recomendacao">
 
-🧠 <strong>Recomendação V14</strong><br><br>
+🧠 <strong>Recomendação V15</strong><br><br>
 
 ${recomendacao}
 
@@ -2688,12 +3045,12 @@ trabalhando=true;
 inicio=Date.now();
 
 localStorage.setItem(
-"trabalhandoV14",
+"trabalhandoV15",
 "1"
 );
 
 localStorage.setItem(
-"inicioV14",
+"inicioV15",
 inicio
 );
 
@@ -2715,17 +3072,17 @@ trabalhando=false;
 inicio=0;
 
 localStorage.setItem(
-"trabalhandoV14",
+"trabalhandoV15",
 "0"
 );
 
 localStorage.setItem(
-"tempoV14",
+"tempoV15",
 tempoAcumulado
 );
 
 localStorage.removeItem(
-"inicioV14"
+"inicioV15"
 );
 
 document.querySelector(
@@ -2764,20 +3121,20 @@ inicio=0;
 
 trabalhando=false;
 
-localStorage.removeItem("histV14");
+localStorage.removeItem("histV15");
 
 localStorage.setItem(
-"tempoV14",
+"tempoV15",
 "0"
 );
 
 localStorage.setItem(
-"trabalhandoV14",
+"trabalhandoV15",
 "0"
 );
 
 localStorage.removeItem(
-"inicioV14"
+"inicioV15"
 );
 
 document.querySelector(
