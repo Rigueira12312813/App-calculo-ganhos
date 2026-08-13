@@ -1,1 +1,11 @@
-
+{
+  "name": "Calculador de Corridas",
+  "short_name": "Ganhos",
+  "description": "Aplicativo para análise de corridas, ganhos, custos e lucro.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f2f4f7",
+  "theme_color": "#111827",
+  "orientation": "portrait",
+  "lang": "pt-BR"
+}
