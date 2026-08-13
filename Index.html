@@ -12,29 +12,23 @@ body{
 margin:0;
 font-family:Arial,sans-serif;
 background:#eef1f5;
-color:#222;
+color:#222
 }
 
 header{
 background:#111827;
 color:white;
 padding:20px 15px;
-text-align:center;
+text-align:center
 }
 
-header h1{
-margin:0;
-font-size:25px;
-}
-
-header p{
-margin:6px 0 0;
-}
+header h1{margin:0;font-size:25px}
+header p{margin:6px 0 0}
 
 .container{
 max-width:550px;
 margin:auto;
-padding:15px;
+padding:15px
 }
 
 .card{
@@ -42,37 +36,37 @@ background:white;
 border-radius:15px;
 padding:18px;
 margin-bottom:15px;
-box-shadow:0 3px 12px rgba(0,0,0,.08);
+box-shadow:0 3px 12px rgba(0,0,0,.08)
 }
 
 h2{
 margin-top:0;
-font-size:20px;
+font-size:20px
 }
 
 .grid{
 display:grid;
 grid-template-columns:1fr 1fr;
-gap:10px;
+gap:10px
 }
 
 .box{
 background:#f3f4f6;
 border-radius:10px;
 padding:12px;
-text-align:center;
+text-align:center
 }
 
 .box strong{
 display:block;
 font-size:20px;
-margin-top:5px;
+margin-top:5px
 }
 
 label{
 display:block;
 font-weight:bold;
-margin-top:12px;
+margin-top:12px
 }
 
 input{
@@ -81,7 +75,7 @@ padding:13px;
 margin-top:6px;
 border:1px solid #ccc;
 border-radius:9px;
-font-size:16px;
+font-size:16px
 }
 
 button{
@@ -93,59 +87,44 @@ border-radius:9px;
 background:#16a34a;
 color:white;
 font-size:17px;
-font-weight:bold;
+font-weight:bold
 }
 
-button.secundario{
-background:#374151;
-}
-
-button.perigo{
-background:#dc2626;
-}
-
-.progresso{
-height:15px;
-background:#e5e7eb;
-border-radius:20px;
-overflow:hidden;
-margin-top:10px;
-}
-
-.barra{
-height:100%;
-width:0%;
-background:#16a34a;
-transition:.3s;
-}
+button.secundario{background:#374151}
+button.perigo{background:#dc2626}
 
 .veredito{
 text-align:center;
-font-size:24px;
+font-size:25px;
 font-weight:bold;
-padding:14px;
+padding:15px;
 border-radius:10px;
-margin-bottom:15px;
+margin-bottom:15px
 }
 
 .bom{
 background:#dcfce7;
-color:#15803d;
+color:#15803d
 }
 
 .atencao{
 background:#fef3c7;
-color:#b45309;
+color:#b45309
 }
 
 .ruim{
 background:#fee2e2;
-color:#dc2626;
+color:#dc2626
 }
 
 .numero{
-font-size:21px;
-font-weight:bold;
+font-size:22px;
+font-weight:bold
+}
+
+.destaque{
+font-size:26px;
+font-weight:bold
 }
 
 .corrida{
@@ -153,13 +132,20 @@ border:1px solid #ddd;
 border-radius:10px;
 padding:12px;
 margin-top:10px;
-background:#fafafa;
+background:#fafafa
 }
 
 .pequeno{
 font-size:13px;
 color:#666;
-margin-top:10px;
+margin-top:10px
+}
+
+.linha{
+display:flex;
+justify-content:space-between;
+padding:7px 0;
+border-bottom:1px solid #eee
 }
 </style>
 </head>
@@ -168,7 +154,7 @@ margin-top:10px;
 
 <header>
 <h1>🚗 Meu Ganho</h1>
-<p>Painel do motorista</p>
+<p>Painel inteligente do motorista</p>
 </header>
 
 <div class="container">
@@ -184,14 +170,16 @@ type="number"
 id="meta"
 value="200"
 step="0.01"
-oninput="salvarConfiguracoes()"
+oninput="salvarMeta()"
 >
 
-<div class="progresso">
-<div class="barra" id="barra"></div>
+<div style="margin-top:12px">
+<strong id="progressoTexto">R$ 0,00 de R$ 200,00</strong>
 </div>
 
-<p id="progressoTexto">R$ 0,00 de R$ 200,00</p>
+<div style="height:15px;background:#e5e7eb;border-radius:20px;overflow:hidden;margin-top:8px">
+<div id="barra" style="height:100%;width:0%;background:#16a34a"></div>
+</div>
 
 </div>
 
@@ -239,58 +227,32 @@ oninput="salvarConfiguracoes()"
 
 <div class="card">
 
-<h2>🔎 Analisar corrida</h2>
+<h2>⚡ Decisão rápida</h2>
+
+<p class="pequeno">
+Digite os dados da corrida para saber se ela compensa.
+</p>
 
 <label>Valor da corrida (R$)</label>
+<input type="number" id="valor" placeholder="Ex: 18.50" step="0.01">
 
-<input
-type="number"
-id="valor"
-placeholder="Ex: 15.00"
-step="0.01"
->
-
-<label>Distância (km)</label>
-
-<input
-type="number"
-id="distancia"
-placeholder="Ex: 6"
-step="0.1"
->
+<label>Distância total (km)</label>
+<input type="number" id="distancia" placeholder="Ex: 7.2" step="0.1">
 
 <label>Tempo estimado (minutos)</label>
+<input type="number" id="tempo" placeholder="Ex: 18">
 
-<input
-type="number"
-id="tempo"
-placeholder="Ex: 15"
->
-
-<label>Preço da gasolina (R$/L)</label>
-
-<input
-type="number"
-id="gasolina"
-value="6.95"
-step="0.01"
->
+<label>Gasolina (R$/L)</label>
+<input type="number" id="gasolina" value="6.95" step="0.01">
 
 <label>Consumo (km/L)</label>
-
-<input
-type="number"
-id="consumo"
-value="10"
-step="0.1"
->
+<input type="number" id="consumo" value="10" step="0.1">
 
 <button onclick="analisar()">
-ANALISAR CORRIDA
+⚡ ANALISAR CORRIDA
 </button>
 
-<div id="resultado" style="margin-top:15px">
-</div>
+<div id="resultado" style="margin-top:15px"></div>
 
 </div>
 
@@ -321,21 +283,16 @@ let metaSalva =
 localStorage.getItem("metaMotorista");
 
 if(metaSalva){
-
-document.getElementById("meta").value =
-metaSalva;
-
+document.getElementById("meta").value=metaSalva;
 }
 
-function salvarConfiguracoes(){
 
-let meta =
+function salvarMeta(){
+
+let meta=
 Number(document.getElementById("meta").value);
 
-localStorage.setItem(
-"metaMotorista",
-meta
-);
+localStorage.setItem("metaMotorista",meta);
 
 atualizarPainel();
 
@@ -344,31 +301,25 @@ atualizarPainel();
 
 function analisar(){
 
-let valor =
+let valor=
 Number(document.getElementById("valor").value);
 
-let distancia =
+let distancia=
 Number(document.getElementById("distancia").value);
 
-let tempo =
+let tempo=
 Number(document.getElementById("tempo").value);
 
-let gasolina =
+let gasolina=
 Number(document.getElementById("gasolina").value);
 
-let consumo =
+let consumo=
 Number(document.getElementById("consumo").value);
 
 
-if(
-!valor ||
-!distancia ||
-!tempo ||
-!gasolina ||
-!consumo
-){
+if(!valor || !distancia || !tempo || !gasolina || !consumo){
 
-document.getElementById("resultado").innerHTML =
+document.getElementById("resultado").innerHTML=
 "<div class='veredito ruim'>⚠️ Preencha todos os campos</div>";
 
 return;
@@ -376,96 +327,93 @@ return;
 }
 
 
-let litros =
-distancia / consumo;
+let litros=distancia/consumo;
 
-let combustivel =
-litros * gasolina;
+let combustivel=litros*gasolina;
 
-let lucro =
-valor - combustivel;
+let lucro=valor-combustivel;
 
-let reaisKm =
-valor / distancia;
+let reaisKm=valor/distancia;
 
-let horas =
-tempo / 60;
+let horas=tempo/60;
 
-let reaisHora =
-valor / horas;
+let reaisHora=valor/horas;
 
-let lucroHora =
-lucro / horas;
+let lucroHora=lucro/horas;
 
 
 let classe;
 let mensagem;
+let explicacao;
 
 
-if(lucroHora >= 40){
+if(lucroHora>=40 && reaisKm>=2){
 
-classe = "bom";
-mensagem = "🟢 VALE A PENA";
+classe="bom";
+mensagem="🟢 ACEITAR";
+explicacao="Boa relação entre tempo e distância.";
 
 }
 
-else if(lucroHora >= 25){
+else if(lucroHora>=30 && reaisKm>=1.80){
 
-classe = "atencao";
-mensagem = "🟡 ATENÇÃO";
+classe="atencao";
+mensagem="🟡 AVALIAR";
+explicacao="Pode compensar dependendo do destino.";
 
 }
 
 else{
 
-classe = "ruim";
-mensagem = "🔴 NÃO VALE A PENA";
+classe="ruim";
+mensagem="🔴 RECUSAR";
+explicacao="Baixo retorno para o tempo ou distância.";
 
 }
 
 
-document.getElementById("resultado").innerHTML = `
+document.getElementById("resultado").innerHTML=`
 
 <div class="veredito ${classe}">
 ${mensagem}
 </div>
 
-<strong>💰 Valor:</strong>
-<span class="numero">
-R$ ${valor.toFixed(2)}
-</span>
+<div class="linha">
+<strong>💰 Valor</strong>
+<span>R$ ${valor.toFixed(2)}</span>
+</div>
 
-<br><br>
+<div class="linha">
+<strong>📍 R$/km</strong>
+<span>R$ ${reaisKm.toFixed(2)}</span>
+</div>
 
-<strong>📍 R$/km:</strong>
-${reaisKm.toFixed(2)}
+<div class="linha">
+<strong>⏰ R$/hora</strong>
+<span>R$ ${reaisHora.toFixed(2)}</span>
+</div>
 
-<br>
+<div class="linha">
+<strong>⛽ Combustível</strong>
+<span>R$ ${combustivel.toFixed(2)}</span>
+</div>
 
-<strong>⏰ R$/hora:</strong>
-${reaisHora.toFixed(2)}
+<div class="linha">
+<strong>💵 Lucro</strong>
+<span>R$ ${lucro.toFixed(2)}</span>
+</div>
 
-<br>
+<div class="linha">
+<strong>📈 Lucro/hora</strong>
+<span>R$ ${lucroHora.toFixed(2)}</span>
+</div>
 
-<strong>⛽ Combustível:</strong>
-R$ ${combustivel.toFixed(2)}
-
-<br>
-
-<strong>💵 Lucro:</strong>
-<span class="numero">
-R$ ${lucro.toFixed(2)}
-</span>
-
-<br>
-
-<strong>📈 Lucro/hora:</strong>
-R$ ${lucroHora.toFixed(2)}
-
-<br><br>
+<p class="pequeno">
+${explicacao}
+</p>
 
 <button onclick="adicionarCorrida(${valor},${distancia},${tempo},${combustivel},${lucro})">
-ADICIONAR AO MEU DIA
+➕ ADICIONAR AO MEU DIA
 </button>
 
 `;
@@ -473,33 +421,22 @@ ADICIONAR AO MEU DIA
 }
 
 
-function adicionarCorrida(
-valor,
-distancia,
-tempo,
-combustivel,
-lucro
-){
+function adicionarCorrida(valor,distancia,tempo,combustivel,lucro){
 
 historico.push({
-
 valor:valor,
 distancia:distancia,
 tempo:tempo,
 combustivel:combustivel,
 lucro:lucro
-
 });
-
 
 localStorage.setItem(
 "historicoCorridas",
 JSON.stringify(historico)
 );
 
-
-document.getElementById("resultado").innerHTML =
-
+document.getElementById("resultado").innerHTML=
 "<div class='veredito bom'>✅ Corrida adicionada!</div>";
 
 atualizarPainel();
@@ -509,69 +446,62 @@ atualizarPainel();
 
 function atualizarPainel(){
 
-let ganhos = 0;
-let km = 0;
-let combustivel = 0;
-let lucro = 0;
-let minutos = 0;
+let ganhos=0;
+let km=0;
+let combustivel=0;
+let lucro=0;
+let minutos=0;
 
 
-historico.forEach(c => {
+historico.forEach(c=>{
 
-ganhos += c.valor;
-km += c.distancia;
-combustivel += c.combustivel;
-lucro += c.lucro;
-minutos += c.tempo;
+ganhos+=c.valor;
+km+=c.distancia;
+combustivel+=c.combustivel;
+lucro+=c.lucro;
+minutos+=c.tempo;
 
 });
 
 
-let horas =
-minutos / 60;
+let horas=minutos/60;
 
-let mediaHora =
-horas > 0 ? ganhos / horas : 0;
+let mediaHora=
+horas>0 ? ganhos/horas : 0;
 
-let meta =
-Number(document.getElementById("meta").value) || 200;
+let meta=
+Number(document.getElementById("meta").value)||200;
 
-let percentual =
-meta > 0 ? (ganhos / meta) * 100 : 0;
+let percentual=
+meta>0 ? (ganhos/meta)*100 : 0;
 
-if(percentual > 100){
-
-percentual = 100;
-
-}
+if(percentual>100) percentual=100;
 
 
-document.getElementById("totalGanhos").innerText =
-"R$ " + ganhos.toFixed(2);
+document.getElementById("totalGanhos").innerText=
+"R$ "+ganhos.toFixed(2);
 
-document.getElementById("totalCorridas").innerText =
+document.getElementById("totalCorridas").innerText=
 historico.length;
 
-document.getElementById("totalKm").innerText =
+document.getElementById("totalKm").innerText=
 km.toFixed(2);
 
-document.getElementById("totalCombustivel").innerText =
-"R$ " + combustivel.toFixed(2);
+document.getElementById("totalCombustivel").innerText=
+"R$ "+combustivel.toFixed(2);
 
-document.getElementById("totalLucro").innerText =
-"R$ " + lucro.toFixed(2);
+document.getElementById("totalLucro").innerText=
+"R$ "+lucro.toFixed(2);
 
-document.getElementById("mediaHora").innerText =
-"R$ " + mediaHora.toFixed(2);
+document.getElementById("mediaHora").innerText=
+"R$ "+mediaHora.toFixed(2);
 
-document.getElementById("barra").style.width =
-percentual + "%";
+document.getElementById("barra").style.width=
+percentual+"%";
 
-document.getElementById("progressoTexto").innerText =
-
-"R$ " + ganhos.toFixed(2) +
-" de R$ " + meta.toFixed(2);
-
+document.getElementById("progressoTexto").innerText=
+"R$ "+ganhos.toFixed(2)+
+" de R$ "+meta.toFixed(2);
 
 mostrarHistorico();
 
@@ -580,30 +510,29 @@ mostrarHistorico();
 
 function mostrarHistorico(){
 
-let div =
+let div=
 document.getElementById("historico");
 
 
-if(historico.length === 0){
+if(historico.length===0){
 
-div.innerHTML =
-"Nenhuma corrida registrada.";
+div.innerHTML="Nenhuma corrida registrada.";
 
 return;
 
 }
 
 
-div.innerHTML = "";
+div.innerHTML="";
 
 
 historico.forEach((c,index)=>{
 
-div.innerHTML += `
+div.innerHTML+=`
 
 <div class="corrida">
 
-<strong>Corrida ${index + 1}</strong>
+<strong>🚗 Corrida ${index+1}</strong>
 
 <br>
 
@@ -619,13 +548,11 @@ div.innerHTML += `
 
 <br>
 
-⛽ Combustível:
-R$ ${c.combustivel.toFixed(2)}
+⛽ R$ ${c.combustivel.toFixed(2)} combustível
 
 <br>
 
-💵 Lucro:
-<strong>R$ ${c.lucro.toFixed(2)}</strong>
+💵 <strong>R$ ${c.lucro.toFixed(2)} lucro</strong>
 
 </div>
 
@@ -638,13 +565,11 @@ R$ ${c.combustivel.toFixed(2)}
 
 function limparHistorico(){
 
-if(confirm("Deseja realmente apagar o histórico de hoje?")){
+if(confirm("Deseja realmente apagar o histórico?")){
 
-historico = [];
+historico=[];
 
-localStorage.removeItem(
-"historicoCorridas"
-);
+localStorage.removeItem("historicoCorridas");
 
 atualizarPainel();
 
