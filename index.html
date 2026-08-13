@@ -8,375 +8,408 @@
 
 <style>
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: Arial, sans-serif;
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+font-family:Arial,sans-serif;
 }
 
-body {
-  background: #f2f4f7;
-  color: #222;
-  padding: 15px;
+body{
+background:#f2f4f7;
+color:#222;
+padding:15px;
 }
 
-.app {
-  max-width: 500px;
-  margin: auto;
+.app{
+max-width:500px;
+margin:auto;
 }
 
-.header {
-  background: #111827;
-  color: white;
-  padding: 20px;
-  border-radius: 18px;
-  margin-bottom: 15px;
-  text-align: center;
+.header{
+background:#111827;
+color:white;
+padding:20px;
+border-radius:18px;
+margin-bottom:15px;
+text-align:center;
 }
 
-.header h1 {
-  font-size: 24px;
-  margin-bottom: 6px;
+.header h1{
+font-size:24px;
+margin-bottom:6px;
 }
 
-.header p {
-  font-size: 13px;
-  color: #d1d5db;
+.header p{
+font-size:13px;
+color:#d1d5db;
 }
 
-.card {
-  background: white;
-  border-radius: 18px;
-  padding: 18px;
-  margin-bottom: 15px;
-  box-shadow: 0 3px 12px rgba(0,0,0,.07);
+.card{
+background:white;
+border-radius:18px;
+padding:18px;
+margin-bottom:15px;
+box-shadow:0 3px 12px rgba(0,0,0,.07);
 }
 
-.card h2 {
-  font-size: 19px;
-  margin-bottom: 15px;
+.card h2{
+font-size:19px;
+margin-bottom:15px;
 }
 
-label {
-  display: block;
-  font-weight: bold;
-  margin: 12px 0 6px;
+label{
+display:block;
+font-weight:bold;
+margin:12px 0 6px;
 }
 
 input,
-select {
-  width: 100%;
-  padding: 14px;
-  border: 1px solid #d1d5db;
-  border-radius: 12px;
-  font-size: 16px;
-  background: white;
+select{
+width:100%;
+padding:14px;
+border:1px solid #d1d5db;
+border-radius:12px;
+font-size:16px;
+background:white;
 }
 
-button {
-  width: 100%;
-  padding: 16px;
-  margin-top: 15px;
-  border: 0;
-  border-radius: 13px;
-  color: white;
-  font-size: 16px;
-  font-weight: bold;
+button{
+width:100%;
+padding:16px;
+margin-top:15px;
+border:0;
+border-radius:13px;
+color:white;
+font-size:16px;
+font-weight:bold;
 }
 
-button:active {
-  transform: scale(.98);
+button:active{
+transform:scale(.98);
 }
 
-.azul {
-  background: #2563eb;
+.azul{
+background:#2563eb;
 }
 
-.verde {
-  background: #16a34a;
+.verde{
+background:#16a34a;
 }
 
-.vermelho {
-  background: #dc2626;
+.vermelho{
+background:#dc2626;
 }
 
-.cinza {
-  background: #6b7280;
+.cinza{
+background:#6b7280;
 }
 
 /* MODO RÁPIDO */
 
-.rapido {
-  background: #111827;
-  color: white;
+.rapido{
+background:#111827;
+color:white;
 }
 
-.rapido h2 {
-  color: white;
+.rapido h2{
+color:white;
 }
 
-.rapido .subtitulo {
-  color: #d1d5db;
-  font-size: 13px;
-  margin-bottom: 12px;
+.subtitulo{
+color:#d1d5db;
+font-size:13px;
+margin-bottom:12px;
 }
 
-.botao-rapido {
-  background: #2563eb;
-  font-size: 18px;
-  padding: 18px;
+.botao-rapido{
+background:#2563eb;
+font-size:18px;
+padding:18px;
 }
 
 /* META */
 
-.meta-box {
-  text-align: center;
+.meta-box{
+text-align:center;
 }
 
-.meta-valor {
-  font-size: 32px;
-  font-weight: bold;
-  margin: 8px 0;
+.meta-valor{
+font-size:32px;
+font-weight:bold;
+margin:8px 0;
 }
 
-.barra {
-  width: 100%;
-  height: 17px;
-  background: #e5e7eb;
-  border-radius: 20px;
-  overflow: hidden;
-  margin: 14px 0;
+.barra{
+width:100%;
+height:17px;
+background:#e5e7eb;
+border-radius:20px;
+overflow:hidden;
+margin:14px 0;
 }
 
-.progresso {
-  height: 100%;
-  width: 0%;
-  background: #16a34a;
-  transition: .4s;
+.progresso{
+height:100%;
+width:0%;
+background:#16a34a;
+transition:.4s;
 }
 
-/* GRID */
-
-.grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-top: 12px;
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+margin-top:12px;
 }
 
-.mini {
-  background: #f3f4f6;
-  border-radius: 13px;
-  padding: 14px;
-  text-align: center;
+.mini{
+background:#f3f4f6;
+border-radius:13px;
+padding:14px;
+text-align:center;
 }
 
-.mini span {
-  display: block;
-  color: #666;
-  font-size: 12px;
+.mini span{
+display:block;
+color:#666;
+font-size:12px;
 }
 
-.mini strong {
-  display: block;
-  font-size: 20px;
-  margin-top: 5px;
+.mini strong{
+display:block;
+font-size:20px;
+margin-top:5px;
 }
 
 /* PAINEL */
 
-.painel {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
+.painel{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
 }
 
-.painel-item {
-  background: #f8fafc;
-  border: 1px solid #e5e7eb;
-  border-radius: 13px;
-  padding: 14px;
+.painel-item{
+background:#f8fafc;
+border:1px solid #e5e7eb;
+border-radius:13px;
+padding:14px;
 }
 
-.painel-item span {
-  display: block;
-  color: #666;
-  font-size: 12px;
-  margin-bottom: 6px;
+.painel-item span{
+display:block;
+color:#666;
+font-size:12px;
+margin-bottom:6px;
 }
 
-.painel-item strong {
-  font-size: 20px;
+.painel-item strong{
+font-size:20px;
 }
 
-.lucro-box {
-  grid-column: 1 / 3;
-  background: #ecfdf5;
-  border-color: #bbf7d0;
+.lucro-box{
+grid-column:1 / 3;
+background:#ecfdf5;
+border-color:#bbf7d0;
 }
 
-.lucro-box strong {
-  color: #166534;
-  font-size: 27px;
+.lucro-box strong{
+color:#166534;
+font-size:27px;
 }
 
-/* DECISÃO */
+/* RESULTADO */
 
-.resultado {
-  display: none;
+.resultado{
+display:none;
 }
 
-.decisao {
-  text-align: center;
-  padding: 20px;
-  border-radius: 15px;
-  margin-bottom: 17px;
+.decisao{
+text-align:center;
+padding:20px;
+border-radius:15px;
+margin-bottom:17px;
 }
 
-.decisao h3 {
-  font-size: 28px;
-  margin-bottom: 7px;
+.decisao h3{
+font-size:28px;
+margin-bottom:7px;
 }
 
-.decisao p {
-  font-size: 13px;
+.decisao p{
+font-size:13px;
 }
 
-.excelente {
-  background: #dcfce7;
-  color: #166534;
+.excelente{
+background:#dcfce7;
+color:#166534;
 }
 
-.razoavel {
-  background: #fef3c7;
-  color: #92400e;
+.razoavel{
+background:#fef3c7;
+color:#92400e;
 }
 
-.fraca {
-  background: #fee2e2;
-  color: #991b1b;
+.fraca{
+background:#fee2e2;
+color:#991b1b;
+}
+
+/* RESUMO FINANCEIRO */
+
+.resumo-financeiro{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+margin-bottom:15px;
+}
+
+.resumo-box{
+padding:15px;
+border-radius:14px;
+background:#f8fafc;
+border:1px solid #e5e7eb;
+}
+
+.resumo-box span{
+display:block;
+font-size:12px;
+color:#666;
+margin-bottom:6px;
+}
+
+.resumo-box strong{
+font-size:20px;
+}
+
+.resumo-lucro{
+grid-column:1 / 3;
+background:#ecfdf5;
+border-color:#bbf7d0;
+}
+
+.resumo-lucro strong{
+font-size:29px;
+color:#166534;
 }
 
 /* LINHAS */
 
-.linha {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 12px 0;
-  border-bottom: 1px solid #eee;
+.linha{
+display:flex;
+justify-content:space-between;
+gap:10px;
+padding:12px 0;
+border-bottom:1px solid #eee;
 }
 
-.nome {
-  color: #555;
+.nome{
+color:#555;
 }
 
-.valor {
-  font-weight: bold;
-  text-align: right;
+.valor{
+font-weight:bold;
+text-align:right;
 }
 
-.destaque {
-  background: #f3f4f6;
-  border-radius: 13px;
-  padding: 14px;
-  margin-top: 12px;
+.destaque{
+background:#f3f4f6;
+border-radius:13px;
+padding:14px;
+margin-top:12px;
 }
 
-.numero {
-  font-size: 25px;
-  font-weight: bold;
-  margin-top: 5px;
+.numero{
+font-size:25px;
+font-weight:bold;
+margin-top:5px;
 }
 
 /* HISTÓRICO */
 
-.historico-item {
-  border: 1px solid #e5e7eb;
-  border-radius: 13px;
-  padding: 14px;
-  margin-bottom: 10px;
-  background: #fafafa;
+.historico-item{
+border:1px solid #e5e7eb;
+border-radius:13px;
+padding:14px;
+margin-bottom:10px;
+background:#fafafa;
 }
 
-.historico-topo {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 9px;
+.historico-topo{
+display:flex;
+justify-content:space-between;
+margin-bottom:9px;
 }
 
-.historico-linha {
-  display: flex;
-  justify-content: space-between;
-  padding: 4px 0;
-  font-size: 13px;
+.historico-linha{
+display:flex;
+justify-content:space-between;
+padding:4px 0;
+font-size:13px;
 }
 
-.historico-vazio {
-  text-align: center;
-  color: #777;
-  padding: 18px 5px;
+.historico-vazio{
+text-align:center;
+color:#777;
+padding:18px 5px;
 }
 
 /* RANKING */
 
-.ranking-item {
-  padding: 13px;
-  border-radius: 13px;
-  background: #f8fafc;
-  margin-bottom: 9px;
-  border: 1px solid #e5e7eb;
+.ranking-item{
+padding:13px;
+border-radius:13px;
+background:#f8fafc;
+margin-bottom:9px;
+border:1px solid #e5e7eb;
 }
 
-.ranking-topo {
-  display: flex;
-  justify-content: space-between;
-  font-weight: bold;
-  margin-bottom: 6px;
+.ranking-topo{
+display:flex;
+justify-content:space-between;
+font-weight:bold;
+margin-bottom:6px;
 }
 
-.ranking-info {
-  color: #555;
-  font-size: 12px;
-  line-height: 1.6;
+.ranking-info{
+color:#555;
+font-size:12px;
+line-height:1.6;
 }
 
 /* CONFIGURAÇÕES */
 
-.configuracao {
-  background: #f8fafc;
-  padding: 13px;
-  border-radius: 13px;
-  margin-bottom: 10px;
+.configuracao{
+background:#f8fafc;
+padding:13px;
+border-radius:13px;
+margin-bottom:10px;
 }
 
-.info {
-  background: #eff6ff;
-  color: #1e40af;
-  padding: 12px;
-  border-radius: 11px;
-  font-size: 12px;
-  line-height: 1.5;
-  margin-top: 10px;
+.info{
+background:#eff6ff;
+color:#1e40af;
+padding:12px;
+border-radius:11px;
+font-size:12px;
+line-height:1.5;
+margin-top:10px;
 }
 
-.rodape {
-  text-align: center;
-  color: #777;
-  font-size: 11px;
-  margin: 20px 0;
+.rodape{
+text-align:center;
+color:#777;
+font-size:11px;
+margin:20px 0;
 }
 
 </style>
 </head>
 
-
 <body>
 
 <div class="app">
-
-<!-- CABEÇALHO -->
 
 <div class="header">
 
@@ -396,18 +429,14 @@ Controle inteligente dos seus ganhos
 <h2>⚡ Corrida rápida</h2>
 
 <div class="subtitulo">
-
 Registre uma corrida em poucos segundos.
-
 </div>
 
 <button
 class="botao-rapido"
 onclick="irParaCorrida()"
 >
-
 ➕ NOVA CORRIDA
-
 </button>
 
 </div>
@@ -429,9 +458,7 @@ Faturamento de hoje
 class="meta-valor"
 id="totalDia"
 >
-
 R$ 0,00
-
 </div>
 
 <div class="barra">
@@ -444,13 +471,10 @@ id="progresso"
 </div>
 
 <div id="mensagemMeta">
-
 Você ainda não iniciou o dia.
-
 </div>
 
 </div>
-
 
 <div class="grid">
 
@@ -465,7 +489,6 @@ Corridas
 </strong>
 
 </div>
-
 
 <div class="mini">
 
@@ -494,9 +517,7 @@ R$ 0,00
 
 <div class="painel-item">
 
-<span>
-💰 Faturamento
-</span>
+<span>💰 Faturamento</span>
 
 <strong id="painelBruto">
 R$ 0,00
@@ -504,12 +525,9 @@ R$ 0,00
 
 </div>
 
-
 <div class="painel-item">
 
-<span>
-⛽ Combustível
-</span>
+<span>⛽ Combustível</span>
 
 <strong id="painelCombustivel">
 R$ 0,00
@@ -517,12 +535,9 @@ R$ 0,00
 
 </div>
 
-
 <div class="painel-item lucro-box">
 
-<span>
-💵 Lucro estimado
-</span>
+<span>💵 Lucro após combustível</span>
 
 <strong id="painelLucro">
 R$ 0,00
@@ -530,12 +545,9 @@ R$ 0,00
 
 </div>
 
-
 <div class="painel-item">
 
-<span>
-🚗 Km
-</span>
+<span>🚗 Km</span>
 
 <strong id="painelKm">
 0 km
@@ -543,12 +555,9 @@ R$ 0,00
 
 </div>
 
-
 <div class="painel-item">
 
-<span>
-📍 R$/km
-</span>
+<span>📍 R$/km</span>
 
 <strong id="painelPorKm">
 R$ 0,00
@@ -556,12 +565,9 @@ R$ 0,00
 
 </div>
 
-
 <div class="painel-item">
 
-<span>
-⏱️ Tempo
-</span>
+<span>⏱️ Tempo</span>
 
 <strong id="painelTempo">
 0 min
@@ -569,12 +575,9 @@ R$ 0,00
 
 </div>
 
-
 <div class="painel-item">
 
-<span>
-🕐 R$/hora
-</span>
+<span>🕐 R$/hora</span>
 
 <strong id="painelPorHora">
 R$ 0,00
@@ -595,7 +598,6 @@ id="areaCorrida"
 >
 
 <h2>📋 Nova corrida</h2>
-
 
 <label>
 Aplicativo
@@ -662,9 +664,7 @@ step="1"
 class="azul"
 onclick="calcular()"
 >
-
-🔎 ANALISAR
-
+🔎 ANALISAR CORRIDA
 </button>
 
 </div>
@@ -689,6 +689,54 @@ RESULTADO
 <p id="motivoDecisao">
 Análise
 </p>
+
+</div>
+
+
+<h2>
+💰 Resumo financeiro
+</h2>
+
+
+<div class="resumo-financeiro">
+
+<div class="resumo-box">
+
+<span>
+💰 Faturamento
+</span>
+
+<strong id="resumoValor">
+R$ 0,00
+</strong>
+
+</div>
+
+
+<div class="resumo-box">
+
+<span>
+⛽ Combustível
+</span>
+
+<strong id="resumoCombustivel">
+R$ 0,00
+</strong>
+
+</div>
+
+
+<div class="resumo-box resumo-lucro">
+
+<span>
+💵 SOBRA APÓS COMBUSTÍVEL
+</span>
+
+<strong id="resumoLucro">
+R$ 0,00
+</strong>
+
+</div>
 
 </div>
 
@@ -776,7 +824,7 @@ R$ 0,00
 <div class="destaque">
 
 <div class="nome">
-💰 Lucro
+💵 Lucro
 </div>
 
 <div
@@ -792,7 +840,7 @@ R$ 0,00
 <div class="destaque">
 
 <div class="nome">
-📍 R$/km
+📍 Ganho por km
 </div>
 
 <div
@@ -808,7 +856,7 @@ R$ 0,00/km
 <div class="destaque">
 
 <div class="nome">
-⏱️ R$/hora
+⏱️ Ganho por hora
 </div>
 
 <div
@@ -825,9 +873,7 @@ R$ 0,00/h
 class="verde"
 onclick="adicionarCorrida()"
 >
-
 ✅ REGISTRAR CORRIDA
-
 </button>
 
 </div>
@@ -844,9 +890,7 @@ onclick="adicionarCorrida()"
 <div id="ranking">
 
 <div class="historico-vazio">
-
 Registre algumas corridas para comparar.
-
 </div>
 
 </div>
@@ -865,9 +909,7 @@ Registre algumas corridas para comparar.
 <div id="historico">
 
 <div class="historico-vazio">
-
 Nenhuma corrida registrada.
-
 </div>
 
 </div>
@@ -963,9 +1005,7 @@ step="0.1"
 class="azul"
 onclick="salvarConfiguracoes()"
 >
-
 💾 SALVAR CONFIGURAÇÕES
-
 </button>
 
 
@@ -978,7 +1018,7 @@ Os valores ficam salvos no celular.
 </div>
 
 
-<!-- ZERAR -->
+<!-- CONTROLE -->
 
 <div class="card">
 
@@ -990,9 +1030,7 @@ Os valores ficam salvos no celular.
 class="vermelho"
 onclick="zerarDia()"
 >
-
 🗑️ ZERAR DIA
-
 </button>
 
 </div>
@@ -1000,7 +1038,7 @@ onclick="zerarDia()"
 
 <div class="rodape">
 
-Calculador de Corridas — versão 7
+Calculador de Corridas — versão 8
 
 </div>
 
@@ -1009,27 +1047,19 @@ Calculador de Corridas — versão 7
 
 <script>
 
-/* ===============================
-CONFIGURAÇÕES
-=============================== */
-
 let configuracoes =
 JSON.parse(
 localStorage.getItem("configuracoes")
 ) || {
 
-meta: 300,
-minPorKm: 2,
-minPorHora: 40,
-gasolina: 6.95,
-consumo: 9
+meta:300,
+minPorKm:2,
+minPorHora:40,
+gasolina:6.95,
+consumo:9
 
 };
 
-
-/* ===============================
-DADOS
-=============================== */
 
 let totalDia =
 parseFloat(
@@ -1049,31 +1079,23 @@ localStorage.getItem("historico")
 ) || [];
 
 
-let ultimaCorrida = null;
+let ultimaCorrida=null;
 
 
-/* ===============================
-DINHEIRO
-=============================== */
+function dinheiro(valor){
 
-function dinheiro(valor) {
-
-return valor.toLocaleString(
+return Number(valor).toLocaleString(
 "pt-BR",
 {
-style: "currency",
-currency: "BRL"
+style:"currency",
+currency:"BRL"
 }
 );
 
 }
 
 
-/* ===============================
-IR PARA CORRIDA
-=============================== */
-
-function irParaCorrida() {
+function irParaCorrida(){
 
 const area =
 document.getElementById(
@@ -1081,11 +1103,11 @@ document.getElementById(
 );
 
 area.scrollIntoView({
-behavior: "smooth"
+behavior:"smooth"
 });
 
 setTimeout(
-function() {
+function(){
 
 document.getElementById(
 "valor"
@@ -1098,11 +1120,7 @@ document.getElementById(
 }
 
 
-/* ===============================
-CONFIGURAÇÕES
-=============================== */
-
-function carregarConfiguracoes() {
+function carregarConfiguracoes(){
 
 document.getElementById("meta").value =
 configuracoes.meta;
@@ -1122,7 +1140,7 @@ configuracoes.consumo;
 }
 
 
-function salvarConfiguracoes() {
+function salvarConfiguracoes(){
 
 const meta =
 parseFloat(
@@ -1150,21 +1168,18 @@ document.getElementById("consumoPadrao").value
 );
 
 
-if (
-
+if(
 isNaN(meta) ||
 isNaN(minPorKm) ||
 isNaN(minPorHora) ||
 isNaN(gasolina) ||
 isNaN(consumo) ||
-
-meta <= 0 ||
-minPorKm <= 0 ||
-minPorHora <= 0 ||
-gasolina <= 0 ||
-consumo <= 0
-
-) {
+meta<=0 ||
+minPorKm<=0 ||
+minPorHora<=0 ||
+gasolina<=0 ||
+consumo<=0
+){
 
 alert(
 "Preencha as configurações corretamente."
@@ -1175,27 +1190,22 @@ return;
 }
 
 
-configuracoes = {
-
+configuracoes={
 meta,
 minPorKm,
 minPorHora,
 gasolina,
 consumo
-
 };
 
 
 localStorage.setItem(
 "configuracoes",
-JSON.stringify(
-configuracoes
-)
+JSON.stringify(configuracoes)
 );
 
 
 atualizarTela();
-
 
 alert(
 "✅ Configurações salvas!"
@@ -1204,11 +1214,7 @@ alert(
 }
 
 
-/* ===============================
-SALVAR
-=============================== */
-
-function salvarDados() {
+function salvarDados(){
 
 localStorage.setItem(
 "totalDia",
@@ -1222,19 +1228,13 @@ quantidade
 
 localStorage.setItem(
 "historico",
-JSON.stringify(
-historico
-)
+JSON.stringify(historico)
 );
 
 }
 
 
-/* ===============================
-ATUALIZAR
-=============================== */
-
-function atualizarTela() {
+function atualizarTela(){
 
 document.getElementById(
 "totalDia"
@@ -1249,9 +1249,9 @@ quantidade;
 
 
 const media =
-quantidade > 0
-? totalDia / quantidade
-: 0;
+quantidade>0
+?totalDia/quantidade
+:0;
 
 
 document.getElementById(
@@ -1261,45 +1261,36 @@ dinheiro(media);
 
 
 let percentual =
-(totalDia /
-configuracoes.meta) *
-100;
+(totalDia/configuracoes.meta)*100;
 
 
-if (percentual > 100) {
-percentual = 100;
-}
+if(percentual>100)
+percentual=100;
 
 
 document.getElementById(
 "progresso"
 ).style.width =
-percentual + "%";
+percentual+"%";
 
 
-if (
-totalDia >=
-configuracoes.meta
-) {
+if(totalDia>=configuracoes.meta){
 
 document.getElementById(
 "mensagemMeta"
 ).textContent =
 "🎉 META ATINGIDA!";
 
-}
-
-else {
+}else{
 
 const falta =
-configuracoes.meta -
-totalDia;
+configuracoes.meta-totalDia;
 
 document.getElementById(
 "mensagemMeta"
 ).textContent =
-"Falta " +
-dinheiro(falta) +
+"Falta "+
+dinheiro(falta)+
 " para sua meta.";
 
 }
@@ -1314,51 +1305,43 @@ mostrarHistorico();
 }
 
 
-/* ===============================
-PAINEL
-=============================== */
+function atualizarPainel(){
 
-function atualizarPainel() {
-
-let bruto = 0;
-let combustivel = 0;
-let lucro = 0;
-let km = 0;
-let tempo = 0;
+let bruto=0;
+let combustivel=0;
+let lucro=0;
+let km=0;
+let tempo=0;
 
 
 historico.forEach(
-function(corrida) {
+function(corrida){
 
-bruto +=
-Number(corrida.valor) || 0;
+bruto+=Number(corrida.valor)||0;
 
-combustivel +=
-Number(corrida.combustivel) || 0;
+combustivel+=
+Number(corrida.combustivel)||0;
 
-lucro +=
-Number(corrida.lucro) || 0;
+lucro+=Number(corrida.lucro)||0;
 
-km +=
-Number(corrida.km) || 0;
+km+=Number(corrida.km)||0;
 
-tempo +=
-Number(corrida.tempo) || 0;
+tempo+=Number(corrida.tempo)||0;
 
 }
 );
 
 
 const porKm =
-km > 0
-? bruto / km
-: 0;
+km>0
+?bruto/km
+:0;
 
 
 const porHora =
-tempo > 0
-? bruto / (tempo / 60)
-: 0;
+tempo>0
+?bruto/(tempo/60)
+:0;
 
 
 document.getElementById(
@@ -1382,8 +1365,7 @@ dinheiro(lucro);
 document.getElementById(
 "painelKm"
 ).textContent =
-km.toFixed(1) +
-" km";
+km.toFixed(1)+" km";
 
 
 document.getElementById(
@@ -1406,39 +1388,28 @@ dinheiro(porHora);
 }
 
 
-/* ===============================
-TEMPO
-=============================== */
-
-function formatarTempo(minutos) {
+function formatarTempo(minutos){
 
 const horas =
-Math.floor(minutos / 60);
+Math.floor(minutos/60);
 
 const resto =
-minutos % 60;
+minutos%60;
 
 
-if (horas === 0) {
-
-return resto + " min";
-
-}
+if(horas===0)
+return resto+" min";
 
 
-return horas +
-"h " +
-resto +
+return horas+
+"h "+
+resto+
 "min";
 
 }
 
 
-/* ===============================
-ANALISAR
-=============================== */
-
-function calcular() {
+function calcular(){
 
 const plataforma =
 document.getElementById(
@@ -1470,17 +1441,14 @@ document.getElementById(
 );
 
 
-if (
-
+if(
 isNaN(valor) ||
 isNaN(km) ||
 isNaN(tempo) ||
-
-valor <= 0 ||
-km <= 0 ||
-tempo <= 0
-
-) {
+valor<=0 ||
+km<=0 ||
+tempo<=0
+){
 
 alert(
 "Preencha valor, km e tempo."
@@ -1492,44 +1460,32 @@ return;
 
 
 const combustivel =
-(
-km /
-configuracoes.consumo
-) *
+(km/configuracoes.consumo)*
 configuracoes.gasolina;
 
 
 const lucro =
-valor -
-combustivel;
+valor-combustivel;
 
 
 const porKm =
-valor /
-km;
+valor/km;
 
 
 const porHora =
-valor /
-(tempo / 60);
+valor/(tempo/60);
 
 
 const decisao =
-document.getElementById(
-"decisao"
-);
+document.getElementById("decisao");
 
 
 const texto =
-document.getElementById(
-"textoDecisao"
-);
+document.getElementById("textoDecisao");
 
 
 const motivo =
-document.getElementById(
-"motivoDecisao"
-);
+document.getElementById("motivoDecisao");
 
 
 decisao.classList.remove(
@@ -1539,15 +1495,10 @@ decisao.classList.remove(
 );
 
 
-if (
-
-porKm >=
-configuracoes.minPorKm &&
-
-porHora >=
-configuracoes.minPorHora
-
-) {
+if(
+porKm>=configuracoes.minPorKm &&
+porHora>=configuracoes.minPorHora
+){
 
 decisao.classList.add(
 "excelente"
@@ -1560,16 +1511,10 @@ motivo.textContent =
 "Boa corrida pelos seus critérios.";
 
 }
-
-else if (
-
-porKm >=
-configuracoes.minPorKm ||
-
-porHora >=
-configuracoes.minPorHora
-
-) {
+else if(
+porKm>=configuracoes.minPorKm ||
+porHora>=configuracoes.minPorHora
+){
 
 decisao.classList.add(
 "razoavel"
@@ -1582,8 +1527,7 @@ motivo.textContent =
 "Um dos critérios foi atingido.";
 
 }
-
-else {
+else{
 
 decisao.classList.add(
 "fraca"
@@ -1598,7 +1542,7 @@ motivo.textContent =
 }
 
 
-ultimaCorrida = {
+ultimaCorrida={
 
 plataforma,
 valor,
@@ -1608,18 +1552,36 @@ combustivel,
 lucro,
 porKm,
 porHora,
-decisao: texto.textContent,
+decisao:texto.textContent,
 
 horario:
 new Date().toLocaleTimeString(
 "pt-BR",
 {
-hour: "2-digit",
-minute: "2-digit"
+hour:"2-digit",
+minute:"2-digit"
 }
 )
 
 };
+
+
+document.getElementById(
+"resumoValor"
+).textContent =
+dinheiro(valor);
+
+
+document.getElementById(
+"resumoCombustivel"
+).textContent =
+dinheiro(combustivel);
+
+
+document.getElementById(
+"resumoLucro"
+).textContent =
+dinheiro(lucro);
 
 
 document.getElementById(
@@ -1637,15 +1599,13 @@ dinheiro(valor);
 document.getElementById(
 "rKm"
 ).textContent =
-km.toFixed(1) +
-" km";
+km.toFixed(1)+" km";
 
 
 document.getElementById(
 "rTempo"
 ).textContent =
-tempo +
-" min";
+tempo+" min";
 
 
 document.getElementById(
@@ -1663,15 +1623,13 @@ dinheiro(lucro);
 document.getElementById(
 "rPorKm"
 ).textContent =
-dinheiro(porKm) +
-"/km";
+dinheiro(porKm)+"/km";
 
 
 document.getElementById(
 "rPorHora"
 ).textContent =
-dinheiro(porHora) +
-"/h";
+dinheiro(porHora)+"/h";
 
 
 document.getElementById(
@@ -1683,19 +1641,15 @@ document.getElementById(
 document.getElementById(
 "resultado"
 ).scrollIntoView({
-behavior: "smooth"
+behavior:"smooth"
 });
 
 }
 
 
-/* ===============================
-REGISTRAR
-=============================== */
+function adicionarCorrida(){
 
-function adicionarCorrida() {
-
-if (!ultimaCorrida) {
+if(!ultimaCorrida){
 
 alert(
 "Primeiro analise a corrida."
@@ -1706,22 +1660,19 @@ return;
 }
 
 
-const corrida = {
+const corrida={
 
 ...ultimaCorrida,
 
 numero:
-historico.length + 1
+historico.length+1
 
 };
 
 
 historico.push(corrida);
 
-
-totalDia +=
-corrida.valor;
-
+totalDia+=corrida.valor;
 
 quantidade++;
 
@@ -1736,7 +1687,7 @@ alert(
 );
 
 
-ultimaCorrida = null;
+ultimaCorrida=null;
 
 
 document.getElementById(
@@ -1745,25 +1696,13 @@ document.getElementById(
 "none";
 
 
-document.getElementById(
-"valor"
-).value = "";
+document.getElementById("valor").value="";
+document.getElementById("km").value="";
+document.getElementById("tempo").value="";
 
-
-document.getElementById(
-"km"
-).value = "";
-
-
-document.getElementById(
-"tempo"
-).value = "";
-
-
-/* Volta para o campo valor */
 
 setTimeout(
-function() {
+function(){
 
 document.getElementById(
 "valor"
@@ -1776,11 +1715,7 @@ document.getElementById(
 }
 
 
-/* ===============================
-RANKING
-=============================== */
-
-function atualizarRanking() {
+function atualizarRanking(){
 
 const elemento =
 document.getElementById(
@@ -1788,11 +1723,9 @@ document.getElementById(
 );
 
 
-if (
-historico.length === 0
-) {
+if(historico.length===0){
 
-elemento.innerHTML =
+elemento.innerHTML=
 `
 <div class="historico-vazio">
 Registre algumas corridas para comparar.
@@ -1804,26 +1737,23 @@ return;
 }
 
 
-const apps = {};
+const apps={};
 
 
 historico.forEach(
-function(corrida) {
+function(corrida){
 
-const nome =
-corrida.plataforma;
+const nome=corrida.plataforma;
 
 
-if (!apps[nome]) {
+if(!apps[nome]){
 
-apps[nome] = {
-
-corridas: 0,
-valor: 0,
-lucro: 0,
-km: 0,
-tempo: 0
-
+apps[nome]={
+corridas:0,
+valor:0,
+lucro:0,
+km:0,
+tempo:0
 };
 
 }
@@ -1831,46 +1761,39 @@ tempo: 0
 
 apps[nome].corridas++;
 
-apps[nome].valor +=
-corrida.valor;
+apps[nome].valor+=corrida.valor;
 
-apps[nome].lucro +=
-corrida.lucro;
+apps[nome].lucro+=corrida.lucro;
 
-apps[nome].km +=
-corrida.km;
+apps[nome].km+=corrida.km;
 
-apps[nome].tempo +=
-corrida.tempo;
+apps[nome].tempo+=corrida.tempo;
 
 }
 );
 
 
-const lista =
+const lista=
 Object.keys(apps)
 .map(
-function(nome) {
+function(nome){
 
-const dados =
-apps[nome];
-
-
-dados.porHora =
-dados.tempo > 0
-? dados.valor /
-(dados.tempo / 60)
-: 0;
+const dados=apps[nome];
 
 
-dados.porKm =
-dados.km > 0
-? dados.valor /
-dados.km
-: 0;
+dados.porHora=
+dados.tempo>0
+?dados.valor/(dados.tempo/60)
+:0;
 
 
-return {
+dados.porKm=
+dados.km>0
+?dados.valor/dados.km
+:0;
+
+
+return{
 nome,
 dados
 };
@@ -1878,50 +1801,44 @@ dados
 }
 )
 .sort(
-function(a,b) {
+function(a,b){
 
-return b.dados.porHora -
+return b.dados.porHora-
 a.dados.porHora;
 
 }
 );
 
 
-elemento.innerHTML = "";
+elemento.innerHTML="";
 
 
 lista.forEach(
-function(item,index) {
+function(item,index){
 
-const dados =
-item.dados;
+const dados=item.dados;
 
+let medalha="📱";
 
-let medalha =
-"📱";
+if(index===0)
+medalha="🏆";
 
+else if(index===1)
+medalha="🥈";
 
-if (index === 0)
-medalha = "🏆";
-
-else if (index === 1)
-medalha = "🥈";
-
-else if (index === 2)
-medalha = "🥉";
+else if(index===2)
+medalha="🥉";
 
 
-const div =
-document.createElement(
-"div"
-);
+const div=
+document.createElement("div");
 
 
-div.className =
+div.className=
 "ranking-item";
 
 
-div.innerHTML = `
+div.innerHTML=`
 
 <div class="ranking-topo">
 
@@ -1971,11 +1888,7 @@ elemento.appendChild(div);
 }
 
 
-/* ===============================
-HISTÓRICO
-=============================== */
-
-function mostrarHistorico() {
+function mostrarHistorico(){
 
 const elemento =
 document.getElementById(
@@ -1983,11 +1896,9 @@ document.getElementById(
 );
 
 
-if (
-historico.length === 0
-) {
+if(historico.length===0){
 
-elemento.innerHTML =
+elemento.innerHTML=
 `
 <div class="historico-vazio">
 Nenhuma corrida registrada.
@@ -1999,26 +1910,24 @@ return;
 }
 
 
-elemento.innerHTML = "";
+elemento.innerHTML="";
 
 
 historico
 .slice()
 .reverse()
 .forEach(
-function(corrida) {
+function(corrida){
 
-const div =
-document.createElement(
-"div"
-);
+const div=
+document.createElement("div");
 
 
-div.className =
+div.className=
 "historico-item";
 
 
-div.innerHTML = `
+div.innerHTML=`
 
 <div class="historico-topo">
 
@@ -2035,9 +1944,7 @@ ${dinheiro(corrida.valor)}
 
 <div class="historico-linha">
 
-<span>
-📱 Aplicativo
-</span>
+<span>📱 Aplicativo</span>
 
 <strong>
 ${corrida.plataforma}
@@ -2048,9 +1955,7 @@ ${corrida.plataforma}
 
 <div class="historico-linha">
 
-<span>
-🕐 Horário
-</span>
+<span>🕐 Horário</span>
 
 <strong>
 ${corrida.horario}
@@ -2061,13 +1966,10 @@ ${corrida.horario}
 
 <div class="historico-linha">
 
-<span>
-📍 Distância
-</span>
+<span>📍 Distância</span>
 
 <strong>
-${corrida.km.toFixed(1)}
-km
+${corrida.km.toFixed(1)} km
 </strong>
 
 </div>
@@ -2075,13 +1977,10 @@ km
 
 <div class="historico-linha">
 
-<span>
-⏱️ Tempo
-</span>
+<span>⏱️ Tempo</span>
 
 <strong>
-${corrida.tempo}
-min
+${corrida.tempo} min
 </strong>
 
 </div>
@@ -2089,9 +1988,7 @@ min
 
 <div class="historico-linha">
 
-<span>
-⛽ Combustível
-</span>
+<span>⛽ Combustível</span>
 
 <strong>
 ${dinheiro(corrida.combustivel)}
@@ -2102,9 +1999,7 @@ ${dinheiro(corrida.combustivel)}
 
 <div class="historico-linha">
 
-<span>
-💰 Lucro
-</span>
+<span>💵 Lucro</span>
 
 <strong>
 ${dinheiro(corrida.lucro)}
@@ -2115,9 +2010,7 @@ ${dinheiro(corrida.lucro)}
 
 <div class="historico-linha">
 
-<span>
-📊 R$/km
-</span>
+<span>📊 R$/km</span>
 
 <strong>
 ${dinheiro(corrida.porKm)}
@@ -2128,9 +2021,7 @@ ${dinheiro(corrida.porKm)}
 
 <div class="historico-linha">
 
-<span>
-⏱️ R$/hora
-</span>
+<span>⏱️ R$/hora</span>
 
 <strong>
 ${dinheiro(corrida.porHora)}
@@ -2141,9 +2032,7 @@ ${dinheiro(corrida.porHora)}
 
 <div class="historico-linha">
 
-<span>
-🎯 Decisão
-</span>
+<span>🎯 Decisão</span>
 
 <strong>
 ${corrida.decisao}
@@ -2162,30 +2051,26 @@ elemento.appendChild(div);
 }
 
 
-/* ===============================
-ZERAR
-=============================== */
+function zerarDia(){
 
-function zerarDia() {
-
-if (
+if(
 !confirm(
 "Tem certeza que deseja zerar o dia?"
 )
-) {
+){
 
 return;
 
 }
 
 
-totalDia = 0;
+totalDia=0;
 
-quantidade = 0;
+quantidade=0;
 
-historico = [];
+historico=[];
 
-ultimaCorrida = null;
+ultimaCorrida=null;
 
 
 salvarDados();
@@ -2195,8 +2080,7 @@ atualizarTela();
 
 document.getElementById(
 "resultado"
-).style.display =
-"none";
+).style.display="none";
 
 
 alert(
@@ -2205,10 +2089,6 @@ alert(
 
 }
 
-
-/* ===============================
-INICIAR
-=============================== */
 
 carregarConfiguracoes();
 
