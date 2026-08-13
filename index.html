@@ -94,6 +94,14 @@
       transform: scale(0.98);
     }
 
+    .botao-verde {
+      background: #16a34a;
+    }
+
+    .botao-vermelho {
+      background: #dc2626;
+    }
+
     .resultado {
       display: none;
     }
@@ -154,6 +162,53 @@
       margin-top: 15px;
     }
 
+    .meta-box {
+      text-align: center;
+      padding: 10px;
+    }
+
+    .meta-valor {
+      font-size: 32px;
+      font-weight: bold;
+      margin: 8px 0;
+    }
+
+    .barra {
+      width: 100%;
+      height: 18px;
+      background: #e5e7eb;
+      border-radius: 20px;
+      overflow: hidden;
+      margin: 15px 0;
+    }
+
+    .progresso {
+      height: 100%;
+      width: 0%;
+      background: #16a34a;
+      transition: width 0.5s;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 15px;
+    }
+
+    .mini {
+      background: #f3f4f6;
+      padding: 15px;
+      border-radius: 14px;
+      text-align: center;
+    }
+
+    .mini strong {
+      display: block;
+      font-size: 21px;
+      margin-top: 5px;
+    }
+
     .aviso {
       margin-top: 15px;
       font-size: 13px;
@@ -176,14 +231,78 @@
 
   <div class="header">
     <h1>🚗 Calculador de Corridas</h1>
-    <p>Analise rapidamente se uma corrida vale a pena</p>
+    <p>Seu controle de ganhos como motorista</p>
   </div>
+
+
+  <!-- META DIÁRIA -->
 
   <div class="card">
 
-    <h2>📋 Dados da corrida</h2>
+    <h2>🎯 Meta do dia</h2>
+
+    <label>Digite sua meta diária (R$)</label>
+
+    <input
+      type="number"
+      id="meta"
+      value="300"
+      step="0.01"
+      onchange="salvarMeta()"
+    >
+
+    <div class="meta-box">
+
+      <div class="nome">
+        Faturamento de hoje
+      </div>
+
+      <div class="meta-valor" id="totalDia">
+        R$ 0,00
+      </div>
+
+      <div class="barra">
+        <div
+          class="progresso"
+          id="progresso"
+        ></div>
+      </div>
+
+      <div id="mensagemMeta">
+        Você ainda não iniciou o dia.
+      </div>
+
+    </div>
+
+    <div class="grid">
+
+      <div class="mini">
+        Corridas
+        <strong id="quantidade">
+          0
+        </strong>
+      </div>
+
+      <div class="mini">
+        Média
+        <strong id="media">
+          R$ 0,00
+        </strong>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- CALCULADOR -->
+
+  <div class="card">
+
+    <h2>📋 Nova corrida</h2>
 
     <label>Valor da corrida (R$)</label>
+
     <input
       type="number"
       id="valor"
@@ -192,6 +311,7 @@
     >
 
     <label>Distância (km)</label>
+
     <input
       type="number"
       id="km"
@@ -200,6 +320,7 @@
     >
 
     <label>Tempo da corrida (minutos)</label>
+
     <input
       type="number"
       id="tempo"
@@ -208,6 +329,7 @@
     >
 
     <label>Preço da gasolina (R$/litro)</label>
+
     <input
       type="number"
       id="gasolina"
@@ -216,6 +338,7 @@
     >
 
     <label>Consumo do carro (km/l)</label>
+
     <input
       type="number"
       id="consumo"
@@ -229,146 +352,457 @@
 
   </div>
 
-  <div class="card resultado" id="resultado">
 
-    <div id="status" class="status">
+  <!-- RESULTADO -->
+
+  <div
+    class="card resultado"
+    id="resultado"
+  >
+
+    <div
+      id="status"
+      class="status"
+    >
       RESULTADO
     </div>
 
-    <h2>📊 Análise</h2>
+    <h2>📊 Análise da corrida</h2>
 
     <div class="linha">
-      <span class="nome">Valor da corrida</span>
-      <span class="valor" id="rValor">R$ 0,00</span>
+      <span class="nome">
+        Valor da corrida
+      </span>
+
+      <span
+        class="valor"
+        id="rValor"
+      >
+        R$ 0,00
+      </span>
     </div>
 
     <div class="linha">
-      <span class="nome">Distância</span>
-      <span class="valor" id="rKm">0 km</span>
+
+      <span class="nome">
+        Distância
+      </span>
+
+      <span
+        class="valor"
+        id="rKm"
+      >
+        0 km
+      </span>
+
     </div>
 
     <div class="linha">
-      <span class="nome">Tempo</span>
-      <span class="valor" id="rTempo">0 min</span>
+
+      <span class="nome">
+        Tempo
+      </span>
+
+      <span
+        class="valor"
+        id="rTempo"
+      >
+        0 min
+      </span>
+
     </div>
 
     <div class="linha">
-      <span class="nome">Custo estimado de combustível</span>
-      <span class="valor" id="rCombustivel">R$ 0,00</span>
+
+      <span class="nome">
+        Combustível
+      </span>
+
+      <span
+        class="valor"
+        id="rCombustivel"
+      >
+        R$ 0,00
+      </span>
+
     </div>
 
     <div class="destaque">
-      <div class="nome">💰 Lucro estimado</div>
-      <div class="numero" id="rLucro">R$ 0,00</div>
+
+      <div class="nome">
+        💰 Lucro estimado
+      </div>
+
+      <div
+        class="numero"
+        id="rLucro"
+      >
+        R$ 0,00
+      </div>
+
     </div>
 
     <div class="destaque">
-      <div class="nome">📍 Ganho por km</div>
-      <div class="numero" id="rPorKm">R$ 0,00/km</div>
+
+      <div class="nome">
+        📍 Ganho por km
+      </div>
+
+      <div
+        class="numero"
+        id="rPorKm"
+      >
+        R$ 0,00/km
+      </div>
+
     </div>
 
     <div class="destaque">
-      <div class="nome">⏱️ Ganho por hora</div>
-      <div class="numero" id="rPorHora">R$ 0,00/h</div>
+
+      <div class="nome">
+        ⏱️ Ganho por hora
+      </div>
+
+      <div
+        class="numero"
+        id="rPorHora"
+      >
+        R$ 0,00/h
+      </div>
+
     </div>
+
+
+    <button
+      class="botao-verde"
+      onclick="adicionarCorrida()"
+    >
+      ✅ ADICIONAR AO MEU DIA
+    </button>
 
     <div class="aviso">
-      ⚠️ O cálculo considera somente o combustível.
-      Desgaste do carro, manutenção, pneus, óleo e outros custos
-      ainda não estão incluídos.
+      O valor será adicionado ao faturamento
+      do dia.
     </div>
 
   </div>
 
+
+  <!-- CONTROLES -->
+
+  <div class="card">
+
+    <h2>🔄 Controle do dia</h2>
+
+    <button
+      class="botao-vermelho"
+      onclick="zerarDia()"
+    >
+      ZERAR DIA
+    </button>
+
+  </div>
+
+
   <div class="rodape">
-    Calculador de Corridas — versão inicial
+    Calculador de Corridas — versão 2
   </div>
 
 </div>
 
+
 <script>
 
+let totalDia =
+  parseFloat(
+    localStorage.getItem("totalDia")
+  ) || 0;
+
+let quantidade =
+  parseInt(
+    localStorage.getItem("quantidade")
+  ) || 0;
+
+let meta =
+  parseFloat(
+    localStorage.getItem("meta")
+  ) || 300;
+
+let valorUltimaCorrida = 0;
+
+
+/* FORMATA DINHEIRO */
+
 function dinheiro(valor) {
-  return valor.toLocaleString("pt-BR", {
-    style: "currency",
-    currency: "BRL"
-  });
+
+  return valor.toLocaleString(
+    "pt-BR",
+    {
+      style: "currency",
+      currency: "BRL"
+    }
+  );
+
 }
+
+
+/* SALVA OS DADOS */
+
+function salvarDados() {
+
+  localStorage.setItem(
+    "totalDia",
+    totalDia
+  );
+
+  localStorage.setItem(
+    "quantidade",
+    quantidade
+  );
+
+  localStorage.setItem(
+    "meta",
+    meta
+  );
+
+}
+
+
+/* SALVA META */
+
+function salvarMeta() {
+
+  const novaMeta =
+    parseFloat(
+      document.getElementById("meta").value
+    );
+
+  if (
+    !isNaN(novaMeta) &&
+    novaMeta > 0
+  ) {
+
+    meta = novaMeta;
+
+    salvarDados();
+
+    atualizarTela();
+
+  }
+
+}
+
+
+/* ATUALIZA A TELA */
+
+function atualizarTela() {
+
+  document.getElementById(
+    "meta"
+  ).value = meta;
+
+  document.getElementById(
+    "totalDia"
+  ).textContent =
+    dinheiro(totalDia);
+
+  document.getElementById(
+    "quantidade"
+  ).textContent =
+    quantidade;
+
+
+  let media = 0;
+
+  if (quantidade > 0) {
+
+    media =
+      totalDia / quantidade;
+
+  }
+
+  document.getElementById(
+    "media"
+  ).textContent =
+    dinheiro(media);
+
+
+  let percentual =
+    (totalDia / meta) * 100;
+
+
+  if (percentual > 100) {
+
+    percentual = 100;
+
+  }
+
+  document.getElementById(
+    "progresso"
+  ).style.width =
+    percentual + "%";
+
+
+  const mensagem =
+    document.getElementById(
+      "mensagemMeta"
+    );
+
+
+  if (totalDia >= meta) {
+
+    mensagem.textContent =
+      "🎉 META ATINGIDA!";
+
+  } else {
+
+    const falta =
+      meta - totalDia;
+
+    mensagem.textContent =
+      "Falta " +
+      dinheiro(falta) +
+      " para sua meta.";
+
+  }
+
+}
+
+
+/* CALCULA A CORRIDA */
 
 function calcular() {
 
-  const valor = parseFloat(
-    document.getElementById("valor").value
-  );
+  const valor =
+    parseFloat(
+      document.getElementById("valor").value
+    );
 
-  const km = parseFloat(
-    document.getElementById("km").value
-  );
+  const km =
+    parseFloat(
+      document.getElementById("km").value
+    );
 
-  const tempo = parseFloat(
-    document.getElementById("tempo").value
-  );
+  const tempo =
+    parseFloat(
+      document.getElementById("tempo").value
+    );
 
-  const gasolina = parseFloat(
-    document.getElementById("gasolina").value
-  );
+  const gasolina =
+    parseFloat(
+      document.getElementById("gasolina").value
+    );
 
-  const consumo = parseFloat(
-    document.getElementById("consumo").value
-  );
+  const consumo =
+    parseFloat(
+      document.getElementById("consumo").value
+    );
+
 
   if (
+
     isNaN(valor) ||
     isNaN(km) ||
     isNaN(tempo) ||
     isNaN(gasolina) ||
     isNaN(consumo) ||
+
     valor <= 0 ||
     km <= 0 ||
     tempo <= 0 ||
     gasolina <= 0 ||
     consumo <= 0
+
   ) {
 
-    alert("Preencha todos os campos corretamente.");
+    alert(
+      "Preencha todos os campos corretamente."
+    );
 
     return;
+
   }
 
-  const litros = km / consumo;
 
-  const custoCombustivel = litros * gasolina;
+  const litros =
+    km / consumo;
 
-  const lucro = valor - custoCombustivel;
 
-  const ganhoPorKm = valor / km;
+  const custoCombustivel =
+    litros * gasolina;
 
-  const horas = tempo / 60;
 
-  const ganhoPorHora = valor / horas;
+  const lucro =
+    valor - custoCombustivel;
 
-  document.getElementById("rValor").textContent =
+
+  const ganhoPorKm =
+    valor / km;
+
+
+  const horas =
+    tempo / 60;
+
+
+  const ganhoPorHora =
+    valor / horas;
+
+
+  valorUltimaCorrida =
+    valor;
+
+
+  document.getElementById(
+    "rValor"
+  ).textContent =
     dinheiro(valor);
 
-  document.getElementById("rKm").textContent =
+
+  document.getElementById(
+    "rKm"
+  ).textContent =
     km.toFixed(1) + " km";
 
-  document.getElementById("rTempo").textContent =
+
+  document.getElementById(
+    "rTempo"
+  ).textContent =
     tempo + " minutos";
 
-  document.getElementById("rCombustivel").textContent =
-    dinheiro(custoCombustivel);
 
-  document.getElementById("rLucro").textContent =
+  document.getElementById(
+    "rCombustivel"
+  ).textContent =
+    dinheiro(
+      custoCombustivel
+    );
+
+
+  document.getElementById(
+    "rLucro"
+  ).textContent =
     dinheiro(lucro);
 
-  document.getElementById("rPorKm").textContent =
-    dinheiro(ganhoPorKm) + "/km";
 
-  document.getElementById("rPorHora").textContent =
-    dinheiro(ganhoPorHora) + "/h";
+  document.getElementById(
+    "rPorKm"
+  ).textContent =
+    dinheiro(ganhoPorKm) +
+    "/km";
 
-  const status = document.getElementById("status");
+
+  document.getElementById(
+    "rPorHora"
+  ).textContent =
+    dinheiro(ganhoPorHora) +
+    "/h";
+
+
+  const status =
+    document.getElementById(
+      "status"
+    );
+
 
   status.classList.remove(
     "boa",
@@ -376,20 +810,6 @@ function calcular() {
     "ruim"
   );
 
-  /*
-    Critério inicial:
-
-    Boa:
-    ganho por km >= R$ 2,00
-    E ganho por hora >= R$ 40
-
-    Média:
-    ganho por km >= R$ 1,50
-    OU ganho por hora >= R$ 30
-
-    Ruim:
-    abaixo disso
-  */
 
   if (
     ganhoPorKm >= 2 &&
@@ -399,7 +819,9 @@ function calcular() {
     status.textContent =
       "🟢 CORRIDA BOA";
 
-    status.classList.add("boa");
+    status.classList.add(
+      "boa"
+    );
 
   } else if (
     ganhoPorKm >= 1.5 ||
@@ -409,24 +831,134 @@ function calcular() {
     status.textContent =
       "🟡 CORRIDA MÉDIA";
 
-    status.classList.add("media");
+    status.classList.add(
+      "media"
+    );
 
   } else {
 
     status.textContent =
       "🔴 CORRIDA FRACA";
 
-    status.classList.add("ruim");
+    status.classList.add(
+      "ruim"
+    );
+
   }
 
-  document.getElementById("resultado").style.display =
+
+  document.getElementById(
+    "resultado"
+  ).style.display =
     "block";
 
-  document.getElementById("resultado").scrollIntoView({
+
+  document.getElementById(
+    "resultado"
+  ).scrollIntoView({
     behavior: "smooth"
   });
 
 }
+
+
+/* ADICIONA CORRIDA */
+
+function adicionarCorrida() {
+
+  if (
+    valorUltimaCorrida <= 0
+  ) {
+
+    alert(
+      "Primeiro calcule uma corrida."
+    );
+
+    return;
+
+  }
+
+
+  totalDia +=
+    valorUltimaCorrida;
+
+
+  quantidade++;
+
+
+  salvarDados();
+
+
+  atualizarTela();
+
+
+  alert(
+    "✅ Corrida adicionada ao seu dia!"
+  );
+
+
+  valorUltimaCorrida = 0;
+
+
+  document.getElementById(
+    "resultado"
+  ).style.display =
+    "none";
+
+
+  document.getElementById(
+    "valor"
+  ).value = "";
+
+  document.getElementById(
+    "km"
+  ).value = "";
+
+  document.getElementById(
+    "tempo"
+  ).value = "";
+
+}
+
+
+/* ZERA O DIA */
+
+function zerarDia() {
+
+  const confirmar =
+    confirm(
+      "Tem certeza que deseja zerar o faturamento e as corridas de hoje?"
+    );
+
+
+  if (!confirmar) {
+
+    return;
+
+  }
+
+
+  totalDia = 0;
+
+  quantidade = 0;
+
+
+  salvarDados();
+
+
+  atualizarTela();
+
+
+  alert(
+    "Dia zerado com sucesso!"
+  );
+
+}
+
+
+/* INICIA */
+
+atualizarTela();
 
 </script>
 
