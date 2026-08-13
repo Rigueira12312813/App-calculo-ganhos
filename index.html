@@ -1,14 +1,22 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#111827">
-<link rel="manifest" href="./manifest.json">
 
-<title>Ganhos Drive V1</title>
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<meta name="theme-color"
+content="#111827">
+
+<link rel="manifest"
+href="./manifest.json">
+
+<title>Ganhos Drive V2</title>
 
 <style>
+
 *{
   box-sizing:border-box;
   margin:0;
@@ -146,10 +154,25 @@ button{
   margin-top:12px;
 }
 
-.blue{background:#2563eb}
-.green{background:#16a34a}
-.red{background:#dc2626}
-.gray{background:#64748b}
+button:disabled{
+  opacity:.6;
+}
+
+.blue{
+  background:#2563eb;
+}
+
+.green{
+  background:#16a34a;
+}
+
+.red{
+  background:#dc2626;
+}
+
+.gray{
+  background:#64748b;
+}
 
 .quick{
   background:#111827;
@@ -305,7 +328,54 @@ button{
   font-size:11px;
   padding:10px;
 }
+
+.auth{
+  background:#ffffff;
+}
+
+.auth-status{
+  padding:11px;
+  border-radius:12px;
+  margin-top:10px;
+  font-size:13px;
+  line-height:1.4;
+}
+
+.online{
+  background:#dcfce7;
+  color:#166534;
+}
+
+.offline{
+  background:#fef3c7;
+  color:#92400e;
+}
+
+.user-email{
+  font-size:13px;
+  color:#475569;
+  margin-top:8px;
+  word-break:break-all;
+}
+
+.sync-status{
+  font-size:12px;
+  color:#64748b;
+  margin-top:8px;
+  text-align:center;
+}
+
+.hidden{
+  display:none !important;
+}
+
+.small-button{
+  padding:11px;
+  font-size:14px;
+}
+
 </style>
+
 </head>
 
 <body>
@@ -313,9 +383,103 @@ button{
 <div class="app">
 
 <header class="header">
-  <div class="logo">🚗 Ganhos Drive</div>
-  <div class="subtitle">Seu controle inteligente de corridas</div>
+
+<div class="logo">
+🚗 Ganhos Drive
+</div>
+
+<div class="subtitle">
+Seu controle inteligente de corridas
+</div>
+
 </header>
+
+
+<!-- LOGIN -->
+
+<section class="card auth" id="authCard">
+
+<h2>🔐 Minha conta</h2>
+
+<div id="loginArea">
+
+<label>📧 E-mail</label>
+
+<input
+id="email"
+type="email"
+placeholder="seuemail@email.com"
+autocomplete="email"
+>
+
+<label>🔑 Senha</label>
+
+<input
+id="senha"
+type="password"
+placeholder="Mínimo de 6 caracteres"
+autocomplete="current-password"
+>
+
+<button
+class="blue"
+onclick="entrar()"
+id="entrarBtn"
+>
+🔐 ENTRAR
+</button>
+
+<button
+class="gray"
+onclick="criarConta()"
+id="criarBtn"
+>
+➕ CRIAR CONTA
+</button>
+
+<div
+class="auth-status"
+id="authMensagem"
+>
+Você pode usar o aplicativo offline. O login é necessário para sincronizar suas corridas na nuvem.
+</div>
+
+</div>
+
+
+<div
+id="usuarioArea"
+class="hidden"
+>
+
+<strong>✅ Conta conectada</strong>
+
+<div
+class="user-email"
+id="usuarioEmail"
+>
+</div>
+
+<button
+class="red small-button"
+onclick="sair()"
+>
+🚪 SAIR DA CONTA
+</button>
+
+</div>
+
+<div
+class="sync-status"
+id="syncStatus"
+>
+☁️ Aguardando conexão...
+</div>
+
+</section>
+
+
+<!-- RESUMO -->
 
 <section class="card">
 
@@ -324,54 +488,110 @@ button{
 <div class="dashboard">
 
 <div class="metric">
+
 <span>💰 FATURAMENTO</span>
-<strong id="faturamento">R$ 0,00</strong>
+
+<strong id="faturamento">
+R$ 0,00
+</strong>
+
 </div>
 
+
 <div class="metric">
+
 <span>🚗 CORRIDAS</span>
-<strong id="corridas">0</strong>
+
+<strong id="corridas">
+0
+</strong>
+
 </div>
+
 
 <div class="metric full">
+
 <span>💵 LUCRO REAL</span>
-<strong id="lucro">R$ 0,00</strong>
+
+<strong id="lucro">
+R$ 0,00
+</strong>
+
 </div>
 
+
 <div class="metric">
+
 <span>📍 KM</span>
-<strong id="kmTotal">0 km</strong>
+
+<strong id="kmTotal">
+0 km
+</strong>
+
 </div>
+
 
 <div class="metric">
+
 <span>⏱️ R$/HORA</span>
-<strong id="horaTotal">R$ 0,00</strong>
+
+<strong id="horaTotal">
+R$ 0,00
+</strong>
+
 </div>
 
 </div>
+
 
 <div class="goal">
 
 <div class="goal-top">
+
 <strong>🎯 Meta diária</strong>
-<strong id="metaTexto">R$ 300,00</strong>
+
+<strong id="metaTexto">
+R$ 300,00
+</strong>
+
 </div>
+
 
 <div class="bar">
-<div class="progress" id="progress"></div>
+
+<div
+class="progress"
+id="progress"
+>
 </div>
 
-<div id="metaMensagem" class="alert"></div>
+</div>
+
+
+<div
+id="metaMensagem"
+class="alert"
+>
+</div>
 
 </div>
+
 
 <div class="timer">
 
-<small>⏱️ TEMPO DE TRABALHO</small>
+<small>
+⏱️ TEMPO DE TRABALHO
+</small>
 
-<strong id="timer">00:00:00</strong>
+<strong id="timer">
+00:00:00
+</strong>
 
-<button class="blue" id="timerBtn" onclick="alternarTimer()">
+<button
+class="blue"
+id="timerBtn"
+onclick="alternarTimer()"
+>
 ▶ INICIAR DIA
 </button>
 
@@ -380,72 +600,158 @@ button{
 </section>
 
 
+<!-- ANALISAR -->
+
 <section class="card quick">
 
-<h2>⚡ Analisar corrida</h2>
+<h2>
+⚡ Analisar corrida
+</h2>
 
 <p>
 Digite apenas o valor, distância e tempo.
 O aplicativo dirá rapidamente se a corrida é boa.
 </p>
 
+
 <div class="quick-grid">
 
 <div>
+
 <label>💰 R$</label>
-<input id="qValor" type="number" step="0.01" inputmode="decimal" placeholder="25">
+
+<input
+id="qValor"
+type="number"
+step="0.01"
+inputmode="decimal"
+placeholder="25"
+>
+
 </div>
 
+
 <div>
+
 <label>📍 KM</label>
-<input id="qKm" type="number" step="0.1" inputmode="decimal" placeholder="10">
+
+<input
+id="qKm"
+type="number"
+step="0.1"
+inputmode="decimal"
+placeholder="10"
+>
+
 </div>
+
 
 <div>
+
 <label>⏱️ MIN</label>
-<input id="qTempo" type="number" step="1" inputmode="numeric" placeholder="20">
-</div>
+
+<input
+id="qTempo"
+type="number"
+step="1"
+inputmode="numeric"
+placeholder="20"
+>
 
 </div>
 
-<button class="blue" onclick="analisarRapido()">
+</div>
+
+
+<button
+class="blue"
+onclick="analisarRapido()"
+>
 🔎 ANALISAR
 </button>
 
-<div class="result" id="quickResult">
 
-<div class="decision" id="quickDecision">
+<div
+class="result"
+id="quickResult"
+>
 
-<h3 id="quickStatus">-</h3>
-<p id="quickMotivo">-</p>
+<div
+class="decision"
+id="quickDecision"
+>
+
+<h3 id="quickStatus">
+-
+</h3>
+
+<p id="quickMotivo">
+-
+</p>
 
 </div>
+
 
 <div class="result-grid">
 
 <div class="result-box">
-<span>📍 R$/KM</span>
-<strong id="qRkm">R$ 0,00</strong>
+
+<span>
+📍 R$/KM
+</span>
+
+<strong id="qRkm">
+R$ 0,00
+</strong>
+
 </div>
+
 
 <div class="result-box">
-<span>⏱️ R$/HORA</span>
-<strong id="qRhora">R$ 0,00</strong>
+
+<span>
+⏱️ R$/HORA
+</span>
+
+<strong id="qRhora">
+R$ 0,00
+</strong>
+
 </div>
+
 
 <div class="result-box">
-<span>⛽ COMBUSTÍVEL</span>
-<strong id="qComb">R$ 0,00</strong>
+
+<span>
+⛽ COMBUSTÍVEL
+</span>
+
+<strong id="qComb">
+R$ 0,00
+</strong>
+
 </div>
+
 
 <div class="result-box">
-<span>💵 SOBRA</span>
-<strong id="qLucro">R$ 0,00</strong>
-</div>
+
+<span>
+💵 SOBRA
+</span>
+
+<strong id="qLucro">
+R$ 0,00
+</strong>
 
 </div>
 
-<button class="gray" onclick="limparAnalise()">
+</div>
+
+
+<button
+class="gray"
+onclick="limparAnalise()"
+>
 ➕ NOVA ANÁLISE
 </button>
 
@@ -454,937 +760,2443 @@ O aplicativo dirá rapidamente se a corrida é boa.
 </section>
 
 
+<!-- REGISTRAR -->
+
 <section class="card">
 
-<h2>🚗 Registrar corrida</h2>
+<h2>
+🚗 Registrar corrida
+</h2>
 
-<label>📱 Aplicativo</label>
+
+<label>
+📱 Aplicativo
+</label>
+
 <select id="app">
+
 <option>99</option>
+
 <option>Uber</option>
+
 <option>InDrive</option>
+
 <option>Outro</option>
+
 </select>
 
-<label>📍 Origem</label>
-<input id="origem" placeholder="Ex: Igarassu">
 
-<label>🏁 Destino</label>
-<input id="destino" placeholder="Ex: Paulista">
+<label>
+📍 Origem
+</label>
 
-<label>💰 Valor recebido</label>
-<input id="valor" type="number" step="0.01" inputmode="decimal">
+<input
+id="origem"
+placeholder="Ex: Igarassu"
+>
 
-<label>📍 Distância</label>
-<input id="km" type="number" step="0.1" inputmode="decimal">
 
-<label>⏱️ Tempo em minutos</label>
-<input id="tempo" type="number" step="1" inputmode="numeric">
+<label>
+🏁 Destino
+</label>
 
-<button class="green" onclick="registrarCorrida()">
+<input
+id="destino"
+placeholder="Ex: Paulista"
+>
+
+
+<label>
+💰 Valor recebido
+</label>
+
+<input
+id="valor"
+type="number"
+step="0.01"
+inputmode="decimal"
+>
+
+
+<label>
+📍 Distância
+</label>
+
+<input
+id="km"
+type="number"
+step="0.1"
+inputmode="decimal"
+>
+
+
+<label>
+⏱️ Tempo em minutos
+</label>
+
+<input
+id="tempo"
+type="number"
+step="1"
+inputmode="numeric"
+>
+
+
+<button
+class="green"
+onclick="registrarCorrida()"
+>
 ✅ REGISTRAR CORRIDA
 </button>
 
 </section>
 
 
+<!-- PROJEÇÃO -->
+
 <section class="card">
 
-<h2>📈 Projeção</h2>
+<h2>
+📈 Projeção
+</h2>
 
 <div class="dashboard">
 
 <div class="metric">
-<span>🎯 FALTA PARA META</span>
-<strong id="falta">R$ 300,00</strong>
+
+<span>
+🎯 FALTA PARA META
+</span>
+
+<strong id="falta">
+R$ 300,00
+</strong>
+
 </div>
+
 
 <div class="metric">
-<span>📈 RITMO/HORA</span>
-<strong id="ritmo">R$ 0,00</strong>
+
+<span>
+📈 RITMO/HORA
+</span>
+
+<strong id="ritmo">
+R$ 0,00
+</strong>
+
 </div>
+
 
 <div class="metric full">
-<span>🔮 ESTIMATIVA EM 6 HORAS</span>
-<strong id="estimativa">R$ 0,00</strong>
-</div>
+
+<span>
+🔮 ESTIMATIVA EM 6 HORAS
+</span>
+
+<strong id="estimativa">
+R$ 0,00
+</strong>
 
 </div>
 
-<div id="projecaoMensagem" class="alert">
+</div>
+
+
+<div
+id="projecaoMensagem"
+class="alert"
+>
 Registre algumas corridas para criar sua projeção.
 </div>
 
 </section>
 
 
+<!-- ROTAS -->
+
 <section class="card">
 
-<h2>🏆 Melhores rotas</h2>
+<h2>
+🏆 Melhores rotas
+</h2>
 
 <div id="rotas">
+
 <div class="empty">
 Registre corridas para descobrir suas melhores rotas.
 </div>
+
 </div>
 
 </section>
 
 
+<!-- APPS -->
+
 <section class="card">
 
-<h2>📱 Aplicativos</h2>
+<h2>
+📱 Aplicativos
+</h2>
 
 <div id="apps">
+
 <div class="empty">
 Registre corridas para comparar.
 </div>
+
 </div>
 
 </section>
 
 
+<!-- HISTÓRICO -->
+
 <section class="card">
 
-<h2>📚 Histórico</h2>
+<h2>
+📚 Histórico
+</h2>
 
 <div id="historico">
+
 <div class="empty">
 Nenhuma corrida registrada hoje.
 </div>
+
 </div>
 
 </section>
 
 
+<!-- CONFIGURAÇÕES -->
+
 <section class="card">
 
-<h2>⚙️ Configurações</h2>
+<h2>
+⚙️ Configurações
+</h2>
 
-<label>🎯 Meta diária</label>
-<input id="cfgMeta" type="number" step="0.01" value="300">
 
-<label>📍 R$/km mínimo</label>
-<input id="cfgKm" type="number" step="0.01" value="2">
+<label>
+🎯 Meta diária
+</label>
 
-<label>⏱️ R$/hora mínimo</label>
-<input id="cfgHora" type="number" step="0.01" value="40">
+<input
+id="cfgMeta"
+type="number"
+step="0.01"
+value="300"
+>
 
-<label>⛽ Preço da gasolina</label>
-<input id="cfgGas" type="number" step="0.01" value="6.95">
 
-<label>🚗 Consumo do carro km/L</label>
-<input id="cfgCons" type="number" step="0.1" value="9">
+<label>
+📍 R$/km mínimo
+</label>
 
-<button class="blue" onclick="salvarConfiguracoes()">
+<input
+id="cfgKm"
+type="number"
+step="0.01"
+value="2"
+>
+
+
+<label>
+⏱️ R$/hora mínimo
+</label>
+
+<input
+id="cfgHora"
+type="number"
+step="0.01"
+value="40"
+>
+
+
+<label>
+⛽ Preço da gasolina
+</label>
+
+<input
+id="cfgGas"
+type="number"
+step="0.01"
+value="6.95"
+>
+
+
+<label>
+🚗 Consumo do carro km/L
+</label>
+
+<input
+id="cfgCons"
+type="number"
+step="0.1"
+value="9"
+>
+
+
+<button
+class="blue"
+onclick="salvarConfiguracoes()"
+>
 💾 SALVAR
 </button>
 
 </section>
 
 
+<!-- CONTROLE -->
+
 <section class="card">
 
-<h2>🔄 Controle</h2>
+<h2>
+🔄 Controle
+</h2>
 
-<button class="red" onclick="zerarDia()">
+<button
+class="red"
+onclick="zerarDia()"
+>
 🗑️ ZERAR DADOS DO DIA
 </button>
 
 </section>
 
+
 <div class="footer">
-Ganhos Drive V1 • Controle de ganhos para motorista
+
+Ganhos Drive • Controle de ganhos para motorista
+
 </div>
 
 </div>
+
+
+<!-- SUPABASE -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 
 <script>
 
+/* =====================================================
+   CONFIGURAÇÃO DO SUPABASE
+===================================================== */
+
+const SUPABASE_URL =
+"https://beiattgdvpsltdhenpoy.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+"sb_publishable_AtqEM8uJhmTc-OpODn9P2Q_Vp4iOF-R";
+
+
+const supabaseClient =
+window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
+
+
+/* =====================================================
+   CONFIGURAÇÃO PADRÃO
+===================================================== */
+
 const PADRAO = {
+
   meta:300,
+
   minKm:2,
+
   minHora:40,
+
   gasolina:6.95,
+
   consumo:9
+
 };
 
+
+/* =====================================================
+   VARIÁVEIS
+===================================================== */
+
 let config =
-JSON.parse(localStorage.getItem("ganhosConfig")) ||
-PADRAO;
+JSON.parse(
+  localStorage.getItem("ganhosConfig")
+) || PADRAO;
+
 
 let corridas =
-JSON.parse(localStorage.getItem("ganhosCorridas")) ||
-[];
+JSON.parse(
+  localStorage.getItem("ganhosCorridas")
+) || [];
+
 
 let trabalhando =
-localStorage.getItem("ganhosTrabalhando")==="1";
+localStorage.getItem(
+  "ganhosTrabalhando"
+)==="1";
+
 
 let inicio =
-Number(localStorage.getItem("ganhosInicio")) || 0;
+Number(
+  localStorage.getItem("ganhosInicio")
+) || 0;
+
 
 let tempoAcumulado =
-Number(localStorage.getItem("ganhosTempo")) || 0;
+Number(
+  localStorage.getItem("ganhosTempo")
+) || 0;
 
+
+let usuarioAtual = null;
+
+
+/* =====================================================
+   FUNÇÕES BÁSICAS
+===================================================== */
 
 function dinheiro(valor){
 
-return Number(valor || 0).toLocaleString(
-"pt-BR",
-{
-style:"currency",
-currency:"BRL"
+  return Number(valor || 0)
+  .toLocaleString(
+    "pt-BR",
+    {
+      style:"currency",
+      currency:"BRL"
+    }
+  );
+
 }
-);
+
+
+function hoje(){
+
+  const d =
+  new Date();
+
+  return d
+  .toISOString()
+  .slice(0,10);
 
 }
 
 
 function salvarDados(){
 
-localStorage.setItem(
-"ganhosCorridas",
-JSON.stringify(corridas)
-);
+  localStorage.setItem(
+    "ganhosCorridas",
+    JSON.stringify(corridas)
+  );
 
-localStorage.setItem(
-"ganhosConfig",
-JSON.stringify(config)
-);
+  localStorage.setItem(
+    "ganhosConfig",
+    JSON.stringify(config)
+  );
 
 }
 
 
-function atualizar(){
+/* =====================================================
+   AUTENTICAÇÃO
+===================================================== */
 
-let faturamento=0;
-let combustivel=0;
-let km=0;
-let minutos=0;
+async function criarConta(){
 
-corridas.forEach(c=>{
+  const email =
+  document.getElementById("email")
+  .value
+  .trim();
 
-faturamento += Number(c.valor)||0;
-combustivel += Number(c.comb)||0;
-km += Number(c.km)||0;
-minutos += Number(c.tempo)||0;
+  const senha =
+  document.getElementById("senha")
+  .value;
+
+
+  if(!email || !senha){
+
+    mostrarAuthMensagem(
+      "Digite seu e-mail e uma senha.",
+      "offline"
+    );
+
+    return;
+
+  }
+
+
+  if(senha.length < 6){
+
+    mostrarAuthMensagem(
+      "A senha precisa ter pelo menos 6 caracteres.",
+      "offline"
+    );
+
+    return;
+
+  }
+
+
+  bloquearAuth(true);
+
+
+  const {data,error} =
+  await supabaseClient.auth.signUp({
+
+    email:email,
+
+    password:senha
+
+  });
+
+
+  bloquearAuth(false);
+
+
+  if(error){
+
+    mostrarAuthMensagem(
+      "Erro: "+error.message,
+      "offline"
+    );
+
+    return;
+
+  }
+
+
+  if(data.session){
+
+    mostrarAuthMensagem(
+      "Conta criada e conectada!",
+      "online"
+    );
+
+  }else{
+
+    mostrarAuthMensagem(
+      "Conta criada! Verifique seu e-mail se o Supabase solicitar confirmação.",
+      "online"
+    );
+
+  }
+
+}
+
+
+async function entrar(){
+
+  const email =
+  document.getElementById("email")
+  .value
+  .trim();
+
+  const senha =
+  document.getElementById("senha")
+  .value;
+
+
+  if(!email || !senha){
+
+    mostrarAuthMensagem(
+      "Digite seu e-mail e sua senha.",
+      "offline"
+    );
+
+    return;
+
+  }
+
+
+  bloquearAuth(true);
+
+
+  const {data,error} =
+  await supabaseClient.auth.signInWithPassword({
+
+    email:email,
+
+    password:senha
+
+  });
+
+
+  bloquearAuth(false);
+
+
+  if(error){
+
+    mostrarAuthMensagem(
+      "Erro ao entrar: "+error.message,
+      "offline"
+    );
+
+    return;
+
+  }
+
+
+  usuarioAtual =
+  data.user;
+
+
+  atualizarInterfaceUsuario();
+
+  await sincronizar();
+
+}
+
+
+async function sair(){
+
+  await supabaseClient.auth.signOut();
+
+  usuarioAtual=null;
+
+  atualizarInterfaceUsuario();
+
+  atualizarStatus(
+    "📱 Você saiu da conta. O aplicativo continua funcionando offline.",
+    "offline"
+  );
+
+}
+
+
+function bloquearAuth(valor){
+
+  document.getElementById("entrarBtn")
+  .disabled=valor;
+
+  document.getElementById("criarBtn")
+  .disabled=valor;
+
+}
+
+
+function mostrarAuthMensagem(texto,tipo){
+
+  const el =
+  document.getElementById("authMensagem");
+
+  el.textContent=texto;
+
+  el.className=
+  "auth-status "+tipo;
+
+}
+
+
+function atualizarInterfaceUsuario(){
+
+  const loginArea =
+  document.getElementById("loginArea");
+
+  const usuarioArea =
+  document.getElementById("usuarioArea");
+
+  const email =
+  document.getElementById("usuarioEmail");
+
+
+  if(usuarioAtual){
+
+    loginArea.classList.add("hidden");
+
+    usuarioArea.classList.remove("hidden");
+
+    email.textContent=
+    usuarioAtual.email || "";
+
+  }else{
+
+    loginArea.classList.remove("hidden");
+
+    usuarioArea.classList.add("hidden");
+
+    email.textContent="";
+
+  }
+
+}
+
+
+/* =====================================================
+   STATUS DE CONEXÃO
+===================================================== */
+
+function atualizarStatus(texto,tipo){
+
+  const el =
+  document.getElementById("syncStatus");
+
+  el.textContent=texto;
+
+  el.className=
+  "sync-status "+tipo;
+
+}
+
+
+function verificarInternet(){
+
+  if(navigator.onLine){
+
+    atualizarStatus(
+      "🌐 Internet disponível",
+      "online"
+    );
+
+  }else{
+
+    atualizarStatus(
+      "📱 Offline — seus dados continuam salvos neste aparelho.",
+      "offline"
+    );
+
+  }
+
+}
+
+
+window.addEventListener(
+"online",
+async function(){
+
+  verificarInternet();
+
+  if(usuarioAtual){
+
+    await sincronizar();
+
+  }
 
 });
 
-let lucro=faturamento-combustivel;
 
-let hora=minutos>0
-?faturamento/(minutos/60)
-:0;
+window.addEventListener(
+"offline",
+function(){
 
-document.getElementById("faturamento")
-.textContent=dinheiro(faturamento);
+  verificarInternet();
 
-document.getElementById("corridas")
-.textContent=corridas.length;
+});
 
-document.getElementById("lucro")
-.textContent=dinheiro(lucro);
 
-document.getElementById("kmTotal")
-.textContent=km.toFixed(1)+" km";
+/* =====================================================
+   SINCRONIZAÇÃO COM SUPABASE
+===================================================== */
 
-document.getElementById("horaTotal")
-.textContent=dinheiro(hora);
+async function sincronizar(){
 
-document.getElementById("metaTexto")
-.textContent=dinheiro(config.meta);
+  if(!usuarioAtual){
 
-let percentual=config.meta>0
-?(faturamento/config.meta)*100
-:0;
+    atualizarStatus(
+      "📱 Entre na conta para sincronizar.",
+      "offline"
+    );
 
-document.getElementById("progress")
-.style.width=Math.min(percentual,100)+"%";
+    return;
 
-let falta=Math.max(config.meta-faturamento,0);
+  }
 
-document.getElementById("falta")
-.textContent=dinheiro(falta);
 
-let metaMensagem=document.getElementById("metaMensagem");
+  if(!navigator.onLine){
 
-if(faturamento>=config.meta){
+    atualizarStatus(
+      "📱 Offline — aguardando internet para sincronizar.",
+      "offline"
+    );
 
-metaMensagem.className="alert good";
-metaMensagem.innerHTML=
-"🎉 <strong>Meta atingida!</strong> Você já chegou a "+
-dinheiro(faturamento)+".";
+    return;
 
-}else if(percentual>=70){
+  }
 
-metaMensagem.className="alert good";
-metaMensagem.innerHTML=
-"🔥 Você já está em "+
-percentual.toFixed(0)+
-"% da meta. Continue assim!";
 
-}else if(percentual>=40){
+  atualizarStatus(
+    "☁️ Sincronizando...",
+    "online"
+  );
 
-metaMensagem.className="alert medium";
-metaMensagem.innerHTML=
-"🟡 Você está em "+
-percentual.toFixed(0)+
-"% da meta.";
 
-}else{
+  try{
 
-metaMensagem.className="alert bad";
-metaMensagem.innerHTML=
-"🔴 Ainda faltam "+
-dinheiro(falta)+
-" para sua meta.";
+    const {data,error} =
+    await supabaseClient
+    .from("corridas")
+    .select("id,dados,created_at")
+    .eq("user_id",usuarioAtual.id);
+
+
+    if(error){
+
+      throw error;
+
+    }
+
+
+    const nuvem =
+    data || [];
+
+
+    const idsNuvem =
+    new Set();
+
+
+    nuvem.forEach(row=>{
+
+      if(
+        row.dados &&
+        row.dados.localId
+      ){
+
+        idsNuvem.add(
+          row.dados.localId
+        );
+
+      }
+
+    });
+
+
+    /*
+      Envia para a nuvem as corridas
+      locais que ainda não existem lá.
+    */
+
+    const novas =
+    corridas.filter(c=>
+      c.localId &&
+      !idsNuvem.has(c.localId)
+    );
+
+
+    for(
+      const corrida of novas
+    ){
+
+      const {error:insertError} =
+      await supabaseClient
+      .from("corridas")
+      .insert({
+
+        user_id:
+        usuarioAtual.id,
+
+        dados:corrida,
+
+        created_at:
+        corrida.criadoEm ||
+        new Date().toISOString()
+
+      });
+
+
+      if(insertError){
+
+        throw insertError;
+
+      }
+
+    }
+
+
+    /*
+      Junta as corridas da nuvem
+      com as corridas locais.
+    */
+
+    const todas = [];
+
+
+    nuvem.forEach(row=>{
+
+      if(row.dados){
+
+        todas.push(
+          row.dados
+        );
+
+      }
+
+    });
+
+
+    corridas.forEach(c=>{
+
+      if(
+        !todas.some(
+          x=>x.localId===c.localId
+        )
+      ){
+
+        todas.push(c);
+
+      }
+
+    });
+
+
+    /*
+      Mantém somente as corridas do dia atual.
+    */
+
+    corridas =
+    todas.filter(
+      c=>c.data===hoje()
+    );
+
+
+    salvarDados();
+
+    atualizar();
+
+    atualizarStatus(
+      "☁️ Sincronizado com sucesso.",
+      "online"
+    );
+
+
+  }catch(error){
+
+    console.error(
+      "Erro de sincronização:",
+      error
+    );
+
+
+    atualizarStatus(
+      "⚠️ Não foi possível sincronizar agora. Os dados continuam salvos no aparelho.",
+      "offline"
+    );
+
+  }
 
 }
 
-let ritmo=hora;
 
-document.getElementById("ritmo")
-.textContent=dinheiro(ritmo);
+/* =====================================================
+   ATUALIZAÇÃO DO DASHBOARD
+===================================================== */
 
-let estimativa=ritmo*6;
+function atualizar(){
 
-document.getElementById("estimativa")
-.textContent=dinheiro(estimativa);
+  let faturamento=0;
 
-if(corridas.length===0){
+  let combustivel=0;
 
-document.getElementById("projecaoMensagem").className=
-"alert";
+  let km=0;
 
-document.getElementById("projecaoMensagem").textContent=
-"Registre algumas corridas para criar sua projeção.";
+  let minutos=0;
 
-}else if(ritmo>=config.meta/6){
 
-document.getElementById("projecaoMensagem").className=
-"alert good";
+  corridas.forEach(c=>{
 
-document.getElementById("projecaoMensagem").innerHTML=
-"🚀 Seu ritmo atual é "+
-dinheiro(ritmo)+
-"/hora. Mantendo esse ritmo, você está em uma boa velocidade para sua meta.";
+    faturamento +=
+    Number(c.valor)||0;
 
-}else{
+    combustivel +=
+    Number(c.comb)||0;
 
-document.getElementById("projecaoMensagem").className=
-"alert medium";
+    km +=
+    Number(c.km)||0;
 
-document.getElementById("projecaoMensagem").innerHTML=
-"⚠️ Seu ritmo atual é "+
-dinheiro(ritmo)+
-"/hora. Para fazer "+
-dinheiro(config.meta)+
-" em 6 horas, a média seria "+
-dinheiro(config.meta/6)+
-"/hora.";
+    minutos +=
+    Number(c.tempo)||0;
+
+  });
+
+
+  let lucro =
+  faturamento-combustivel;
+
+
+  let hora =
+  minutos>0
+  ? faturamento/(minutos/60)
+  : 0;
+
+
+  document.getElementById(
+    "faturamento"
+  ).textContent=
+  dinheiro(faturamento);
+
+
+  document.getElementById(
+    "corridas"
+  ).textContent=
+  corridas.length;
+
+
+  document.getElementById(
+    "lucro"
+  ).textContent=
+  dinheiro(lucro);
+
+
+  document.getElementById(
+    "kmTotal"
+  ).textContent=
+  km.toFixed(1)+" km";
+
+
+  document.getElementById(
+    "horaTotal"
+  ).textContent=
+  dinheiro(hora);
+
+
+  document.getElementById(
+    "metaTexto"
+  ).textContent=
+  dinheiro(config.meta);
+
+
+  let percentual =
+  config.meta>0
+  ?(faturamento/config.meta)*100
+  :0;
+
+
+  document.getElementById(
+    "progress"
+  ).style.width=
+  Math.min(
+    percentual,
+    100
+  )+"%";
+
+
+  let falta =
+  Math.max(
+    config.meta-faturamento,
+    0
+  );
+
+
+  document.getElementById(
+    "falta"
+  ).textContent=
+  dinheiro(falta);
+
+
+  let metaMensagem =
+  document.getElementById(
+    "metaMensagem"
+  );
+
+
+  if(
+    faturamento>=config.meta
+  ){
+
+    metaMensagem.className=
+    "alert good";
+
+    metaMensagem.innerHTML=
+    "🎉 <strong>Meta atingida!</strong> Você já chegou a "+
+    dinheiro(faturamento)+".";
+
+  }else if(
+    percentual>=70
+  ){
+
+    metaMensagem.className=
+    "alert good";
+
+    metaMensagem.innerHTML=
+    "🔥 Você já está em "+
+    percentual.toFixed(0)+
+    "% da meta. Continue assim!";
+
+  }else if(
+    percentual>=40
+  ){
+
+    metaMensagem.className=
+    "alert medium";
+
+    metaMensagem.innerHTML=
+    "🟡 Você está em "+
+    percentual.toFixed(0)+
+    "% da meta.";
+
+  }else{
+
+    metaMensagem.className=
+    "alert bad";
+
+    metaMensagem.innerHTML=
+    "🔴 Ainda faltam "+
+    dinheiro(falta)+
+    " para sua meta.";
+
+  }
+
+
+  let ritmo=hora;
+
+
+  document.getElementById(
+    "ritmo"
+  ).textContent=
+  dinheiro(ritmo);
+
+
+  let estimativa =
+  ritmo*6;
+
+
+  document.getElementById(
+    "estimativa"
+  ).textContent=
+  dinheiro(estimativa);
+
+
+  if(
+    corridas.length===0
+  ){
+
+    document.getElementById(
+      "projecaoMensagem"
+    ).className=
+    "alert";
+
+    document.getElementById(
+      "projecaoMensagem"
+    ).textContent=
+    "Registre algumas corridas para criar sua projeção.";
+
+  }else if(
+    ritmo>=config.meta/6
+  ){
+
+    document.getElementById(
+      "projecaoMensagem"
+    ).className=
+    "alert good";
+
+    document.getElementById(
+      "projecaoMensagem"
+    ).innerHTML=
+    "🚀 Seu ritmo atual é "+
+    dinheiro(ritmo)+
+    "/hora. Mantendo esse ritmo, você está em uma boa velocidade para sua meta.";
+
+  }else{
+
+    document.getElementById(
+      "projecaoMensagem"
+    ).className=
+    "alert medium";
+
+    document.getElementById(
+      "projecaoMensagem"
+    ).innerHTML=
+    "⚠️ Seu ritmo atual é "+
+    dinheiro(ritmo)+
+    "/hora. Para fazer "+
+    dinheiro(config.meta)+
+    " em 6 horas, a média seria "+
+    dinheiro(config.meta/6)+
+    "/hora.";
+
+  }
+
+
+  mostrarRotas();
+
+  mostrarApps();
+
+  mostrarHistorico();
+
+  atualizarTimer();
 
 }
 
-mostrarRotas();
-mostrarApps();
-mostrarHistorico();
-atualizarTimer();
 
-}
-
+/* =====================================================
+   ANALISADOR RÁPIDO
+===================================================== */
 
 function analisarRapido(){
 
-let valor=Number(
-document.getElementById("qValor").value
-);
+  let valor =
+  Number(
+    document.getElementById(
+      "qValor"
+    ).value
+  );
 
-let km=Number(
-document.getElementById("qKm").value
-);
 
-let tempo=Number(
-document.getElementById("qTempo").value
-);
+  let km =
+  Number(
+    document.getElementById(
+      "qKm"
+    ).value
+  );
 
-if(valor<=0||km<=0||tempo<=0){
 
-alert("Digite valor, km e tempo.");
+  let tempo =
+  Number(
+    document.getElementById(
+      "qTempo"
+    ).value
+  );
 
-return;
 
-}
+  if(
+    valor<=0 ||
+    km<=0 ||
+    tempo<=0
+  ){
 
-let comb=(km/config.consumo)*config.gasolina;
+    alert(
+      "Digite valor, km e tempo."
+    );
 
-let lucro=valor-comb;
+    return;
 
-let rkm=valor/km;
+  }
 
-let rhora=valor/(tempo/60);
 
-let caixa=document.getElementById("quickDecision");
+  let comb =
+  (km/config.consumo)*
+  config.gasolina;
 
-let status=document.getElementById("quickStatus");
 
-let motivo=document.getElementById("quickMotivo");
+  let lucro =
+  valor-comb;
 
-if(rkm>=config.minKm&&rhora>=config.minHora){
 
-caixa.className="decision good";
+  let rkm =
+  valor/km;
 
-status.textContent="🟢 ACEITAR";
 
-motivo.textContent=
-"Boa corrida. Ela atingiu seus dois principais critérios.";
+  let rhora =
+  valor/(tempo/60);
 
-}else if(rkm>=config.minKm||rhora>=config.minHora){
 
-caixa.className="decision medium";
+  let caixa =
+  document.getElementById(
+    "quickDecision"
+  );
 
-status.textContent="🟡 AVALIAR";
 
-motivo.textContent=
-"Um dos critérios foi atingido, mas o outro merece atenção.";
+  let status =
+  document.getElementById(
+    "quickStatus"
+  );
 
-}else{
 
-caixa.className="decision bad";
+  let motivo =
+  document.getElementById(
+    "quickMotivo"
+  );
 
-status.textContent="🔴 RECUSAR";
 
-motivo.textContent=
-"A corrida ficou abaixo dos seus critérios atuais.";
+  if(
+    rkm>=config.minKm &&
+    rhora>=config.minHora
+  ){
 
-}
+    caixa.className=
+    "decision good";
 
-document.getElementById("qRkm")
-.textContent=dinheiro(rkm);
+    status.textContent=
+    "🟢 ACEITAR";
 
-document.getElementById("qRhora")
-.textContent=dinheiro(rhora);
+    motivo.textContent=
+    "Boa corrida. Ela atingiu seus dois principais critérios.";
 
-document.getElementById("qComb")
-.textContent=dinheiro(comb);
+  }else if(
+    rkm>=config.minKm ||
+    rhora>=config.minHora
+  ){
 
-document.getElementById("qLucro")
-.textContent=dinheiro(lucro);
+    caixa.className=
+    "decision medium";
 
-document.getElementById("quickResult")
-.style.display="block";
+    status.textContent=
+    "🟡 AVALIAR";
+
+    motivo.textContent=
+    "Um dos critérios foi atingido, mas o outro merece atenção.";
+
+  }else{
+
+    caixa.className=
+    "decision bad";
+
+    status.textContent=
+    "🔴 RECUSAR";
+
+    motivo.textContent=
+    "A corrida ficou abaixo dos seus critérios atuais.";
+
+  }
+
+
+  document.getElementById(
+    "qRkm"
+  ).textContent=
+  dinheiro(rkm);
+
+
+  document.getElementById(
+    "qRhora"
+  ).textContent=
+  dinheiro(rhora);
+
+
+  document.getElementById(
+    "qComb"
+  ).textContent=
+  dinheiro(comb);
+
+
+  document.getElementById(
+    "qLucro"
+  ).textContent=
+  dinheiro(lucro);
+
+
+  document.getElementById(
+    "quickResult"
+  ).style.display=
+  "block";
 
 }
 
 
 function limparAnalise(){
 
-document.getElementById("qValor").value="";
-document.getElementById("qKm").value="";
-document.getElementById("qTempo").value="";
+  document.getElementById(
+    "qValor"
+  ).value="";
 
-document.getElementById("quickResult")
-.style.display="none";
+
+  document.getElementById(
+    "qKm"
+  ).value="";
+
+
+  document.getElementById(
+    "qTempo"
+  ).value="";
+
+
+  document.getElementById(
+    "quickResult"
+  ).style.display=
+  "none";
+
+}
+
+
+/* =====================================================
+   REGISTRAR CORRIDA
+===================================================== */
+
+async function registrarCorrida(){
+
+  let app =
+  document.getElementById(
+    "app"
+  ).value;
+
+
+  let origem =
+  document.getElementById(
+    "origem"
+  ).value.trim();
+
+
+  let destino =
+  document.getElementById(
+    "destino"
+  ).value.trim();
+
+
+  let valor =
+  Number(
+    document.getElementById(
+      "valor"
+    ).value
+  );
+
+
+  let km =
+  Number(
+    document.getElementById(
+      "km"
+    ).value
+  );
+
+
+  let tempo =
+  Number(
+    document.getElementById(
+      "tempo"
+    ).value
+  );
+
+
+  if(
+    !origem ||
+    !destino ||
+    valor<=0 ||
+    km<=0 ||
+    tempo<=0
+  ){
+
+    alert(
+      "Preencha aplicativo, origem, destino, valor, km e tempo."
+    );
+
+    return;
+
+  }
+
+
+  let comb =
+  (km/config.consumo)*
+  config.gasolina;
+
+
+  let lucro =
+  valor-comb;
+
+
+  let rkm =
+  valor/km;
+
+
+  let rhora =
+  valor/(tempo/60);
+
+
+  let decisao;
+
+
+  if(
+    rkm>=config.minKm &&
+    rhora>=config.minHora
+  ){
+
+    decisao=
+    "🟢 ACEITAR";
+
+  }else if(
+    rkm>=config.minKm ||
+    rhora>=config.minHora
+  ){
+
+    decisao=
+    "🟡 AVALIAR";
+
+  }else{
+
+    decisao=
+    "🔴 RECUSAR";
+
+  }
+
+
+  let agora =
+  new Date();
+
+
+  let hora =
+  agora.toLocaleTimeString(
+    "pt-BR",
+    {
+      hour:"2-digit",
+      minute:"2-digit"
+    }
+  );
+
+
+  const corrida={
+
+    localId:
+    crypto.randomUUID(),
+
+    data:
+    hoje(),
+
+    criadoEm:
+    agora.toISOString(),
+
+    app,
+
+    origem,
+
+    destino,
+
+    valor,
+
+    km,
+
+    tempo,
+
+    comb,
+
+    lucro,
+
+    rkm,
+
+    rhora,
+
+    decisao,
+
+    hora
+
+  };
+
+
+  corridas.push(
+    corrida
+  );
+
+
+  salvarDados();
+
+  atualizar();
+
+
+  document.getElementById(
+    "origem"
+  ).value="";
+
+
+  document.getElementById(
+    "destino"
+  ).value="";
+
+
+  document.getElementById(
+    "valor"
+  ).value="";
+
+
+  document.getElementById(
+    "km"
+  ).value="";
+
+
+  document.getElementById(
+    "tempo"
+  ).value="";
+
+
+  alert(
+    "✅ Corrida registrada!"
+  );
+
+
+  /*
+    Se estiver conectado,
+    manda imediatamente para a nuvem.
+  */
+
+  if(usuarioAtual){
+
+    await sincronizar();
+
+  }
 
 }
 
 
-function registrarCorrida(){
-
-let app=document.getElementById("app").value;
-
-let origem=document.getElementById("origem").value.trim();
-
-let destino=document.getElementById("destino").value.trim();
-
-let valor=Number(
-document.getElementById("valor").value
-);
-
-let km=Number(
-document.getElementById("km").value
-);
-
-let tempo=Number(
-document.getElementById("tempo").value
-);
-
-if(!origem||!destino||valor<=0||km<=0||tempo<=0){
-
-alert(
-"Preencha aplicativo, origem, destino, valor, km e tempo."
-);
-
-return;
-
-}
-
-let comb=(km/config.consumo)*config.gasolina;
-
-let lucro=valor-comb;
-
-let rkm=valor/km;
-
-let rhora=valor/(tempo/60);
-
-let decisao;
-
-if(rkm>=config.minKm&&rhora>=config.minHora){
-
-decisao="🟢 ACEITAR";
-
-}else if(rkm>=config.minKm||rhora>=config.minHora){
-
-decisao="🟡 AVALIAR";
-
-}else{
-
-decisao="🔴 RECUSAR";
-
-}
-
-let agora=new Date();
-
-let hora=agora.toLocaleTimeString(
-"pt-BR",
-{
-hour:"2-digit",
-minute:"2-digit"
-}
-);
-
-corridas.push({
-
-app,
-origem,
-destino,
-valor,
-km,
-tempo,
-comb,
-lucro,
-rkm,
-rhora,
-decisao,
-hora
-
-});
-
-salvarDados();
-atualizar();
-
-document.getElementById("origem").value="";
-document.getElementById("destino").value="";
-document.getElementById("valor").value="";
-document.getElementById("km").value="";
-document.getElementById("tempo").value="";
-
-alert("✅ Corrida registrada!");
-
-}
-
+/* =====================================================
+   HISTÓRICO
+===================================================== */
 
 function mostrarHistorico(){
 
-let el=document.getElementById("historico");
+  let el =
+  document.getElementById(
+    "historico"
+  );
 
-if(!corridas.length){
 
-el.innerHTML=
-'<div class="empty">Nenhuma corrida registrada hoje.</div>';
+  if(
+    !corridas.length
+  ){
 
-return;
+    el.innerHTML=
+    '<div class="empty">Nenhuma corrida registrada hoje.</div>';
+
+    return;
+
+  }
+
+
+  el.innerHTML="";
+
+
+  corridas
+  .slice()
+  .reverse()
+  .forEach(
+    (c,index)=>{
+
+      let item =
+      document.createElement(
+        "div"
+      );
+
+
+      item.className=
+      "history-item";
+
+
+      item.innerHTML=`
+
+      <div class="history-top">
+
+      <span>
+      🚗 Corrida ${corridas.length-index}
+      </span>
+
+      <strong>
+      ${dinheiro(c.valor)}
+      </strong>
+
+      </div>
+
+      <div class="history-info">
+
+      📱 ${c.app}<br>
+
+      📍 ${c.origem} → ${c.destino}<br>
+
+      🕐 ${c.hora}<br>
+
+      📏 ${Number(c.km).toFixed(1)} km<br>
+
+      ⏱️ ${c.tempo} minutos<br>
+
+      ⛽ Combustível:
+      ${dinheiro(c.comb)}<br>
+
+      💵 Lucro:
+      <strong>
+      ${dinheiro(c.lucro)}
+      </strong><br>
+
+      📊 ${dinheiro(c.rkm)}/km<br>
+
+      ⏱️ ${dinheiro(c.rhora)}/hora<br>
+
+      <strong>
+      ${c.decisao}
+      </strong>
+
+      </div>
+
+      `;
+
+
+      el.appendChild(
+        item
+      );
+
+    }
+  );
 
 }
 
-el.innerHTML="";
 
-corridas.slice().reverse().forEach((c,index)=>{
-
-let item=document.createElement("div");
-
-item.className="history-item";
-
-item.innerHTML=`
-
-<div class="history-top">
-
-<span>🚗 Corrida ${corridas.length-index}</span>
-
-<strong>${dinheiro(c.valor)}</strong>
-
-</div>
-
-<div class="history-info">
-
-📱 ${c.app}<br>
-
-📍 ${c.origem} → ${c.destino}<br>
-
-🕐 ${c.hora}<br>
-
-📏 ${Number(c.km).toFixed(1)} km<br>
-
-⏱️ ${c.tempo} minutos<br>
-
-⛽ Combustível: ${dinheiro(c.comb)}<br>
-
-💵 Lucro: <strong>${dinheiro(c.lucro)}</strong><br>
-
-📊 ${dinheiro(c.rkm)}/km<br>
-
-⏱️ ${dinheiro(c.rhora)}/hora<br>
-
-<strong>${c.decisao}</strong>
-
-</div>
-`;
-
-el.appendChild(item);
-
-});
-
-}
-
+/* =====================================================
+   ROTAS
+===================================================== */
 
 function mostrarRotas(){
 
-let el=document.getElementById("rotas");
+  let el =
+  document.getElementById(
+    "rotas"
+  );
 
-if(!corridas.length){
 
-el.innerHTML=
-'<div class="empty">Registre corridas para descobrir suas melhores rotas.</div>';
+  if(
+    !corridas.length
+  ){
 
-return;
+    el.innerHTML=
+    '<div class="empty">Registre corridas para descobrir suas melhores rotas.</div>';
+
+    return;
+
+  }
+
+
+  let rotas={};
+
+
+  corridas.forEach(
+    c=>{
+
+      let chave =
+      c.origem+
+      " → "+
+      c.destino;
+
+
+      if(
+        !rotas[chave]
+      ){
+
+        rotas[chave]={
+
+          nome:chave,
+
+          q:0,
+
+          valor:0,
+
+          lucro:0,
+
+          tempo:0
+
+        };
+
+      }
+
+
+      rotas[chave].q++;
+
+      rotas[chave].valor +=
+      Number(c.valor)||0;
+
+      rotas[chave].lucro +=
+      Number(c.lucro)||0;
+
+      rotas[chave].tempo +=
+      Number(c.tempo)||0;
+
+    }
+  );
+
+
+  let lista =
+  Object.values(
+    rotas
+  );
+
+
+  lista.sort(
+    (a,b)=>{
+
+      let horaA =
+      a.tempo
+      ?a.valor/(a.tempo/60)
+      :0;
+
+
+      let horaB =
+      b.tempo
+      ?b.valor/(b.tempo/60)
+      :0;
+
+
+      return horaB-horaA;
+
+    }
+  );
+
+
+  el.innerHTML="";
+
+
+  lista
+  .slice(0,5)
+  .forEach(
+    (r,i)=>{
+
+      let hora =
+      r.tempo
+      ?r.valor/(r.tempo/60)
+      :0;
+
+
+      let item =
+      document.createElement(
+        "div"
+      );
+
+
+      item.className=
+      "history-item";
+
+
+      item.innerHTML=`
+
+      <div class="history-top">
+
+      <span>
+      ${i===0?"🏆 ":"📍 "}
+      ${r.nome}
+      </span>
+
+      <strong>
+      ${dinheiro(r.valor)}
+      </strong>
+
+      </div>
+
+      <div class="history-info">
+
+      🚗 ${r.q} corrida(s)<br>
+
+      💵 Lucro:
+      <strong>
+      ${dinheiro(r.lucro)}
+      </strong><br>
+
+      ⏱️ Média:
+      <strong>
+      ${dinheiro(hora)}/hora
+      </strong>
+
+      </div>
+
+      `;
+
+
+      el.appendChild(
+        item
+      );
+
+    }
+  );
 
 }
 
-let rotas={};
 
-corridas.forEach(c=>{
-
-let chave=c.origem+" → "+c.destino;
-
-if(!rotas[chave]){
-
-rotas[chave]={
-nome:chave,
-q:0,
-valor:0,
-lucro:0,
-tempo:0
-};
-
-}
-
-rotas[chave].q++;
-rotas[chave].valor+=Number(c.valor)||0;
-rotas[chave].lucro+=Number(c.lucro)||0;
-rotas[chave].tempo+=Number(c.tempo)||0;
-
-});
-
-let lista=Object.values(rotas);
-
-lista.sort((a,b)=>{
-
-let horaA=a.tempo?a.valor/(a.tempo/60):0;
-let horaB=b.tempo?b.valor/(b.tempo/60):0;
-
-return horaB-horaA;
-
-});
-
-el.innerHTML="";
-
-lista.slice(0,5).forEach((r,i)=>{
-
-let hora=r.tempo
-?r.valor/(r.tempo/60)
-:0;
-
-let item=document.createElement("div");
-
-item.className="history-item";
-
-item.innerHTML=`
-
-<div class="history-top">
-
-<span>${i===0?"🏆 ":"📍 "}${r.nome}</span>
-
-<strong>${dinheiro(r.valor)}</strong>
-
-</div>
-
-<div class="history-info">
-
-🚗 ${r.q} corrida(s)<br>
-
-💵 Lucro: <strong>${dinheiro(r.lucro)}</strong><br>
-
-⏱️ Média: <strong>${dinheiro(hora)}/hora</strong>
-
-</div>
-`;
-
-el.appendChild(item);
-
-});
-
-}
-
+/* =====================================================
+   APLICATIVOS
+===================================================== */
 
 function mostrarApps(){
 
-let el=document.getElementById("apps");
+  let el =
+  document.getElementById(
+    "apps"
+  );
 
-if(!corridas.length){
 
-el.innerHTML=
-'<div class="empty">Registre corridas para comparar.</div>';
+  if(
+    !corridas.length
+  ){
 
-return;
+    el.innerHTML=
+    '<div class="empty">Registre corridas para comparar.</div>';
+
+    return;
+
+  }
+
+
+  let apps={};
+
+
+  corridas.forEach(
+    c=>{
+
+      if(
+        !apps[c.app]
+      ){
+
+        apps[c.app]={
+
+          q:0,
+
+          valor:0,
+
+          lucro:0,
+
+          tempo:0
+
+        };
+
+      }
+
+
+      apps[c.app].q++;
+
+      apps[c.app].valor +=
+      Number(c.valor)||0;
+
+      apps[c.app].lucro +=
+      Number(c.lucro)||0;
+
+      apps[c.app].tempo +=
+      Number(c.tempo)||0;
+
+    }
+  );
+
+
+  let lista =
+  Object.keys(apps)
+  .map(
+    nome=>{
+
+      let a =
+      apps[nome];
+
+
+      return{
+
+        nome,
+
+        q:a.q,
+
+        valor:a.valor,
+
+        lucro:a.lucro,
+
+        hora:
+        a.tempo
+        ?a.valor/(a.tempo/60)
+        :0
+
+      };
+
+    }
+  );
+
+
+  lista.sort(
+    (a,b)=>
+    b.hora-a.hora
+  );
+
+
+  el.innerHTML="";
+
+
+  lista.forEach(
+    (a,i)=>{
+
+      let item =
+      document.createElement(
+        "div"
+      );
+
+
+      item.className=
+      "history-item";
+
+
+      item.innerHTML=`
+
+      <div class="history-top">
+
+      <span>
+      ${i===0?"🏆 ":"📱 "}
+      ${a.nome}
+      </span>
+
+      <strong>
+      ${dinheiro(a.valor)}
+      </strong>
+
+      </div>
+
+      <div class="history-info">
+
+      🚗 ${a.q} corrida(s)<br>
+
+      💵 Lucro:
+      <strong>
+      ${dinheiro(a.lucro)}
+      </strong><br>
+
+      ⏱️ ${dinheiro(a.hora)}/hora
+
+      </div>
+
+      `;
+
+
+      el.appendChild(
+        item
+      );
+
+    }
+  );
 
 }
 
-let apps={};
 
-corridas.forEach(c=>{
-
-if(!apps[c.app]){
-
-apps[c.app]={
-q:0,
-valor:0,
-lucro:0,
-tempo:0
-};
-
-}
-
-apps[c.app].q++;
-apps[c.app].valor+=Number(c.valor)||0;
-apps[c.app].lucro+=Number(c.lucro)||0;
-apps[c.app].tempo+=Number(c.tempo)||0;
-
-});
-
-let lista=Object.keys(apps).map(nome=>{
-
-let a=apps[nome];
-
-return{
-nome,
-q:a.q,
-valor:a.valor,
-lucro:a.lucro,
-hora:a.tempo?a.valor/(a.tempo/60):0
-};
-
-});
-
-lista.sort((a,b)=>b.hora-a.hora);
-
-el.innerHTML="";
-
-lista.forEach((a,i)=>{
-
-let item=document.createElement("div");
-
-item.className="history-item";
-
-item.innerHTML=`
-
-<div class="history-top">
-
-<span>${i===0?"🏆 ":"📱 "}${a.nome}</span>
-
-<strong>${dinheiro(a.valor)}</strong>
-
-</div>
-
-<div class="history-info">
-
-🚗 ${a.q} corrida(s)<br>
-
-💵 Lucro: <strong>${dinheiro(a.lucro)}</strong><br>
-
-⏱️ ${dinheiro(a.hora)}/hora
-
-</div>
-`;
-
-el.appendChild(item);
-
-});
-
-}
-
+/* =====================================================
+   CONFIGURAÇÕES
+===================================================== */
 
 function salvarConfiguracoes(){
 
-config.meta=
-Number(document.getElementById("cfgMeta").value)||300;
+  config.meta =
+  Number(
+    document.getElementById(
+      "cfgMeta"
+    ).value
+  ) || 300;
 
-config.minKm=
-Number(document.getElementById("cfgKm").value)||2;
 
-config.minHora=
-Number(document.getElementById("cfgHora").value)||40;
+  config.minKm =
+  Number(
+    document.getElementById(
+      "cfgKm"
+    ).value
+  ) || 2;
 
-config.gasolina=
-Number(document.getElementById("cfgGas").value)||6.95;
 
-config.consumo=
-Number(document.getElementById("cfgCons").value)||9;
+  config.minHora =
+  Number(
+    document.getElementById(
+      "cfgHora"
+    ).value
+  ) || 40;
 
-salvarDados();
-atualizar();
 
-alert("✅ Configurações salvas!");
+  config.gasolina =
+  Number(
+    document.getElementById(
+      "cfgGas"
+    ).value
+  ) || 6.95;
+
+
+  config.consumo =
+  Number(
+    document.getElementById(
+      "cfgCons"
+    ).value
+  ) || 9;
+
+
+  salvarDados();
+
+  atualizar();
+
+
+  alert(
+    "✅ Configurações salvas!"
+  );
 
 }
 
 
 function carregarConfiguracoes(){
 
-document.getElementById("cfgMeta").value=config.meta;
-document.getElementById("cfgKm").value=config.minKm;
-document.getElementById("cfgHora").value=config.minHora;
-document.getElementById("cfgGas").value=config.gasolina;
-document.getElementById("cfgCons").value=config.consumo;
+  document.getElementById(
+    "cfgMeta"
+  ).value=
+  config.meta;
+
+
+  document.getElementById(
+    "cfgKm"
+  ).value=
+  config.minKm;
+
+
+  document.getElementById(
+    "cfgHora"
+  ).value=
+  config.minHora;
+
+
+  document.getElementById(
+    "cfgGas"
+  ).value=
+  config.gasolina;
+
+
+  document.getElementById(
+    "cfgCons"
+  ).value=
+  config.consumo;
 
 }
 
 
-function zerarDia(){
+/* =====================================================
+   ZERAR DIA
+===================================================== */
 
-if(!confirm(
-"Tem certeza que deseja apagar as corridas de hoje?"
-)){
+async function zerarDia(){
 
-return;
+  if(
+    !confirm(
+      "Tem certeza que deseja apagar as corridas de hoje?"
+    )
+  ){
+
+    return;
+
+  }
+
+
+  /*
+    Apaga também da nuvem
+    se houver usuário conectado.
+  */
+
+  if(
+    usuarioAtual &&
+    navigator.onLine
+  ){
+
+    try{
+
+      const {
+        data,
+        error
+      } =
+      await supabaseClient
+      .from("corridas")
+      .select("id,dados")
+      .eq(
+        "user_id",
+        usuarioAtual.id
+      );
+
+
+      if(error){
+
+        throw error;
+
+      }
+
+
+      const ids =
+      (data || [])
+      .filter(
+        row=>
+        row.dados &&
+        row.dados.data===hoje()
+      )
+      .map(
+        row=>row.id
+      );
+
+
+      if(ids.length){
+
+        const {
+          error:deleteError
+        } =
+        await supabaseClient
+        .from("corridas")
+        .delete()
+        .in(
+          "id",
+          ids
+        );
+
+
+        if(deleteError){
+
+          throw deleteError;
+
+        }
+
+      }
+
+    }catch(error){
+
+      console.error(
+        "Erro ao apagar nuvem:",
+        error
+      );
+
+      alert(
+        "⚠️ Não foi possível apagar os dados da nuvem. Verifique a internet e tente novamente."
+      );
+
+      return;
+
+    }
+
+  }
+
+
+  corridas=[];
+
+  tempoAcumulado=0;
+
+  inicio=0;
+
+  trabalhando=false;
+
+
+  localStorage.removeItem(
+    "ganhosCorridas"
+  );
+
+
+  localStorage.setItem(
+    "ganhosTempo",
+    "0"
+  );
+
+
+  localStorage.setItem(
+    "ganhosTrabalhando",
+    "0"
+  );
+
+
+  localStorage.removeItem(
+    "ganhosInicio"
+  );
+
+
+  document.getElementById(
+    "timerBtn"
+  ).textContent=
+  "▶ INICIAR DIA";
+
+
+  salvarDados();
+
+  atualizar();
+
+
+  alert(
+    "✅ Dados de hoje zerados!"
+  );
 
 }
 
-corridas=[];
 
-tempoAcumulado=0;
-inicio=0;
-trabalhando=false;
-
-localStorage.removeItem("ganhosCorridas");
-
-localStorage.setItem("ganhosTempo","0");
-
-localStorage.setItem("ganhosTrabalhando","0");
-
-localStorage.removeItem("ganhosInicio");
-
-document.getElementById("timerBtn")
-.textContent="▶ INICIAR DIA";
-
-salvarDados();
-atualizar();
-
-}
-
+/* =====================================================
+   TIMER
+===================================================== */
 
 function alternarTimer(){
 
-if(!trabalhando){
+  if(!trabalhando){
 
-trabalhando=true;
+    trabalhando=true;
 
-inicio=Date.now();
+    inicio =
+    Date.now();
 
-localStorage.setItem(
-"ganhosTrabalhando",
-"1"
-);
 
-localStorage.setItem(
-"ganhosInicio",
-inicio
-);
+    localStorage.setItem(
+      "ganhosTrabalhando",
+      "1"
+    );
 
-document.getElementById("timerBtn")
-.textContent="⏹️ PARAR DIA";
 
-}else{
+    localStorage.setItem(
+      "ganhosInicio",
+      inicio
+    );
 
-tempoAcumulado+=Math.floor(
-(Date.now()-inicio)/1000
-);
 
-trabalhando=false;
+    document.getElementById(
+      "timerBtn"
+    ).textContent=
+    "⏹️ PARAR DIA";
 
-inicio=0;
+  }else{
 
-localStorage.setItem(
-"ganhosTempo",
-tempoAcumulado
-);
+    tempoAcumulado +=
+    Math.floor(
+      (Date.now()-inicio)/1000
+    );
 
-localStorage.setItem(
-"ganhosTrabalhando",
-"0"
-);
 
-localStorage.removeItem("ganhosInicio");
+    trabalhando=false;
 
-document.getElementById("timerBtn")
-.textContent="▶ INICIAR DIA";
+    inicio=0;
 
-}
 
-atualizarTimer();
+    localStorage.setItem(
+      "ganhosTempo",
+      tempoAcumulado
+    );
+
+
+    localStorage.setItem(
+      "ganhosTrabalhando",
+      "0"
+    );
+
+
+    localStorage.removeItem(
+      "ganhosInicio"
+    );
+
+
+    document.getElementById(
+      "timerBtn"
+    ).textContent=
+    "▶ INICIAR DIA";
+
+  }
+
+
+  atualizarTimer();
 
 }
 
 
 function atualizarTimer(){
 
-let total=tempoAcumulado;
+  let total =
+  tempoAcumulado;
 
-if(trabalhando&&inicio){
 
-total+=Math.floor(
-(Date.now()-inicio)/1000
+  if(
+    trabalhando &&
+    inicio
+  ){
+
+    total +=
+    Math.floor(
+      (Date.now()-inicio)/1000
+    );
+
+  }
+
+
+  let h =
+  Math.floor(
+    total/3600
+  );
+
+
+  let m =
+  Math.floor(
+    (total%3600)/60
+  );
+
+
+  let s =
+  total%60;
+
+
+  document.getElementById(
+    "timer"
+  ).textContent=
+
+  String(h)
+  .padStart(2,"0")+
+  ":"+
+
+  String(m)
+  .padStart(2,"0")+
+  ":"+
+
+  String(s)
+  .padStart(2,"0");
+
+}
+
+
+/* =====================================================
+   INICIALIZAÇÃO
+===================================================== */
+
+async function iniciarAplicativo(){
+
+  carregarConfiguracoes();
+
+  verificarInternet();
+
+
+  /*
+    Verifica se já existe
+    uma sessão salva.
+  */
+
+  const {
+    data
+  } =
+  await supabaseClient
+  .auth
+  .getSession();
+
+
+  usuarioAtual =
+  data.session
+  ?data.session.user
+  :null;
+
+
+  atualizarInterfaceUsuario();
+
+
+  if(usuarioAtual){
+
+    await sincronizar();
+
+  }
+
+
+  if(trabalhando){
+
+    document.getElementById(
+      "timerBtn"
+    ).textContent=
+    "⏹️ PARAR DIA";
+
+  }
+
+
+  atualizar();
+
+}
+
+
+supabaseClient
+.auth
+.onAuthStateChange(
+  async (
+    event,
+    session
+  )=>{
+
+    usuarioAtual =
+    session
+    ?session.user
+    :null;
+
+
+    atualizarInterfaceUsuario();
+
+
+    if(usuarioAtual){
+
+      await sincronizar();
+
+    }
+
+  }
 );
 
-}
 
-let h=Math.floor(total/3600);
-
-let m=Math.floor((total%3600)/60);
-
-let s=total%60;
-
-document.getElementById("timer")
-.textContent=
-String(h).padStart(2,"0")+":"+
-String(m).padStart(2,"0")+":"+
-String(s).padStart(2,"0");
-
-}
+iniciarAplicativo();
 
 
-carregarConfiguracoes();
-
-if(trabalhando){
-
-document.getElementById("timerBtn")
-.textContent="⏹️ PARAR DIA";
-
-}
-
-atualizar();
-
-setInterval(atualizarTimer,1000);
+setInterval(
+  atualizarTimer,
+  1000
+);
 
 </script>
 
