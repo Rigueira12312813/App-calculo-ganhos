@@ -64,16 +64,19 @@
       margin-top: 14px;
     }
 
-    input {
+    input,
+    select {
       width: 100%;
       padding: 14px;
       border: 1px solid #d1d5db;
       border-radius: 12px;
       font-size: 16px;
       outline: none;
+      background: white;
     }
 
-    input:focus {
+    input:focus,
+    select:focus {
       border-color: #2563eb;
     }
 
@@ -102,34 +105,37 @@
       background: #dc2626;
     }
 
-    .botao-cinza {
-      background: #6b7280;
-    }
-
     .resultado {
       display: none;
     }
 
-    .status {
+    .decisao {
       text-align: center;
-      padding: 15px;
-      border-radius: 14px;
-      margin-bottom: 18px;
-      font-size: 20px;
-      font-weight: bold;
+      padding: 20px;
+      border-radius: 16px;
+      margin-bottom: 20px;
     }
 
-    .boa {
+    .decisao h3 {
+      font-size: 27px;
+      margin-bottom: 7px;
+    }
+
+    .decisao p {
+      font-size: 14px;
+    }
+
+    .excelente {
       background: #dcfce7;
       color: #166534;
     }
 
-    .media {
+    .razoavel {
       background: #fef3c7;
       color: #92400e;
     }
 
-    .ruim {
+    .fraca {
       background: #fee2e2;
       color: #991b1b;
     }
@@ -228,6 +234,7 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 10px;
+      gap: 10px;
     }
 
     .corrida-numero {
@@ -280,17 +287,17 @@
 
   <div class="header">
     <h1>🚗 Calculador de Corridas</h1>
-    <p>Seu controle de ganhos como motorista</p>
+    <p>Seu controle inteligente de ganhos</p>
   </div>
 
 
-  <!-- META DO DIA -->
+  <!-- META -->
 
   <div class="card">
 
     <h2>🎯 Meta do dia</h2>
 
-    <label>Digite sua meta diária (R$)</label>
+    <label>Meta diária (R$)</label>
 
     <input
       type="number"
@@ -351,7 +358,30 @@
 
   <div class="card">
 
-    <h2>📋 Nova corrida</h2>
+    <h2>📋 Analisar corrida</h2>
+
+    <label>Aplicativo</label>
+
+    <select id="plataforma">
+
+      <option value="99">
+        99
+      </option>
+
+      <option value="Uber">
+        Uber
+      </option>
+
+      <option value="InDrive">
+        InDrive
+      </option>
+
+      <option value="Outro">
+        Outro
+      </option>
+
+    </select>
+
 
     <label>Valor da corrida (R$)</label>
 
@@ -362,6 +392,7 @@
       step="0.01"
     >
 
+
     <label>Distância (km)</label>
 
     <input
@@ -370,6 +401,7 @@
       placeholder="Ex: 12"
       step="0.1"
     >
+
 
     <label>Tempo da corrida (minutos)</label>
 
@@ -380,6 +412,7 @@
       step="1"
     >
 
+
     <label>Preço da gasolina (R$/litro)</label>
 
     <input
@@ -388,6 +421,7 @@
       value="6.95"
       step="0.01"
     >
+
 
     <label>Consumo do carro (km/l)</label>
 
@@ -398,8 +432,9 @@
       step="0.1"
     >
 
+
     <button onclick="calcular()">
-      CALCULAR CORRIDA
+      🔎 ANALISAR CORRIDA
     </button>
 
   </div>
@@ -413,17 +448,44 @@
   >
 
     <div
-      id="status"
-      class="status"
+      id="decisao"
+      class="decisao"
     >
-      RESULTADO
+
+      <h3 id="textoDecisao">
+        RESULTADO
+      </h3>
+
+      <p id="motivoDecisao">
+        Análise da corrida
+      </p>
+
     </div>
 
-    <h2>📊 Análise da corrida</h2>
+
+    <h2>📊 Análise</h2>
+
 
     <div class="linha">
+
       <span class="nome">
-        Valor da corrida
+        Aplicativo
+      </span>
+
+      <span
+        class="valor"
+        id="rPlataforma"
+      >
+        -
+      </span>
+
+    </div>
+
+
+    <div class="linha">
+
+      <span class="nome">
+        Valor
       </span>
 
       <span
@@ -432,7 +494,9 @@
       >
         R$ 0,00
       </span>
+
     </div>
+
 
     <div class="linha">
 
@@ -449,6 +513,7 @@
 
     </div>
 
+
     <div class="linha">
 
       <span class="nome">
@@ -463,6 +528,7 @@
       </span>
 
     </div>
+
 
     <div class="linha">
 
@@ -479,6 +545,7 @@
 
     </div>
 
+
     <div class="destaque">
 
       <div class="nome">
@@ -493,6 +560,7 @@
       </div>
 
     </div>
+
 
     <div class="destaque">
 
@@ -509,6 +577,7 @@
 
     </div>
 
+
     <div class="destaque">
 
       <div class="nome">
@@ -523,6 +592,7 @@
       </div>
 
     </div>
+
 
     <button
       class="botao-verde"
@@ -568,7 +638,7 @@
 
 
   <div class="rodape">
-    Calculador de Corridas — versão 3
+    Calculador de Corridas — versão 4
   </div>
 
 </div>
@@ -668,7 +738,7 @@ function salvarMeta() {
 }
 
 
-/* ATUALIZAR TELA */
+/* ATUALIZAR */
 
 function atualizarTela() {
 
@@ -755,9 +825,15 @@ function atualizarTela() {
 }
 
 
-/* CALCULAR */
+/* ANALISAR CORRIDA */
 
 function calcular() {
+
+  const plataforma =
+    document.getElementById(
+      "plataforma"
+    ).value;
+
 
   const valor =
     parseFloat(
@@ -766,12 +842,14 @@ function calcular() {
       ).value
     );
 
+
   const km =
     parseFloat(
       document.getElementById(
         "km"
       ).value
     );
+
 
   const tempo =
     parseFloat(
@@ -780,12 +858,14 @@ function calcular() {
       ).value
     );
 
+
   const gasolina =
     parseFloat(
       document.getElementById(
         "gasolina"
       ).value
     );
+
 
   const consumo =
     parseFloat(
@@ -844,28 +924,130 @@ function calcular() {
     valor / horas;
 
 
+  /*
+    CRITÉRIO DE DECISÃO
+
+    EXCELENTE:
+    R$/km >= 2,00
+    E R$/hora >= 40
+
+    RAZOÁVEL:
+    R$/km >= 1,50
+    OU R$/hora >= 30
+
+    FRACA:
+    abaixo desses valores
+  */
+
+
+  let decisao =
+    document.getElementById(
+      "decisao"
+    );
+
+
+  decisao.classList.remove(
+    "excelente",
+    "razoavel",
+    "fraca"
+  );
+
+
+  let texto =
+    document.getElementById(
+      "textoDecisao"
+    );
+
+
+  let motivo =
+    document.getElementById(
+      "motivoDecisao"
+    );
+
+
+  if (
+    ganhoPorKm >= 2 &&
+    ganhoPorHora >= 40
+  ) {
+
+    decisao.classList.add(
+      "excelente"
+    );
+
+    texto.textContent =
+      "🟢 ACEITAR";
+
+    motivo.textContent =
+      "Boa relação entre valor, distância e tempo.";
+
+  }
+
+  else if (
+    ganhoPorKm >= 1.5 ||
+    ganhoPorHora >= 30
+  ) {
+
+    decisao.classList.add(
+      "razoavel"
+    );
+
+    texto.textContent =
+      "🟡 AVALIAR";
+
+    motivo.textContent =
+      "Corrida razoável. Analise o trânsito e o destino.";
+
+  }
+
+  else {
+
+    decisao.classList.add(
+      "fraca"
+    );
+
+    texto.textContent =
+      "🔴 RECUSAR";
+
+    motivo.textContent =
+      "Baixo retorno em relação à distância ou ao tempo.";
+
+  }
+
+
   ultimaCorrida = {
 
-    valor: valor,
+    plataforma:
+      plataforma,
 
-    km: km,
+    valor:
+      valor,
 
-    tempo: tempo,
+    km:
+      km,
 
-    gasolina: gasolina,
+    tempo:
+      tempo,
 
-    consumo: consumo,
+    gasolina:
+      gasolina,
+
+    consumo:
+      consumo,
 
     combustivel:
       custoCombustivel,
 
-    lucro: lucro,
+    lucro:
+      lucro,
 
     porKm:
       ganhoPorKm,
 
     porHora:
       ganhoPorHora,
+
+    decisao:
+      texto.textContent,
 
     horario:
       new Date().toLocaleTimeString(
@@ -877,6 +1059,12 @@ function calcular() {
       )
 
   };
+
+
+  document.getElementById(
+    "rPlataforma"
+  ).textContent =
+    plataforma;
 
 
   document.getElementById(
@@ -927,55 +1115,6 @@ function calcular() {
     "/h";
 
 
-  const status =
-    document.getElementById(
-      "status"
-    );
-
-
-  status.classList.remove(
-    "boa",
-    "media",
-    "ruim"
-  );
-
-
-  if (
-    ganhoPorKm >= 2 &&
-    ganhoPorHora >= 40
-  ) {
-
-    status.textContent =
-      "🟢 CORRIDA BOA";
-
-    status.classList.add(
-      "boa"
-    );
-
-  } else if (
-    ganhoPorKm >= 1.5 ||
-    ganhoPorHora >= 30
-  ) {
-
-    status.textContent =
-      "🟡 CORRIDA MÉDIA";
-
-    status.classList.add(
-      "media"
-    );
-
-  } else {
-
-    status.textContent =
-      "🔴 CORRIDA FRACA";
-
-    status.classList.add(
-      "ruim"
-    );
-
-  }
-
-
   document.getElementById(
     "resultado"
   ).style.display =
@@ -991,7 +1130,7 @@ function calcular() {
 }
 
 
-/* ADICIONAR CORRIDA */
+/* ADICIONAR */
 
 function adicionarCorrida() {
 
@@ -1000,7 +1139,7 @@ function adicionarCorrida() {
   ) {
 
     alert(
-      "Primeiro calcule uma corrida."
+      "Primeiro analise uma corrida."
     );
 
     return;
@@ -1008,15 +1147,14 @@ function adicionarCorrida() {
   }
 
 
-  const corrida =
-    {
+  const corrida = {
 
-      ...ultimaCorrida,
+    ...ultimaCorrida,
 
-      numero:
-        historico.length + 1
+    numero:
+      historico.length + 1
 
-    };
+  };
 
 
   historico.push(
@@ -1038,7 +1176,7 @@ function adicionarCorrida() {
 
 
   alert(
-    "✅ Corrida registrada no histórico!"
+    "✅ Corrida registrada!"
   );
 
 
@@ -1066,7 +1204,7 @@ function adicionarCorrida() {
 }
 
 
-/* MOSTRAR HISTÓRICO */
+/* HISTÓRICO */
 
 function mostrarHistorico() {
 
@@ -1080,12 +1218,11 @@ function mostrarHistorico() {
     historico.length === 0
   ) {
 
-    elemento.innerHTML =
-      `
+    elemento.innerHTML = `
       <div class="historico-vazio">
         Nenhuma corrida registrada ainda.
       </div>
-      `;
+    `;
 
     return;
 
@@ -1126,23 +1263,38 @@ function mostrarHistorico() {
           </div>
 
           <div class="historico-linha">
+            <span>📱 Aplicativo</span>
+            <strong>
+              ${corrida.plataforma}
+            </strong>
+          </div>
+
+          <div class="historico-linha">
             <span>🕐 Horário</span>
-            <strong>${corrida.horario}</strong>
+            <strong>
+              ${corrida.horario}
+            </strong>
           </div>
 
           <div class="historico-linha">
             <span>📍 Distância</span>
-            <strong>${corrida.km.toFixed(1)} km</strong>
+            <strong>
+              ${corrida.km.toFixed(1)} km
+            </strong>
           </div>
 
           <div class="historico-linha">
             <span>⏱️ Tempo</span>
-            <strong>${corrida.tempo} min</strong>
+            <strong>
+              ${corrida.tempo} min
+            </strong>
           </div>
 
           <div class="historico-linha">
             <span>⛽ Combustível</span>
-            <strong>${dinheiro(corrida.combustivel)}</strong>
+            <strong>
+              ${dinheiro(corrida.combustivel)}
+            </strong>
           </div>
 
           <div class="historico-linha">
@@ -1166,6 +1318,13 @@ function mostrarHistorico() {
             </strong>
           </div>
 
+          <div class="historico-linha">
+            <span>🎯 Decisão</span>
+            <strong>
+              ${corrida.decisao}
+            </strong>
+          </div>
+
         `;
 
 
@@ -1179,7 +1338,7 @@ function mostrarHistorico() {
 }
 
 
-/* ZERAR DIA */
+/* ZERAR */
 
 function zerarDia() {
 
