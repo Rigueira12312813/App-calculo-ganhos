@@ -2,542 +2,75 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Calculador de Corridas</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Calculador de Corridas V11</title>
 
 <style>
-
-*{
-box-sizing:border-box;
-margin:0;
-padding:0;
-font-family:Arial,sans-serif;
-}
-
-body{
-background:#f2f4f7;
-color:#222;
-padding:12px;
-}
-
-.app{
-max-width:500px;
-margin:auto;
-}
-
-.header{
-background:#111827;
-color:white;
-padding:20px;
-border-radius:18px;
-margin-bottom:14px;
-text-align:center;
-}
-
-.header h1{
-font-size:24px;
-margin-bottom:6px;
-}
-
-.header p{
-font-size:13px;
-color:#d1d5db;
-}
-
-.card{
-background:white;
-border-radius:18px;
-padding:17px;
-margin-bottom:14px;
-box-shadow:0 3px 12px rgba(0,0,0,.07);
-}
-
-.card h2{
-font-size:19px;
-margin-bottom:14px;
-}
-
-label{
-display:block;
-font-weight:bold;
-margin:11px 0 6px;
-}
-
-input,
-select{
-width:100%;
-padding:14px;
-border:1px solid #d1d5db;
-border-radius:12px;
-font-size:16px;
-background:white;
-outline:none;
-}
-
-input:focus,
-select:focus{
-border-color:#2563eb;
-}
-
-button{
-width:100%;
-padding:16px;
-margin-top:13px;
-border:0;
-border-radius:13px;
-color:white;
-font-size:16px;
-font-weight:bold;
-}
-
-button:active{
-transform:scale(.98);
-}
-
-.azul{
-background:#2563eb;
-}
-
-.verde{
-background:#16a34a;
-}
-
-.vermelho{
-background:#dc2626;
-}
-
-.cinza{
-background:#6b7280;
-}
-
-/* SUPER RÁPIDO */
-
-.super-rapido{
-background:#111827;
-color:white;
-}
-
-.super-rapido h2{
-color:white;
-}
-
-.super-descricao{
-font-size:13px;
-color:#d1d5db;
-line-height:1.5;
-margin-bottom:12px;
-}
-
-.super-grid{
-display:grid;
-grid-template-columns:1fr 1fr 1fr;
-gap:7px;
-}
-
-.super-campo label{
-font-size:11px;
-color:#d1d5db;
-margin:0 0 5px;
-}
-
-.super-campo input{
-padding:13px 8px;
-font-size:16px;
-text-align:center;
-}
-
-.botao-super{
-background:#2563eb;
-font-size:18px;
-margin-top:12px;
-}
-
-/* RESULTADO SUPER */
-
-.super-resultado{
-display:none;
-margin-top:14px;
-padding:16px;
-border-radius:15px;
-background:white;
-color:#111827;
-}
-
-.super-decisao{
-text-align:center;
-padding:18px;
-border-radius:14px;
-margin-bottom:13px;
-}
-
-.super-decisao h3{
-font-size:30px;
-margin-bottom:5px;
-}
-
-.super-decisao p{
-font-size:13px;
-line-height:1.5;
-}
-
-.excelente{
-background:#dcfce7;
-color:#166534;
-}
-
-.razoavel{
-background:#fef3c7;
-color:#92400e;
-}
-
-.fraca{
-background:#fee2e2;
-color:#991b1b;
-}
-
-.super-numeros{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:8px;
-}
-
-.super-numero{
-background:#f3f4f6;
-padding:12px;
-border-radius:11px;
-text-align:center;
-}
-
-.super-numero span{
-display:block;
-font-size:11px;
-color:#666;
-margin-bottom:4px;
-}
-
-.super-numero strong{
-font-size:19px;
-}
-
-.super-lucro{
-grid-column:1 / 3;
-background:#ecfdf5;
-}
-
-.super-lucro strong{
-font-size:25px;
-color:#166534;
-}
-
-.super-novo{
-background:#111827;
-margin-top:12px;
-}
-
-/* META */
-
-.meta-box{
-text-align:center;
-}
-
-.meta-valor{
-font-size:32px;
-font-weight:bold;
-margin:8px 0;
-}
-
-.barra{
-width:100%;
-height:17px;
-background:#e5e7eb;
-border-radius:20px;
-overflow:hidden;
-margin:14px 0;
-}
-
-.progresso{
-height:100%;
-width:0%;
-background:#16a34a;
-transition:.4s;
-}
-
-.grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:10px;
-margin-top:12px;
-}
-
-.mini{
-background:#f3f4f6;
-border-radius:13px;
-padding:14px;
-text-align:center;
-}
-
-.mini span{
-display:block;
-color:#666;
-font-size:12px;
-}
-
-.mini strong{
-display:block;
-font-size:20px;
-margin-top:5px;
-}
-
-/* PAINEL */
-
-.painel{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:10px;
-}
-
-.painel-item{
-background:#f8fafc;
-border:1px solid #e5e7eb;
-border-radius:13px;
-padding:14px;
-}
-
-.painel-item span{
-display:block;
-color:#666;
-font-size:12px;
-margin-bottom:6px;
-}
-
-.painel-item strong{
-font-size:20px;
-}
-
-.lucro-box{
-grid-column:1 / 3;
-background:#ecfdf5;
-border-color:#bbf7d0;
-}
-
-.lucro-box strong{
-color:#166534;
-font-size:27px;
-}
-
-/* RESULTADO COMPLETO */
-
-.resultado{
-display:none;
-}
-
-.decisao{
-text-align:center;
-padding:20px;
-border-radius:15px;
-margin-bottom:17px;
-}
-
-.decisao h3{
-font-size:28px;
-margin-bottom:7px;
-}
-
-.decisao p{
-font-size:13px;
-line-height:1.5;
-}
-
-.painel-decisao{
-background:#f8fafc;
-border:1px solid #e5e7eb;
-border-radius:16px;
-padding:15px;
-margin-bottom:17px;
-}
-
-.painel-decisao h3{
-font-size:17px;
-margin-bottom:12px;
-}
-
-.criterio{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:10px 0;
-border-bottom:1px solid #e5e7eb;
-font-size:14px;
-}
-
-.criterio:last-child{
-border-bottom:0;
-}
-
-.ok{
-color:#15803d;
-font-weight:bold;
-}
-
-.atencao{
-color:#b45309;
-font-weight:bold;
-}
-
-.ruim{
-color:#b91c1c;
-font-weight:bold;
-}
-
-/* RESUMO */
-
-.resumo-financeiro{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:10px;
-margin-bottom:15px;
-}
-
-.resumo-box{
-padding:15px;
-border-radius:14px;
-background:#f8fafc;
-border:1px solid #e5e7eb;
-}
-
-.resumo-box span{
-display:block;
-font-size:12px;
-color:#666;
-margin-bottom:6px;
-}
-
-.resumo-box strong{
-font-size:20px;
-}
-
-.resumo-lucro{
-grid-column:1 / 3;
-background:#ecfdf5;
-border-color:#bbf7d0;
-}
-
-.resumo-lucro strong{
-font-size:29px;
-color:#166534;
-}
-
-/* LINHAS */
-
-.linha{
-display:flex;
-justify-content:space-between;
-gap:10px;
-padding:12px 0;
-border-bottom:1px solid #eee;
-}
-
-.nome{
-color:#555;
-}
-
-.valor{
-font-weight:bold;
-text-align:right;
-}
-
-.destaque{
-background:#f3f4f6;
-border-radius:13px;
-padding:14px;
-margin-top:12px;
-}
-
-.numero{
-font-size:25px;
-font-weight:bold;
-margin-top:5px;
-}
-
-/* HISTÓRICO */
-
-.historico-item{
-border:1px solid #e5e7eb;
-border-radius:13px;
-padding:14px;
-margin-bottom:10px;
-background:#fafafa;
-}
-
-.historico-topo{
-display:flex;
-justify-content:space-between;
-margin-bottom:9px;
-}
-
-.historico-linha{
-display:flex;
-justify-content:space-between;
-padding:4px 0;
-font-size:13px;
-}
-
-.historico-vazio{
-text-align:center;
-color:#777;
-padding:18px 5px;
-}
-
-/* RANKING */
-
-.ranking-item{
-padding:13px;
-border-radius:13px;
-background:#f8fafc;
-margin-bottom:9px;
-border:1px solid #e5e7eb;
-}
-
-.ranking-topo{
-display:flex;
-justify-content:space-between;
-font-weight:bold;
-margin-bottom:6px;
-}
-
-.ranking-info{
-color:#555;
-font-size:12px;
-line-height:1.6;
-}
-
-/* CONFIGURAÇÕES */
-
-.configuracao{
-background:#f8fafc;
-padding:13px;
-border-radius:13px;
-margin-bottom:10px;
-}
-
-.info{
-background:#eff6ff;
-color:#1e40af;
-padding:12px;
-border-radius:11px;
-font-size:12px;
-line-height:1.5;
-margin-top:10px;
-}
-
-.rodape{
-text-align:center;
-color:#777;
-font-size:11px;
-margin:20px 0;
-}
-
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+body{background:#f2f4f7;color:#222;padding:12px}
+.app{max-width:500px;margin:auto}
+.header{background:#111827;color:white;padding:20px;border-radius:18px;margin-bottom:14px;text-align:center}
+.header h1{font-size:24px;margin-bottom:6px}
+.header p{font-size:13px;color:#d1d5db}
+.card{background:white;border-radius:18px;padding:17px;margin-bottom:14px;box-shadow:0 3px 12px rgba(0,0,0,.07)}
+.card h2{font-size:19px;margin-bottom:14px}
+label{display:block;font-weight:bold;margin:11px 0 6px}
+input,select{width:100%;padding:14px;border:1px solid #d1d5db;border-radius:12px;font-size:16px;background:white;outline:none}
+button{width:100%;padding:16px;margin-top:13px;border:0;border-radius:13px;color:white;font-size:16px;font-weight:bold}
+button:active{transform:scale(.98)}
+.azul{background:#2563eb}.verde{background:#16a34a}.vermelho{background:#dc2626}.cinza{background:#6b7280}
+
+.super{background:#111827;color:white}
+.super h2{color:white}
+.desc{font-size:13px;color:#d1d5db;line-height:1.5;margin-bottom:12px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px}
+.grid3 label{font-size:11px;color:#d1d5db;margin:0 0 5px}
+.grid3 input{text-align:center;padding:13px 7px}
+.resultado-super{display:none;margin-top:14px;padding:14px;border-radius:14px;background:white;color:#111827}
+.decisao{text-align:center;padding:18px;border-radius:14px;margin-bottom:13px}
+.decisao h3{font-size:29px;margin-bottom:5px}
+.decisao p{font-size:13px;line-height:1.5}
+.excelente{background:#dcfce7;color:#166534}
+.razoavel{background:#fef3c7;color:#92400e}
+.fraca{background:#fee2e2;color:#991b1b}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.box{background:#f8fafc;border:1px solid #e5e7eb;border-radius:13px;padding:14px}
+.box span{display:block;color:#666;font-size:12px;margin-bottom:6px}
+.box strong{font-size:20px}
+.full{grid-column:1/3}
+.lucro{background:#ecfdf5;border-color:#bbf7d0}
+.lucro strong{color:#166534;font-size:27px}
+
+.meta{text-align:center}
+.meta-valor{font-size:32px;font-weight:bold;margin:8px 0}
+.barra{height:17px;background:#e5e7eb;border-radius:20px;overflow:hidden;margin:14px 0}
+.progresso{height:100%;width:0;background:#16a34a;transition:.4s}
+
+.tempo-box{background:#111827;color:white;border-radius:15px;padding:17px;text-align:center;margin-top:12px}
+.tempo-box h3{font-size:14px;color:#d1d5db}
+.tempo-box .grande{font-size:30px;font-weight:bold;margin:7px}
+.tempo-box button{background:#2563eb;margin-top:7px}
+
+.projecao{background:#eff6ff;border:1px solid #bfdbfe;padding:14px;border-radius:14px;margin-top:10px}
+.projecao strong{color:#1d4ed8}
+
+.linha{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid #eee}
+.nome{color:#555}.valor{text-align:right;font-weight:bold}
+.destaque{background:#f3f4f6;border-radius:13px;padding:14px;margin-top:12px}
+.numero{font-size:25px;font-weight:bold;margin-top:5px}
+
+.historico-item{border:1px solid #e5e7eb;border-radius:13px;padding:14px;margin-bottom:10px;background:#fafafa}
+.historico-topo{display:flex;justify-content:space-between;margin-bottom:9px}
+.historico-linha{display:flex;justify-content:space-between;padding:4px 0;font-size:13px}
+.vazio{text-align:center;color:#777;padding:18px 5px}
+
+.ranking-item{padding:13px;border-radius:13px;background:#f8fafc;margin-bottom:9px;border:1px solid #e5e7eb}
+.ranking-topo{display:flex;justify-content:space-between;font-weight:bold;margin-bottom:6px}
+.ranking-info{color:#555;font-size:12px;line-height:1.6}
+
+.info{background:#eff6ff;color:#1e40af;padding:12px;border-radius:11px;font-size:12px;line-height:1.5;margin-top:10px}
+.rodape{text-align:center;color:#777;font-size:11px;margin:20px 0}
 </style>
 </head>
 
@@ -545,2286 +78,581 @@ margin:20px 0;
 
 <div class="app">
 
-<!-- CABEÇALHO -->
-
 <div class="header">
-
 <h1>🚗 Calculador de Corridas</h1>
-
-<p>
-Controle inteligente dos seus ganhos
-</p>
-
+<p>Controle inteligente dos seus ganhos — V11</p>
 </div>
-
 
 <!-- MODO SUPER RÁPIDO -->
-
-<div class="card super-rapido">
-
+<div class="card super">
 <h2>⚡ Modo Super Rápido</h2>
+<div class="desc">Digite valor, quilômetros e tempo para saber imediatamente se vale a pena.</div>
 
-<div class="super-descricao">
-Digite somente o valor, os quilômetros e o tempo da corrida.
-O aplicativo calcula tudo automaticamente.
+<div class="grid3">
+<div>
+<label>💰 R$</label>
+<input id="sv" type="number" step="0.01" inputmode="decimal" placeholder="20">
+</div>
+<div>
+<label>📍 KM</label>
+<input id="sk" type="number" step="0.1" inputmode="decimal" placeholder="10">
+</div>
+<div>
+<label>⏱️ MIN</label>
+<input id="st" type="number" step="1" inputmode="numeric" placeholder="20">
+</div>
 </div>
 
-<div class="super-grid">
+<button class="azul" onclick="superAnalise()">⚡ ANALISAR AGORA</button>
 
-<div class="super-campo">
-
-<label>
-💰 R$
-</label>
-
-<input
-type="number"
-id="superValor"
-placeholder="20"
-step="0.01"
-inputmode="decimal"
->
-
+<div id="sr" class="resultado-super">
+<div id="sd" class="decisao">
+<h3 id="stexto">-</h3>
+<p id="smotivo">-</p>
 </div>
 
-
-<div class="super-campo">
-
-<label>
-📍 KM
-</label>
-
-<input
-type="number"
-id="superKm"
-placeholder="10"
-step="0.1"
-inputmode="decimal"
->
-
+<div class="grid2">
+<div class="box"><span>📍 R$/km</span><strong id="spk">R$ 0,00</strong></div>
+<div class="box"><span>⏱️ R$/hora</span><strong id="sph">R$ 0,00</strong></div>
+<div class="box"><span>⛽ Combustível</span><strong id="sc">R$ 0,00</strong></div>
+<div class="box"><span>💰 Faturamento</span><strong id="sf">R$ 0,00</strong></div>
+<div class="box lucro full"><span>💵 SOBRA</span><strong id="sl">R$ 0,00</strong></div>
 </div>
 
-
-<div class="super-campo">
-
-<label>
-⏱️ MIN
-</label>
-
-<input
-type="number"
-id="superTempo"
-placeholder="20"
-step="1"
-inputmode="numeric"
->
-
+<button class="cinza" onclick="novoSuper()">➕ NOVA CORRIDA</button>
+</div>
 </div>
 
+<!-- PAINEL EM TEMPO REAL -->
+<div class="card">
+<h2>📊 Painel em Tempo Real</h2>
+
+<div class="grid2">
+<div class="box"><span>💰 Faturamento</span><strong id="pb">R$ 0,00</strong></div>
+<div class="box"><span>⛽ Combustível</span><strong id="pc">R$ 0,00</strong></div>
+<div class="box lucro full"><span>💵 LUCRO REAL</span><strong id="pl">R$ 0,00</strong></div>
+<div class="box"><span>📍 KM</span><strong id="pk">0 km</strong></div>
+<div class="box"><span>🚗 Corridas</span><strong id="pq">0</strong></div>
+<div class="box"><span>📈 R$/km</span><strong id="ppk">R$ 0,00</strong></div>
+<div class="box"><span>⏱️ R$/hora</span><strong id="pph">R$ 0,00</strong></div>
 </div>
 
-
-<button
-class="botao-super"
-onclick="analisarSuperRapido()"
->
-⚡ ANALISAR AGORA
-</button>
-
-
-<div
-class="super-resultado"
-id="superResultado"
->
-
-<div
-class="super-decisao"
-id="superDecisao"
->
-
-<h3 id="superTexto">
--
-</h3>
-
-<p id="superMotivo">
--
-</p>
-
+<div class="tempo-box">
+<h3>⏱️ TEMPO DE TRABALHO</h3>
+<div class="grande" id="tempoTrabalho">00:00:00</div>
+<button onclick="iniciarParar()">▶ INICIAR DIA</button>
 </div>
 
-
-<div class="super-numeros">
-
-<div class="super-numero">
-
-<span>
-📍 Ganho por km
-</span>
-
-<strong id="superPorKm">
-R$ 0,00
-</strong>
-
+<div class="projecao">
+📈 <strong>Projeção:</strong>
+<span id="projecao">Registre corridas para calcular.</span>
 </div>
-
-
-<div class="super-numero">
-
-<span>
-⏱️ Ganho por hora
-</span>
-
-<strong id="superPorHora">
-R$ 0,00
-</strong>
-
 </div>
-
-
-<div class="super-numero">
-
-<span>
-⛽ Combustível
-</span>
-
-<strong id="superCombustivel">
-R$ 0,00
-</strong>
-
-</div>
-
-
-<div class="super-numero">
-
-<span>
-💰 Faturamento
-</span>
-
-<strong id="superFaturamento">
-R$ 0,00
-</strong>
-
-</div>
-
-
-<div class="super-numero super-lucro">
-
-<span>
-💵 SOBRA APÓS COMBUSTÍVEL
-</span>
-
-<strong id="superLucro">
-R$ 0,00
-</strong>
-
-</div>
-
-</div>
-
-
-<button
-class="super-novo"
-onclick="novaSuperRapida()"
->
-➕ NOVA CORRIDA
-</button>
-
-</div>
-
-</div>
-
 
 <!-- META -->
-
 <div class="card">
-
 <h2>🎯 Meta do dia</h2>
-
-<div class="meta-box">
-
-<div>
-Faturamento de hoje
+<div class="meta">
+<div>Faturamento atual</div>
+<div class="meta-valor" id="total">R$ 0,00</div>
+<div class="barra"><div id="prog" class="progresso"></div></div>
+<div id="metaMsg">Você ainda não iniciou o dia.</div>
+</div>
+<div class="grid2">
+<div class="box"><span>🏁 Meta</span><strong id="metaTela">R$ 0,00</strong></div>
+<div class="box"><span>📌 Falta</span><strong id="falta">R$ 0,00</strong></div>
+</div>
 </div>
 
-<div
-class="meta-valor"
-id="totalDia"
->
-R$ 0,00
-</div>
-
-<div class="barra">
-
-<div
-class="progresso"
-id="progresso"
-></div>
-
-</div>
-
-<div id="mensagemMeta">
-Você ainda não iniciou o dia.
-</div>
-
-</div>
-
-<div class="grid">
-
-<div class="mini">
-
-<span>
-Corridas
-</span>
-
-<strong id="quantidade">
-0
-</strong>
-
-</div>
-
-<div class="mini">
-
-<span>
-Média
-</span>
-
-<strong id="media">
-R$ 0,00
-</strong>
-
-</div>
-
-</div>
-
-</div>
-
-
-<!-- PAINEL -->
-
+<!-- NOVA CORRIDA -->
 <div class="card">
-
-<h2>📊 Desempenho de hoje</h2>
-
-<div class="painel">
-
-<div class="painel-item">
-
-<span>💰 Faturamento</span>
-
-<strong id="painelBruto">
-R$ 0,00
-</strong>
-
-</div>
-
-<div class="painel-item">
-
-<span>⛽ Combustível</span>
-
-<strong id="painelCombustivel">
-R$ 0,00
-</strong>
-
-</div>
-
-<div class="painel-item lucro-box">
-
-<span>💵 Lucro após combustível</span>
-
-<strong id="painelLucro">
-R$ 0,00
-</strong>
-
-</div>
-
-<div class="painel-item">
-
-<span>🚗 Km</span>
-
-<strong id="painelKm">
-0 km
-</strong>
-
-</div>
-
-<div class="painel-item">
-
-<span>📍 R$/km</span>
-
-<strong id="painelPorKm">
-R$ 0,00
-</strong>
-
-</div>
-
-<div class="painel-item">
-
-<span>⏱️ Tempo</span>
-
-<strong id="painelTempo">
-0 min
-</strong>
-
-</div>
-
-<div class="painel-item">
-
-<span>🕐 R$/hora</span>
-
-<strong id="painelPorHora">
-R$ 0,00
-</strong>
-
-</div>
-
-</div>
-
-</div>
-
-
-<!-- FORMULÁRIO COMPLETO -->
-
-<div
-class="card"
-id="areaCorrida"
->
-
 <h2>📋 Nova corrida completa</h2>
 
-<label>
-Aplicativo
-</label>
-
-<select id="plataforma">
-
-<option value="99">
-99
-</option>
-
-<option value="Uber">
-Uber
-</option>
-
-<option value="InDrive">
-InDrive
-</option>
-
-<option value="Outro">
-Outro
-</option>
-
+<label>Aplicativo</label>
+<select id="app">
+<option>99</option>
+<option>Uber</option>
+<option>InDrive</option>
+<option>Outro</option>
 </select>
 
+<label>💰 Valor</label>
+<input id="v" type="number" step="0.01" placeholder="Ex: 25">
 
-<label>
-💰 Valor da corrida
-</label>
+<label>📍 Distância em km</label>
+<input id="k" type="number" step="0.1" placeholder="Ex: 12">
 
-<input
-type="number"
-id="valor"
-placeholder="Ex: 25"
-step="0.01"
->
+<label>⏱️ Tempo em minutos</label>
+<input id="t" type="number" step="1" placeholder="Ex: 25">
 
-
-<label>
-📍 Distância em km
-</label>
-
-<input
-type="number"
-id="km"
-placeholder="Ex: 12"
-step="0.1"
->
-
-
-<label>
-⏱️ Tempo em minutos
-</label>
-
-<input
-type="number"
-id="tempo"
-placeholder="Ex: 25"
-step="1"
->
-
-
-<button
-class="azul"
-onclick="calcular()"
->
-🔎 ANALISAR CORRIDA
-</button>
-
+<button class="azul" onclick="analisar()">🔎 ANALISAR CORRIDA</button>
 </div>
 
+<!-- RESULTADO -->
+<div id="resultado" class="card" style="display:none">
 
-<!-- RESULTADO COMPLETO -->
-
-<div
-class="card resultado"
-id="resultado"
->
-
-<div
-id="decisao"
-class="decisao"
->
-
-<h3 id="textoDecisao">
-RESULTADO
-</h3>
-
-<p id="motivoDecisao">
-Análise
-</p>
-
+<div id="dec" class="decisao">
+<h3 id="decTexto">-</h3>
+<p id="decMotivo">-</p>
 </div>
 
+<h2>💰 Resumo</h2>
 
-<div class="painel-decisao">
-
-<h3>
-📋 Por que essa decisão?
-</h3>
-
-<div class="criterio">
-
-<span>
-📍 Ganho por km
-</span>
-
-<strong id="criterioKm">
--
-</strong>
-
+<div class="grid2">
+<div class="box"><span>Faturamento</span><strong id="rv">R$ 0,00</strong></div>
+<div class="box"><span>Combustível</span><strong id="rc">R$ 0,00</strong></div>
+<div class="box lucro full"><span>SOBRA</span><strong id="rl">R$ 0,00</strong></div>
 </div>
 
+<div class="linha"><span class="nome">Aplicativo</span><strong id="ra" class="valor">-</strong></div>
+<div class="linha"><span class="nome">Distância</span><strong id="rk" class="valor">-</strong></div>
+<div class="linha"><span class="nome">Tempo</span><strong id="rt" class="valor">-</strong></div>
+<div class="linha"><span class="nome">R$/km</span><strong id="rpk" class="valor">-</strong></div>
+<div class="linha"><span class="nome">R$/hora</span><strong id="rph" class="valor">-</strong></div>
 
-<div class="criterio">
-
-<span>
-⏱️ Ganho por hora
-</span>
-
-<strong id="criterioHora">
--
-</strong>
-
+<button class="verde" onclick="registrar()">✅ REGISTRAR CORRIDA</button>
 </div>
-
-
-<div class="criterio">
-
-<span>
-⛽ Custo combustível
-</span>
-
-<strong id="criterioCombustivel">
--
-</strong>
-
-</div>
-
-
-<div class="criterio">
-
-<span>
-💵 Sobra da corrida
-</span>
-
-<strong id="criterioLucro">
--
-</strong>
-
-</div>
-
-</div>
-
-
-<h2>
-💰 Resumo financeiro
-</h2>
-
-
-<div class="resumo-financeiro">
-
-<div class="resumo-box">
-
-<span>
-💰 Faturamento
-</span>
-
-<strong id="resumoValor">
-R$ 0,00
-</strong>
-
-</div>
-
-
-<div class="resumo-box">
-
-<span>
-⛽ Combustível
-</span>
-
-<strong id="resumoCombustivel">
-R$ 0,00
-</strong>
-
-</div>
-
-
-<div class="resumo-box resumo-lucro">
-
-<span>
-💵 SOBRA APÓS COMBUSTÍVEL
-</span>
-
-<strong id="resumoLucro">
-R$ 0,00
-</strong>
-
-</div>
-
-</div>
-
-
-<div class="linha">
-
-<span class="nome">
-Aplicativo
-</span>
-
-<strong
-class="valor"
-id="rPlataforma"
->
--
-</strong>
-
-</div>
-
-
-<div class="linha">
-
-<span class="nome">
-Valor
-</span>
-
-<strong
-class="valor"
-id="rValor"
->
-R$ 0,00
-</strong>
-
-</div>
-
-
-<div class="linha">
-
-<span class="nome">
-Distância
-</span>
-
-<strong
-class="valor"
-id="rKm"
->
-0 km
-</strong>
-
-</div>
-
-
-<div class="linha">
-
-<span class="nome">
-Tempo
-</span>
-
-<strong
-class="valor"
-id="rTempo"
->
-0 min
-</strong>
-
-</div>
-
-
-<div class="linha">
-
-<span class="nome">
-Combustível
-</span>
-
-<strong
-class="valor"
-id="rCombustivel"
->
-R$ 0,00
-</strong>
-
-</div>
-
-
-<div class="destaque">
-
-<div class="nome">
-💵 Lucro
-</div>
-
-<div
-class="numero"
-id="rLucro"
->
-R$ 0,00
-</div>
-
-</div>
-
-
-<div class="destaque">
-
-<div class="nome">
-📍 Ganho por km
-</div>
-
-<div
-class="numero"
-id="rPorKm"
->
-R$ 0,00/km
-</div>
-
-</div>
-
-
-<div class="destaque">
-
-<div class="nome">
-⏱️ Ganho por hora
-</div>
-
-<div
-class="numero"
-id="rPorHora"
->
-R$ 0,00/h
-</div>
-
-</div>
-
-
-<button
-class="verde"
-onclick="adicionarCorrida()"
->
-✅ REGISTRAR CORRIDA
-</button>
-
-</div>
-
 
 <!-- RANKING -->
-
 <div class="card">
-
-<h2>
-🏆 Aplicativo que mais rende
-</h2>
-
-<div id="ranking">
-
-<div class="historico-vazio">
-Registre algumas corridas para comparar.
+<h2>🏆 Aplicativo que mais rende</h2>
+<div id="ranking"><div class="vazio">Registre corridas para comparar.</div></div>
 </div>
-
-</div>
-
-</div>
-
 
 <!-- HISTÓRICO -->
-
 <div class="card">
-
-<h2>
-📚 Histórico de hoje
-</h2>
-
-<div id="historico">
-
-<div class="historico-vazio">
-Nenhuma corrida registrada.
+<h2>📚 Histórico de hoje</h2>
+<div id="historico"><div class="vazio">Nenhuma corrida registrada.</div></div>
 </div>
-
-</div>
-
-</div>
-
 
 <!-- CONFIGURAÇÕES -->
-
 <div class="card">
+<h2>⚙️ Configurações</h2>
 
-<h2>
-⚙️ Configurações
-</h2>
+<label>🎯 Meta diária</label>
+<input id="metaInput" type="number" step="0.01">
 
+<label>📍 R$/km mínimo</label>
+<input id="minKm" type="number" step="0.01">
 
-<div class="configuracao">
+<label>⏱️ R$/hora mínimo</label>
+<input id="minHora" type="number" step="0.01">
 
-<label>
-🎯 Meta diária
-</label>
+<label>⛽ Gasolina</label>
+<input id="gas" type="number" step="0.01">
 
-<input
-type="number"
-id="meta"
-step="0.01"
->
+<label>🚗 Consumo km/l</label>
+<input id="cons" type="number" step="0.1">
 
-</div>
-
-
-<div class="configuracao">
-
-<label>
-📍 R$/km mínimo
-</label>
-
-<input
-type="number"
-id="minPorKm"
-step="0.01"
->
-
-</div>
-
-
-<div class="configuracao">
-
-<label>
-⏱️ R$/hora mínimo
-</label>
-
-<input
-type="number"
-id="minPorHora"
-step="0.01"
->
-
-</div>
-
-
-<div class="configuracao">
-
-<label>
-⛽ Gasolina
-</label>
-
-<input
-type="number"
-id="gasolinaPadrao"
-step="0.01"
->
-
-</div>
-
-
-<div class="configuracao">
-
-<label>
-🚗 Consumo km/l
-</label>
-
-<input
-type="number"
-id="consumoPadrao"
-step="0.1"
->
-
-</div>
-
-
-<button
-class="azul"
-onclick="salvarConfiguracoes()"
->
-💾 SALVAR CONFIGURAÇÕES
-</button>
-
+<button class="azul" onclick="salvarConfig()">💾 SALVAR CONFIGURAÇÕES</button>
 
 <div class="info">
-
-Os valores ficam salvos no celular.
-
+Os dados e configurações ficam salvos no armazenamento do navegador.
 </div>
-
 </div>
-
-
-<!-- CONTROLE -->
 
 <div class="card">
-
-<h2>
-🔄 Controle
-</h2>
-
-<button
-class="vermelho"
-onclick="zerarDia()"
->
-🗑️ ZERAR DIA
-</button>
-
+<h2>🔄 Controle</h2>
+<button class="vermelho" onclick="zerar()">🗑️ ZERAR DIA</button>
 </div>
 
-
-<div class="rodape">
-
-Calculador de Corridas — versão 10
+<div class="rodape">Calculador de Corridas V11</div>
 
 </div>
-
-</div>
-
 
 <script>
 
-/* =========================
-CONFIGURAÇÕES
-========================= */
-
-let configuracoes =
-JSON.parse(
-localStorage.getItem("configuracoes")
-) || {
-
+let cfg=JSON.parse(localStorage.getItem("cfgV11"))||{
 meta:300,
-minPorKm:2,
-minPorHora:40,
-gasolina:6.95,
-consumo:9
-
+minKm:2,
+minHora:40,
+gas:6.95,
+cons:9
 };
 
+let hist=JSON.parse(localStorage.getItem("histV11"))||[];
+let ultima=null;
+let trabalhando=localStorage.getItem("trabalhandoV11")==="1";
+let inicio=Number(localStorage.getItem("inicioV11"))||0;
+let tempoAcumulado=Number(localStorage.getItem("tempoV11"))||0;
+let timer=null;
 
-/* =========================
-DADOS
-========================= */
+const dinheiro=n=>Number(n||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
 
-let totalDia =
-parseFloat(
-localStorage.getItem("totalDia")
-) || 0;
-
-
-let quantidade =
-parseInt(
-localStorage.getItem("quantidade")
-) || 0;
-
-
-let historico =
-JSON.parse(
-localStorage.getItem("historico")
-) || [];
-
-
-let ultimaCorrida=null;
-
-
-/* =========================
-DINHEIRO
-========================= */
-
-function dinheiro(valor){
-
-return Number(valor).toLocaleString(
-"pt-BR",
-{
-style:"currency",
-currency:"BRL"
-}
-);
-
+function salvar(){
+localStorage.setItem("histV11",JSON.stringify(hist));
+localStorage.setItem("cfgV11",JSON.stringify(cfg));
 }
 
-
-/* =========================
-SUPER RÁPIDO
-========================= */
-
-function analisarSuperRapido(){
-
-const valor =
-parseFloat(
-document.getElementById(
-"superValor"
-).value
-);
-
-
-const km =
-parseFloat(
-document.getElementById(
-"superKm"
-).value
-);
-
-
-const tempo =
-parseFloat(
-document.getElementById(
-"superTempo"
-).value
-);
-
-
-if(
-isNaN(valor) ||
-isNaN(km) ||
-isNaN(tempo) ||
-valor<=0 ||
-km<=0 ||
-tempo<=0
-){
-
-alert(
-"Digite o valor, os km e o tempo da corrida."
-);
-
-return;
-
+function carregarConfig(){
+metaInput.value=cfg.meta;
+minKm.value=cfg.minKm;
+minHora.value=cfg.minHora;
+gas.value=cfg.gas;
+cons.value=cfg.cons;
 }
 
-
-const combustivel =
-(km/configuracoes.consumo)*
-configuracoes.gasolina;
-
-
-const lucro =
-valor-combustivel;
-
-
-const porKm =
-valor/km;
-
-
-const porHora =
-valor/(tempo/60);
-
-
-const painel =
-document.getElementById(
-"superDecisao"
-);
-
-
-const texto =
-document.getElementById(
-"superTexto"
-);
-
-
-const motivo =
-document.getElementById(
-"superMotivo"
-);
-
-
-painel.classList.remove(
-"excelente",
-"razoavel",
-"fraca"
-);
-
-
-if(
-porKm>=configuracoes.minPorKm &&
-porHora>=configuracoes.minPorHora
-){
-
-painel.classList.add(
-"excelente"
-);
-
-texto.textContent =
-"🟢 ACEITAR";
-
-motivo.textContent =
-"Boa corrida: bateu sua meta de R$/km e R$/hora.";
-
-}
-else if(
-porKm>=configuracoes.minPorKm ||
-porHora>=configuracoes.minPorHora
-){
-
-painel.classList.add(
-"razoavel"
-);
-
-texto.textContent =
-"🟡 AVALIAR";
-
-motivo.textContent =
-"Um dos critérios foi atingido. Veja trânsito e destino.";
-
-}
-else{
-
-painel.classList.add(
-"fraca"
-);
-
-texto.textContent =
-"🔴 RECUSAR";
-
-motivo.textContent =
-"Ficou abaixo dos seus critérios.";
-
+function salvarConfig(){
+cfg.meta=Number(metaInput.value)||300;
+cfg.minKm=Number(minKm.value)||2;
+cfg.minHora=Number(minHora.value)||40;
+cfg.gas=Number(gas.value)||6.95;
+cfg.cons=Number(cons.value)||9;
+salvar();
+atualizar();
+alert("✅ Configurações salvas!");
 }
 
+function dadosDia(){
+let bruto=0,comb=0,km=0,min=0;
 
-document.getElementById(
-"superPorKm"
-).textContent =
-dinheiro(porKm)+
-"/km";
+hist.forEach(c=>{
+bruto+=c.valor;
+comb+=c.comb;
+km+=c.km;
+min+=c.tempo;
+});
 
-
-document.getElementById(
-"superPorHora"
-).textContent =
-dinheiro(porHora)+
-"/h";
-
-
-document.getElementById(
-"superCombustivel"
-).textContent =
-dinheiro(combustivel);
-
-
-document.getElementById(
-"superFaturamento"
-).textContent =
-dinheiro(valor);
-
-
-document.getElementById(
-"superLucro"
-).textContent =
-dinheiro(lucro);
-
-
-document.getElementById(
-"superResultado"
-).style.display =
-"block";
-
-}
-
-
-function novaSuperRapida(){
-
-document.getElementById(
-"superValor"
-).value="";
-
-
-document.getElementById(
-"superKm"
-).value="";
-
-
-document.getElementById(
-"superTempo"
-).value="";
-
-
-document.getElementById(
-"superResultado"
-).style.display=
-"none";
-
-
-document.getElementById(
-"superValor"
-).focus();
-
-}
-
-
-/* =========================
-CONFIGURAÇÕES
-========================= */
-
-function carregarConfiguracoes(){
-
-document.getElementById("meta").value =
-configuracoes.meta;
-
-document.getElementById("minPorKm").value =
-configuracoes.minPorKm;
-
-document.getElementById("minPorHora").value =
-configuracoes.minPorHora;
-
-document.getElementById("gasolinaPadrao").value =
-configuracoes.gasolina;
-
-document.getElementById("consumoPadrao").value =
-configuracoes.consumo;
-
-}
-
-
-function salvarConfiguracoes(){
-
-const meta =
-parseFloat(
-document.getElementById("meta").value
-);
-
-const minPorKm =
-parseFloat(
-document.getElementById("minPorKm").value
-);
-
-const minPorHora =
-parseFloat(
-document.getElementById("minPorHora").value
-);
-
-const gasolina =
-parseFloat(
-document.getElementById("gasolinaPadrao").value
-);
-
-const consumo =
-parseFloat(
-document.getElementById("consumoPadrao").value
-);
-
-
-if(
-isNaN(meta) ||
-isNaN(minPorKm) ||
-isNaN(minPorHora) ||
-isNaN(gasolina) ||
-isNaN(consumo) ||
-meta<=0 ||
-minPorKm<=0 ||
-minPorHora<=0 ||
-gasolina<=0 ||
-consumo<=0
-){
-
-alert(
-"Preencha as configurações corretamente."
-);
-
-return;
-
-}
-
-
-configuracoes={
-meta,
-minPorKm,
-minPorHora,
-gasolina,
-consumo
+return {
+bruto,
+comb,
+lucro:bruto-comb,
+km,
+min,
+pk:km?bruto/km:0,
+ph:min?bruto/(min/60):0
 };
-
-
-localStorage.setItem(
-"configuracoes",
-JSON.stringify(configuracoes)
-);
-
-
-atualizarTela();
-
-
-alert(
-"✅ Configurações salvas!"
-);
-
 }
 
+function atualizar(){
+let d=dadosDia();
 
-/* =========================
-SALVAR
-========================= */
+total.textContent=dinheiro(d.bruto);
+pb.textContent=dinheiro(d.bruto);
+pc.textContent=dinheiro(d.comb);
+pl.textContent=dinheiro(d.lucro);
+pk.textContent=d.km.toFixed(1)+" km";
+pq.textContent=hist.length;
+ppk.textContent=dinheiro(d.pk);
+pph.textContent=dinheiro(d.ph);
 
-function salvarDados(){
+metaTela.textContent=dinheiro(cfg.meta);
 
-localStorage.setItem(
-"totalDia",
-totalDia
-);
+let faltaValor=Math.max(cfg.meta-d.bruto,0);
+falta.textContent=dinheiro(faltaValor);
 
-localStorage.setItem(
-"quantidade",
-quantidade
-);
+let pct=Math.min((d.bruto/cfg.meta)*100,100);
+prog.style.width=pct+"%";
 
-localStorage.setItem(
-"historico",
-JSON.stringify(historico)
-);
+if(d.bruto>=cfg.meta)
+metaMsg.textContent="🎉 META ATINGIDA!";
+else
+metaMsg.textContent="Falta "+dinheiro(faltaValor)+" para a meta.";
 
-}
-
-
-/* =========================
-ATUALIZAR TELA
-========================= */
-
-function atualizarTela(){
-
-document.getElementById(
-"totalDia"
-).textContent =
-dinheiro(totalDia);
-
-
-document.getElementById(
-"quantidade"
-).textContent =
-quantidade;
-
-
-const media =
-quantidade>0
-?totalDia/quantidade
-:0;
-
-
-document.getElementById(
-"media"
-).textContent =
-dinheiro(media);
-
-
-let percentual =
-(totalDia/configuracoes.meta)*100;
-
-
-if(percentual>100){
-percentual=100;
-}
-
-
-document.getElementById(
-"progresso"
-).style.width =
-percentual+"%";
-
-
-if(totalDia>=configuracoes.meta){
-
-document.getElementById(
-"mensagemMeta"
-).textContent =
-"🎉 META ATINGIDA!";
-
-}
-else{
-
-const falta =
-configuracoes.meta-totalDia;
-
-document.getElementById(
-"mensagemMeta"
-).textContent =
-"Falta "+
-dinheiro(falta)+
-" para sua meta.";
-
-}
-
-
-atualizarPainel();
-
-atualizarRanking();
-
+projecaoDia(d);
+ranking();
 mostrarHistorico();
-
 }
 
+function superAnalise(){
+let valor=Number(sv.value),km=Number(sk.value),min=Number(st.value);
 
-/* =========================
-PAINEL DO DIA
-========================= */
-
-function atualizarPainel(){
-
-let bruto=0;
-let combustivel=0;
-let lucro=0;
-let km=0;
-let tempo=0;
-
-
-historico.forEach(
-function(corrida){
-
-bruto+=
-Number(corrida.valor)||0;
-
-combustivel+=
-Number(corrida.combustivel)||0;
-
-lucro+=
-Number(corrida.lucro)||0;
-
-km+=
-Number(corrida.km)||0;
-
-tempo+=
-Number(corrida.tempo)||0;
-
-}
-);
-
-
-const porKm =
-km>0
-?bruto/km
-:0;
-
-
-const porHora =
-tempo>0
-?bruto/(tempo/60)
-:0;
-
-
-document.getElementById(
-"painelBruto"
-).textContent =
-dinheiro(bruto);
-
-
-document.getElementById(
-"painelCombustivel"
-).textContent =
-dinheiro(combustivel);
-
-
-document.getElementById(
-"painelLucro"
-).textContent =
-dinheiro(lucro);
-
-
-document.getElementById(
-"painelKm"
-).textContent =
-km.toFixed(1)+" km";
-
-
-document.getElementById(
-"painelPorKm"
-).textContent =
-dinheiro(porKm);
-
-
-document.getElementById(
-"painelTempo"
-).textContent =
-formatarTempo(tempo);
-
-
-document.getElementById(
-"painelPorHora"
-).textContent =
-dinheiro(porHora);
-
-}
-
-
-function formatarTempo(minutos){
-
-const horas =
-Math.floor(minutos/60);
-
-const resto =
-minutos%60;
-
-
-if(horas===0){
-return resto+" min";
-}
-
-
-return horas+
-"h "+
-resto+
-"min";
-
-}
-
-
-/* =========================
-FORMULÁRIO COMPLETO
-========================= */
-
-function calcular(){
-
-const plataforma =
-document.getElementById(
-"plataforma"
-).value;
-
-
-const valor =
-parseFloat(
-document.getElementById(
-"valor"
-).value
-);
-
-
-const km =
-parseFloat(
-document.getElementById(
-"km"
-).value
-);
-
-
-const tempo =
-parseFloat(
-document.getElementById(
-"tempo"
-).value
-);
-
-
-if(
-isNaN(valor) ||
-isNaN(km) ||
-isNaN(tempo) ||
-valor<=0 ||
-km<=0 ||
-tempo<=0
-){
-
-alert(
-"Preencha valor, km e tempo."
-);
-
+if(valor<=0||km<=0||min<=0){
+alert("Digite valor, km e tempo.");
 return;
-
 }
 
+let comb=(km/cfg.cons)*cfg.gas;
+let lucro=valor-comb;
+let pk=valor/km;
+let ph=valor/(min/60);
 
-const combustivel =
-(km/configuracoes.consumo)*
-configuracoes.gasolina;
+sd.className="decisao";
 
-
-const lucro =
-valor-combustivel;
-
-
-const porKm =
-valor/km;
-
-
-const porHora =
-valor/(tempo/60);
-
-
-const decisao =
-document.getElementById(
-"decisao"
-);
-
-
-const texto =
-document.getElementById(
-"textoDecisao"
-);
-
-
-const motivo =
-document.getElementById(
-"motivoDecisao"
-);
-
-
-decisao.classList.remove(
-"excelente",
-"razoavel",
-"fraca"
-);
-
-
-const criterioKm =
-document.getElementById(
-"criterioKm"
-);
-
-criterioKm.className="";
-
-
-if(
-porKm>=configuracoes.minPorKm
-){
-
-criterioKm.textContent=
-"✅ "+
-dinheiro(porKm)+
-"/km";
-
-criterioKm.className=
-"ok";
-
-}
-else{
-
-criterioKm.textContent=
-"❌ "+
-dinheiro(porKm)+
-"/km";
-
-criterioKm.className=
-"ruim";
-
+if(pk>=cfg.minKm&&ph>=cfg.minHora){
+sd.classList.add("excelente");
+stexto.textContent="🟢 ACEITAR";
+smotivo.textContent="Boa corrida: atingiu R$/km e R$/hora.";
+}else if(pk>=cfg.minKm||ph>=cfg.minHora){
+sd.classList.add("razoavel");
+stexto.textContent="🟡 AVALIAR";
+smotivo.textContent="Um dos critérios foi atingido. Confira trânsito e destino.";
+}else{
+sd.classList.add("fraca");
+stexto.textContent="🔴 RECUSAR";
+smotivo.textContent="A corrida ficou abaixo dos seus critérios.";
 }
 
+spk.textContent=dinheiro(pk)+"/km";
+sph.textContent=dinheiro(ph)+"/h";
+sc.textContent=dinheiro(comb);
+sf.textContent=dinheiro(valor);
+sl.textContent=dinheiro(lucro);
 
-const criterioHora =
-document.getElementById(
-"criterioHora"
-);
-
-criterioHora.className="";
-
-
-if(
-porHora>=configuracoes.minPorHora
-){
-
-criterioHora.textContent=
-"✅ "+
-dinheiro(porHora)+
-"/h";
-
-criterioHora.className=
-"ok";
-
-}
-else{
-
-criterioHora.textContent=
-"❌ "+
-dinheiro(porHora)+
-"/h";
-
-criterioHora.className=
-"ruim";
-
+sr.style.display="block";
 }
 
-
-document.getElementById(
-"criterioCombustivel"
-).textContent=
-dinheiro(combustivel);
-
-
-const criterioLucro =
-document.getElementById(
-"criterioLucro"
-);
-
-criterioLucro.textContent=
-dinheiro(lucro);
-
-criterioLucro.className=
-lucro>0
-?"ok"
-:"ruim";
-
-
-if(
-porKm>=configuracoes.minPorKm &&
-porHora>=configuracoes.minPorHora
-){
-
-decisao.classList.add(
-"excelente"
-);
-
-texto.textContent=
-"🟢 ACEITAR";
-
-motivo.textContent=
-"Boa corrida: atingiu R$/km e R$/hora.";
-
-}
-else if(
-porKm>=configuracoes.minPorKm ||
-porHora>=configuracoes.minPorHora
-){
-
-decisao.classList.add(
-"razoavel"
-);
-
-texto.textContent=
-"🟡 AVALIAR";
-
-motivo.textContent=
-"Um dos critérios foi atingido.";
-
-}
-else{
-
-decisao.classList.add(
-"fraca"
-);
-
-texto.textContent=
-"🔴 RECUSAR";
-
-motivo.textContent=
-"Ficou abaixo dos seus critérios.";
-
+function novoSuper(){
+sv.value="";
+sk.value="";
+st.value="";
+sr.style.display="none";
+sv.focus();
 }
 
+function analisar(){
+let plataforma=app.value;
+let valor=Number(v.value);
+let km=Number(k.value);
+let tempo=Number(t.value);
 
-ultimaCorrida={
+if(valor<=0||km<=0||tempo<=0){
+alert("Preencha valor, km e tempo.");
+return;
+}
 
+let comb=(km/cfg.cons)*cfg.gas;
+let lucro=valor-comb;
+let pk=valor/km;
+let ph=valor/(tempo/60);
+
+dec.className="decisao";
+
+if(pk>=cfg.minKm&&ph>=cfg.minHora){
+dec.classList.add("excelente");
+decTexto.textContent="🟢 ACEITAR";
+decMotivo.textContent="Boa corrida: atingiu R$/km e R$/hora.";
+}else if(pk>=cfg.minKm||ph>=cfg.minHora){
+dec.classList.add("razoavel");
+decTexto.textContent="🟡 AVALIAR";
+decMotivo.textContent="Um dos critérios foi atingido.";
+}else{
+dec.classList.add("fraca");
+decTexto.textContent="🔴 RECUSAR";
+decMotivo.textContent="Ficou abaixo dos seus critérios.";
+}
+
+rv.textContent=dinheiro(valor);
+rc.textContent=dinheiro(comb);
+rl.textContent=dinheiro(lucro);
+ra.textContent=plataforma;
+rk.textContent=km.toFixed(1)+" km";
+rt.textContent=tempo+" min";
+rpk.textContent=dinheiro(pk)+"/km";
+rph.textContent=dinheiro(ph)+"/h";
+
+ultima={
 plataforma,
 valor,
 km,
 tempo,
-combustivel,
+comb:comb,
 lucro,
-porKm,
-porHora,
-decisao:texto.textContent,
-
-horario:
-new Date().toLocaleTimeString(
-"pt-BR",
-{
-hour:"2-digit",
-minute:"2-digit"
-}
-)
-
+pk,
+ph,
+decisao:decTexto.textContent,
+hora:new Date().toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})
 };
 
+resultado.style.display="block";
+resultado.scrollIntoView({behavior:"smooth"});
+}
 
-document.getElementById(
-"resumoValor"
-).textContent=
-dinheiro(valor);
+function registrar(){
+if(!ultima){
+alert("Primeiro analise a corrida.");
+return;
+}
 
-
-document.getElementById(
-"resumoCombustivel"
-).textContent=
-dinheiro(combustivel);
-
-
-document.getElementById(
-"resumoLucro"
-).textContent=
-dinheiro(lucro);
-
-
-document.getElementById(
-"rPlataforma"
-).textContent=
-plataforma;
-
-
-document.getElementById(
-"rValor"
-).textContent=
-dinheiro(valor);
-
-
-document.getElementById(
-"rKm"
-).textContent=
-km.toFixed(1)+" km";
-
-
-document.getElementById(
-"rTempo"
-).textContent=
-tempo+" min";
-
-
-document.getElementById(
-"rCombustivel"
-).textContent=
-dinheiro(combustivel);
-
-
-document.getElementById(
-"rLucro"
-).textContent=
-dinheiro(lucro);
-
-
-document.getElementById(
-"rPorKm"
-).textContent=
-dinheiro(porKm)+
-"/km";
-
-
-document.getElementById(
-"rPorHora"
-).textContent=
-dinheiro(porHora)+
-"/h";
-
-
-document.getElementById(
-"resultado"
-).style.display=
-"block";
-
-
-document.getElementById(
-"resultado"
-).scrollIntoView({
-behavior:"smooth"
+hist.push({
+...ultima,
+numero:hist.length+1
 });
 
+salvar();
+atualizar();
+
+alert("✅ Corrida registrada!");
+
+ultima=null;
+resultado.style.display="none";
+
+v.value="";
+k.value="";
+t.value="";
 }
 
-
-/* =========================
-REGISTRAR
-========================= */
-
-function adicionarCorrida(){
-
-if(!ultimaCorrida){
-
-alert(
-"Primeiro analise a corrida."
-);
-
+function ranking(){
+if(!hist.length){
+document.getElementById("ranking").innerHTML='<div class="vazio">Registre corridas para comparar.</div>';
 return;
-
 }
 
+let apps={};
 
-const corrida={
+hist.forEach(c=>{
+if(!apps[c.plataforma])
+apps[c.plataforma]={q:0,v:0,l:0,k:0,t:0};
 
-...ultimaCorrida,
-
-numero:
-historico.length+1
-
-};
-
-
-historico.push(corrida);
-
-totalDia+=
-corrida.valor;
-
-quantidade++;
-
-
-salvarDados();
-
-atualizarTela();
-
-
-alert(
-"✅ Corrida registrada!"
-);
-
-
-ultimaCorrida=null;
-
-
-document.getElementById(
-"resultado"
-).style.display=
-"none";
-
-
-document.getElementById(
-"valor"
-).value="";
-
-document.getElementById(
-"km"
-).value="";
-
-document.getElementById(
-"tempo"
-).value="";
-
-
-document.getElementById(
-"areaCorrida"
-).scrollIntoView({
-behavior:"smooth"
+let a=apps[c.plataforma];
+a.q++;
+a.v+=c.valor;
+a.l+=c.lucro;
+a.k+=c.km;
+a.t+=c.tempo;
 });
 
-}
-
-
-/* =========================
-RANKING
-========================= */
-
-function atualizarRanking(){
-
-const elemento=
-document.getElementById(
-"ranking"
-);
-
-
-if(historico.length===0){
-
-elemento.innerHTML=
-`
-<div class="historico-vazio">
-Registre algumas corridas para comparar.
-</div>
-`;
-
-return;
-
-}
-
-
-const apps={};
-
-
-historico.forEach(
-function(corrida){
-
-const nome=
-corrida.plataforma;
-
-
-if(!apps[nome]){
-
-apps[nome]={
-corridas:0,
-valor:0,
-lucro:0,
-km:0,
-tempo:0
-};
-
-}
-
-
-apps[nome].corridas++;
-
-apps[nome].valor+=
-corrida.valor;
-
-apps[nome].lucro+=
-corrida.lucro;
-
-apps[nome].km+=
-corrida.km;
-
-apps[nome].tempo+=
-corrida.tempo;
-
-}
-);
-
-
-const lista=
-Object.keys(apps)
-.map(
-function(nome){
-
-const dados=
-apps[nome];
-
-
-dados.porHora=
-dados.tempo>0
-?dados.valor/(dados.tempo/60)
-:0;
-
-
-dados.porKm=
-dados.km>0
-?dados.valor/dados.km
-:0;
-
-
+let lista=Object.keys(apps).map(nome=>{
+let a=apps[nome];
 return{
 nome,
-dados
+a,
+ph:a.t?a.v/(a.t/60):0,
+pk:a.k?a.v/a.k:0
 };
+}).sort((a,b)=>b.ph-a.ph);
 
-}
-)
-.sort(
-function(a,b){
-
-return b.dados.porHora-
-a.dados.porHora;
-
-}
-);
-
-
-elemento.innerHTML="";
-
-
-lista.forEach(
-function(item,index){
-
-const dados=
-item.dados;
-
-
-let medalha="📱";
-
-
-if(index===0)
-medalha="🏆";
-
-else if(index===1)
-medalha="🥈";
-
-else if(index===2)
-medalha="🥉";
-
-
-const div=
-document.createElement(
-"div"
-);
-
-
-div.className=
-"ranking-item";
-
-
-div.innerHTML=`
-
+document.getElementById("ranking").innerHTML=lista.map((x,i)=>`
+<div class="ranking-item">
 <div class="ranking-topo">
-
-<span>
-${medalha}
-${item.nome}
-</span>
-
-<span>
-${dinheiro(dados.valor)}
-</span>
-
+<span>${i==0?"🏆":i==1?"🥈":i==2?"🥉":"📱"} ${x.nome}</span>
+<strong>${dinheiro(x.a.v)}</strong>
 </div>
-
 <div class="ranking-info">
-
-${dados.corridas}
-corrida(s)
-•
-${dados.km.toFixed(1)}
-km
-
-<br>
-
-Lucro:
-<strong>
-${dinheiro(dados.lucro)}
-</strong>
-
-<br>
-
-${dinheiro(dados.porKm)}
-/km
-•
-${dinheiro(dados.porHora)}
-/hora
-
+${x.a.q} corrida(s) • ${x.a.k.toFixed(1)} km<br>
+Lucro: <strong>${dinheiro(x.a.l)}</strong><br>
+${dinheiro(x.pk)}/km • ${dinheiro(x.ph)}/hora
 </div>
-`;
-
-
-elemento.appendChild(div);
-
+</div>
+`).join("");
 }
-);
-
-}
-
-
-/* =========================
-HISTÓRICO
-========================= */
 
 function mostrarHistorico(){
+let el=document.getElementById("historico");
 
-const elemento=
-document.getElementById(
-"historico"
-);
-
-
-if(historico.length===0){
-
-elemento.innerHTML=
-`
-<div class="historico-vazio">
-Nenhuma corrida registrada.
-</div>
-`;
-
+if(!hist.length){
+el.innerHTML='<div class="vazio">Nenhuma corrida registrada.</div>';
 return;
-
 }
 
-
-elemento.innerHTML="";
-
-
-historico
-.slice()
-.reverse()
-.forEach(
-function(corrida){
-
-const div=
-document.createElement(
-"div"
-);
-
-
-div.className=
-"historico-item";
-
-
-div.innerHTML=`
-
+el.innerHTML=hist.slice().reverse().map(c=>`
+<div class="historico-item">
 <div class="historico-topo">
-
-<strong>
-🚗 Corrida ${corrida.numero}
-</strong>
-
-<strong>
-${dinheiro(corrida.valor)}
-</strong>
-
+<strong>🚗 Corrida ${c.numero}</strong>
+<strong>${dinheiro(c.valor)}</strong>
 </div>
-
-
-<div class="historico-linha">
-
-<span>
-📱 Aplicativo
-</span>
-
-<strong>
-${corrida.plataforma}
-</strong>
-
+<div class="historico-linha"><span>📱 Aplicativo</span><strong>${c.plataforma}</strong></div>
+<div class="historico-linha"><span>🕐 Horário</span><strong>${c.hora}</strong></div>
+<div class="historico-linha"><span>📍 Distância</span><strong>${c.km.toFixed(1)} km</strong></div>
+<div class="historico-linha"><span>⏱️ Tempo</span><strong>${c.tempo} min</strong></div>
+<div class="historico-linha"><span>⛽ Combustível</span><strong>${dinheiro(c.comb)}</strong></div>
+<div class="historico-linha"><span>💵 Lucro</span><strong>${dinheiro(c.lucro)}</strong></div>
+<div class="historico-linha"><span>📊 R$/km</span><strong>${dinheiro(c.pk)}</strong></div>
+<div class="historico-linha"><span>⏱️ R$/hora</span><strong>${dinheiro(c.ph)}</strong></div>
+<div class="historico-linha"><span>🎯 Decisão</span><strong>${c.decisao}</strong></div>
 </div>
-
-
-<div class="historico-linha">
-
-<span>
-🕐 Horário
-</span>
-
-<strong>
-${corrida.horario}
-</strong>
-
-</div>
-
-
-<div class="historico-linha">
-
-<span>
-📍 Distância
-</span>
-
-<strong>
-${corrida.km.toFixed(1)} km
-</strong>
-
-</div>
-
-
-<div class="historico-linha">
-
-<span>
-⏱️ Tempo
-</span>
-
-<strong>
-${corrida.tempo} min
-</strong>
-
-</div>
-
-
-<div class="historico-linha">
-
-<span>
-⛽ Combustível
-</span>
-
-<strong>
-${dinheiro(corrida.combustivel)}
-</strong>
-
-</div>
-
-
-<div class="historico-linha">
-
-<span>
-💵 Lucro
-</span>
-
-<strong>
-${dinheiro(corrida.lucro)}
-</strong>
-
-</div>
-
-
-<div class="historico-linha">
-
-<span>
-📊 R$/km
-</span>
-
-<strong>
-${dinheiro(corrida.porKm)}
-</strong>
-
-</div>
-
-
-<div class="historico-linha">
-
-<span>
-⏱️ R$/hora
-</span>
-
-<strong>
-${dinheiro(corrida.porHora)}
-</strong>
-
-</div>
-
-
-<div class="historico-linha">
-
-<span>
-🎯 Decisão
-</span>
-
-<strong>
-${corrida.decisao}
-</strong>
-
-</div>
-
-`;
-
-
-elemento.appendChild(div);
-
-}
-);
-
+`).join("");
 }
 
+function tempoAtual(){
+let total=tempoAcumulado;
 
-/* =========================
-ZERAR DIA
-========================= */
+if(trabalhando&&inicio)
+total+=Math.floor((Date.now()-inicio)/1000);
 
-function zerarDia(){
+let h=Math.floor(total/3600);
+let m=Math.floor((total%3600)/60);
+let s=total%60;
 
-if(
-!confirm(
-"Tem certeza que deseja zerar o dia?"
-)
-){
+tempoTrabalho.textContent=
+String(h).padStart(2,"0")+":"+
+String(m).padStart(2,"0")+":"+
+String(s).padStart(2,"0");
+}
 
+function iniciarParar(){
+if(!trabalhando){
+trabalhando=true;
+inicio=Date.now();
+localStorage.setItem("trabalhandoV11","1");
+localStorage.setItem("inicioV11",inicio);
+document.querySelector(".tempo-box button").textContent="⏹️ PARAR DIA";
+}else{
+tempoAcumulado+=Math.floor((Date.now()-inicio)/1000);
+trabalhando=false;
+inicio=0;
+localStorage.setItem("trabalhandoV11","0");
+localStorage.setItem("tempoV11",tempoAcumulado);
+localStorage.removeItem("inicioV11");
+document.querySelector(".tempo-box button").textContent="▶ INICIAR DIA";
+}
+
+tempoAtual();
+}
+
+function projecaoDia(d){
+if(!d.min){
+projecao.textContent="Registre corridas para calcular.";
 return;
-
 }
 
+let horas=d.min/60;
+let atualHora=d.bruto/horas;
 
-totalDia=0;
+if(trabalhando){
+let segundos=tempoAcumulado+
+(inicio?Math.floor((Date.now()-inicio)/1000):0);
 
-quantidade=0;
-
-historico=[];
-
-ultimaCorrida=null;
-
-
-salvarDados();
-
-atualizarTela();
-
-
-document.getElementById(
-"resultado"
-).style.display=
-"none";
-
-
-document.getElementById(
-"superResultado"
-).style.display=
-"none";
-
-
-alert(
-"✅ Dia zerado."
-);
-
+if(segundos>60)
+atualHora=d.bruto/(segundos/3600);
 }
 
+let faltaValor=Math.max(cfg.meta-d.bruto,0);
+let horasNecessarias=atualHora?faltaValor/atualHora:0;
 
-/* =========================
-INICIAR
-========================= */
+if(faltaValor<=0){
+projecao.textContent="Meta já atingida. Continue acompanhando seu lucro.";
+}else{
+projecao.textContent=
+"Ritmo atual de "+dinheiro(atualHora)+
+"/h. Para atingir a meta, faltam aproximadamente "+
+horasNecessarias.toFixed(1)+" hora(s).";
+}
+}
 
-carregarConfiguracoes();
+function zerar(){
+if(!confirm("Tem certeza que deseja zerar o dia?"))return;
 
-atualizarTela();
+hist=[];
+ultima=null;
+tempoAcumulado=0;
+inicio=trabalhando?Date.now():0;
+
+localStorage.removeItem("histV11");
+localStorage.setItem("tempoV11","0");
+
+if(!trabalhando)
+localStorage.removeItem("inicioV11");
+
+atualizar();
+tempoAtual();
+
+alert("✅ Dia zerado.");
+}
+
+carregarConfig();
+atualizar();
+
+if(trabalhando){
+document.querySelector(".tempo-box button").textContent="⏹️ PARAR DIA";
+}
+
+tempoAtual();
+
+timer=setInterval(()=>{
+tempoAtual();
+atualizar();
+},1000);
 
 </script>
 
