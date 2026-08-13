@@ -102,6 +102,10 @@
       background: #dc2626;
     }
 
+    .botao-cinza {
+      background: #6b7280;
+    }
+
     .resultado {
       display: none;
     }
@@ -141,6 +145,7 @@
       justify-content: space-between;
       padding: 13px 0;
       border-bottom: 1px solid #eee;
+      gap: 10px;
     }
 
     .linha:last-child {
@@ -153,6 +158,7 @@
 
     .valor {
       font-weight: bold;
+      text-align: right;
     }
 
     .destaque {
@@ -209,6 +215,49 @@
       margin-top: 5px;
     }
 
+    .historico-item {
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      padding: 15px;
+      margin-bottom: 12px;
+      background: #fafafa;
+    }
+
+    .historico-topo {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .corrida-numero {
+      font-weight: bold;
+      font-size: 17px;
+    }
+
+    .corrida-valor {
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .historico-linha {
+      display: flex;
+      justify-content: space-between;
+      padding: 5px 0;
+      font-size: 14px;
+    }
+
+    .lucro {
+      font-weight: bold;
+    }
+
+    .historico-vazio {
+      text-align: center;
+      color: #777;
+      padding: 20px 5px;
+      line-height: 1.5;
+    }
+
     .aviso {
       margin-top: 15px;
       font-size: 13px;
@@ -235,7 +284,7 @@
   </div>
 
 
-  <!-- META DIÁRIA -->
+  <!-- META DO DIA -->
 
   <div class="card">
 
@@ -257,7 +306,10 @@
         Faturamento de hoje
       </div>
 
-      <div class="meta-valor" id="totalDia">
+      <div
+        class="meta-valor"
+        id="totalDia"
+      >
         R$ 0,00
       </div>
 
@@ -295,7 +347,7 @@
   </div>
 
 
-  <!-- CALCULADOR -->
+  <!-- NOVA CORRIDA -->
 
   <div class="card">
 
@@ -472,7 +524,6 @@
 
     </div>
 
-
     <button
       class="botao-verde"
       onclick="adicionarCorrida()"
@@ -480,15 +531,27 @@
       ✅ ADICIONAR AO MEU DIA
     </button>
 
-    <div class="aviso">
-      O valor será adicionado ao faturamento
-      do dia.
+  </div>
+
+
+  <!-- HISTÓRICO -->
+
+  <div class="card">
+
+    <h2>📚 Histórico de hoje</h2>
+
+    <div id="historico">
+
+      <div class="historico-vazio">
+        Nenhuma corrida registrada ainda.
+      </div>
+
     </div>
 
   </div>
 
 
-  <!-- CONTROLES -->
+  <!-- CONTROLE -->
 
   <div class="card">
 
@@ -505,7 +568,7 @@
 
 
   <div class="rodape">
-    Calculador de Corridas — versão 2
+    Calculador de Corridas — versão 3
   </div>
 
 </div>
@@ -528,10 +591,15 @@ let meta =
     localStorage.getItem("meta")
   ) || 300;
 
-let valorUltimaCorrida = 0;
+let historico =
+  JSON.parse(
+    localStorage.getItem("historico")
+  ) || [];
+
+let ultimaCorrida = null;
 
 
-/* FORMATA DINHEIRO */
+/* DINHEIRO */
 
 function dinheiro(valor) {
 
@@ -546,7 +614,7 @@ function dinheiro(valor) {
 }
 
 
-/* SALVA OS DADOS */
+/* SALVAR */
 
 function salvarDados() {
 
@@ -565,16 +633,23 @@ function salvarDados() {
     meta
   );
 
+  localStorage.setItem(
+    "historico",
+    JSON.stringify(historico)
+  );
+
 }
 
 
-/* SALVA META */
+/* META */
 
 function salvarMeta() {
 
   const novaMeta =
     parseFloat(
-      document.getElementById("meta").value
+      document.getElementById(
+        "meta"
+      ).value
     );
 
   if (
@@ -593,7 +668,7 @@ function salvarMeta() {
 }
 
 
-/* ATUALIZA A TELA */
+/* ATUALIZAR TELA */
 
 function atualizarTela() {
 
@@ -614,12 +689,15 @@ function atualizarTela() {
 
   let media = 0;
 
-  if (quantidade > 0) {
+  if (
+    quantidade > 0
+  ) {
 
     media =
       totalDia / quantidade;
 
   }
+
 
   document.getElementById(
     "media"
@@ -631,11 +709,14 @@ function atualizarTela() {
     (totalDia / meta) * 100;
 
 
-  if (percentual > 100) {
+  if (
+    percentual > 100
+  ) {
 
     percentual = 100;
 
   }
+
 
   document.getElementById(
     "progresso"
@@ -649,7 +730,9 @@ function atualizarTela() {
     );
 
 
-  if (totalDia >= meta) {
+  if (
+    totalDia >= meta
+  ) {
 
     mensagem.textContent =
       "🎉 META ATINGIDA!";
@@ -666,36 +749,49 @@ function atualizarTela() {
 
   }
 
+
+  mostrarHistorico();
+
 }
 
 
-/* CALCULA A CORRIDA */
+/* CALCULAR */
 
 function calcular() {
 
   const valor =
     parseFloat(
-      document.getElementById("valor").value
+      document.getElementById(
+        "valor"
+      ).value
     );
 
   const km =
     parseFloat(
-      document.getElementById("km").value
+      document.getElementById(
+        "km"
+      ).value
     );
 
   const tempo =
     parseFloat(
-      document.getElementById("tempo").value
+      document.getElementById(
+        "tempo"
+      ).value
     );
 
   const gasolina =
     parseFloat(
-      document.getElementById("gasolina").value
+      document.getElementById(
+        "gasolina"
+      ).value
     );
 
   const consumo =
     parseFloat(
-      document.getElementById("consumo").value
+      document.getElementById(
+        "consumo"
+      ).value
     );
 
 
@@ -748,8 +844,39 @@ function calcular() {
     valor / horas;
 
 
-  valorUltimaCorrida =
-    valor;
+  ultimaCorrida = {
+
+    valor: valor,
+
+    km: km,
+
+    tempo: tempo,
+
+    gasolina: gasolina,
+
+    consumo: consumo,
+
+    combustivel:
+      custoCombustivel,
+
+    lucro: lucro,
+
+    porKm:
+      ganhoPorKm,
+
+    porHora:
+      ganhoPorHora,
+
+    horario:
+      new Date().toLocaleTimeString(
+        "pt-BR",
+        {
+          hour: "2-digit",
+          minute: "2-digit"
+        }
+      )
+
+  };
 
 
   document.getElementById(
@@ -761,13 +888,15 @@ function calcular() {
   document.getElementById(
     "rKm"
   ).textContent =
-    km.toFixed(1) + " km";
+    km.toFixed(1) +
+    " km";
 
 
   document.getElementById(
     "rTempo"
   ).textContent =
-    tempo + " minutos";
+    tempo +
+    " minutos";
 
 
   document.getElementById(
@@ -862,12 +991,12 @@ function calcular() {
 }
 
 
-/* ADICIONA CORRIDA */
+/* ADICIONAR CORRIDA */
 
 function adicionarCorrida() {
 
   if (
-    valorUltimaCorrida <= 0
+    ultimaCorrida === null
   ) {
 
     alert(
@@ -879,8 +1008,24 @@ function adicionarCorrida() {
   }
 
 
+  const corrida =
+    {
+
+      ...ultimaCorrida,
+
+      numero:
+        historico.length + 1
+
+    };
+
+
+  historico.push(
+    corrida
+  );
+
+
   totalDia +=
-    valorUltimaCorrida;
+    corrida.valor;
 
 
   quantidade++;
@@ -893,11 +1038,11 @@ function adicionarCorrida() {
 
 
   alert(
-    "✅ Corrida adicionada ao seu dia!"
+    "✅ Corrida registrada no histórico!"
   );
 
 
-  valorUltimaCorrida = 0;
+  ultimaCorrida = null;
 
 
   document.getElementById(
@@ -921,17 +1066,132 @@ function adicionarCorrida() {
 }
 
 
-/* ZERA O DIA */
+/* MOSTRAR HISTÓRICO */
+
+function mostrarHistorico() {
+
+  const elemento =
+    document.getElementById(
+      "historico"
+    );
+
+
+  if (
+    historico.length === 0
+  ) {
+
+    elemento.innerHTML =
+      `
+      <div class="historico-vazio">
+        Nenhuma corrida registrada ainda.
+      </div>
+      `;
+
+    return;
+
+  }
+
+
+  elemento.innerHTML = "";
+
+
+  historico
+    .slice()
+    .reverse()
+    .forEach(
+      function(corrida) {
+
+        const item =
+          document.createElement(
+            "div"
+          );
+
+
+        item.className =
+          "historico-item";
+
+
+        item.innerHTML = `
+
+          <div class="historico-topo">
+
+            <span class="corrida-numero">
+              🚗 Corrida ${corrida.numero}
+            </span>
+
+            <span class="corrida-valor">
+              ${dinheiro(corrida.valor)}
+            </span>
+
+          </div>
+
+          <div class="historico-linha">
+            <span>🕐 Horário</span>
+            <strong>${corrida.horario}</strong>
+          </div>
+
+          <div class="historico-linha">
+            <span>📍 Distância</span>
+            <strong>${corrida.km.toFixed(1)} km</strong>
+          </div>
+
+          <div class="historico-linha">
+            <span>⏱️ Tempo</span>
+            <strong>${corrida.tempo} min</strong>
+          </div>
+
+          <div class="historico-linha">
+            <span>⛽ Combustível</span>
+            <strong>${dinheiro(corrida.combustivel)}</strong>
+          </div>
+
+          <div class="historico-linha">
+            <span>💰 Lucro</span>
+            <strong class="lucro">
+              ${dinheiro(corrida.lucro)}
+            </strong>
+          </div>
+
+          <div class="historico-linha">
+            <span>📊 R$/km</span>
+            <strong>
+              ${dinheiro(corrida.porKm)}
+            </strong>
+          </div>
+
+          <div class="historico-linha">
+            <span>⏱️ R$/hora</span>
+            <strong>
+              ${dinheiro(corrida.porHora)}
+            </strong>
+          </div>
+
+        `;
+
+
+        elemento.appendChild(
+          item
+        );
+
+      }
+    );
+
+}
+
+
+/* ZERAR DIA */
 
 function zerarDia() {
 
   const confirmar =
     confirm(
-      "Tem certeza que deseja zerar o faturamento e as corridas de hoje?"
+      "Tem certeza que deseja apagar todas as corridas e zerar o dia?"
     );
 
 
-  if (!confirmar) {
+  if (
+    !confirmar
+  ) {
 
     return;
 
@@ -942,6 +1202,10 @@ function zerarDia() {
 
   quantidade = 0;
 
+  historico = [];
+
+  ultimaCorrida = null;
+
 
   salvarDados();
 
@@ -949,14 +1213,20 @@ function zerarDia() {
   atualizarTela();
 
 
+  document.getElementById(
+    "resultado"
+  ).style.display =
+    "none";
+
+
   alert(
-    "Dia zerado com sucesso!"
+    "✅ O dia foi zerado."
   );
 
 }
 
 
-/* INICIA */
+/* INICIAR */
 
 atualizarTela();
 
