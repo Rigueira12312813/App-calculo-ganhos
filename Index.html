@@ -90,8 +90,9 @@ font-size:17px;
 font-weight:bold
 }
 
-button.secundario{background:#374151}
-button.perigo{background:#dc2626}
+button.perigo{
+background:#dc2626
+}
 
 .veredito{
 text-align:center;
@@ -122,11 +123,6 @@ font-size:22px;
 font-weight:bold
 }
 
-.destaque{
-font-size:26px;
-font-weight:bold
-}
-
 .corrida{
 border:1px solid #ddd;
 border-radius:10px;
@@ -146,6 +142,11 @@ display:flex;
 justify-content:space-between;
 padding:7px 0;
 border-bottom:1px solid #eee
+}
+
+.destaque{
+font-size:25px;
+font-weight:bold
 }
 </style>
 </head>
@@ -174,12 +175,53 @@ oninput="salvarMeta()"
 >
 
 <div style="margin-top:12px">
-<strong id="progressoTexto">R$ 0,00 de R$ 200,00</strong>
+<strong id="progressoTexto">
+R$ 0,00 de R$ 200,00
+</strong>
 </div>
 
 <div style="height:15px;background:#e5e7eb;border-radius:20px;overflow:hidden;margin-top:8px">
-<div id="barra" style="height:100%;width:0%;background:#16a34a"></div>
+<div id="barra"
+style="height:100%;width:0%;background:#16a34a">
 </div>
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>🚗 Custos do veículo</h2>
+
+<p class="pequeno">
+Informe seus custos mensais. O aplicativo estima quanto eles representam por km.
+</p>
+
+<label>Manutenção mensal (R$)</label>
+<input type="number" id="manutencao" value="150" step="0.01">
+
+<label>Pneus / reserva mensal (R$)</label>
+<input type="number" id="pneus" value="50" step="0.01">
+
+<label>Óleo e revisões mensais (R$)</label>
+<input type="number" id="oleo" value="50" step="0.01">
+
+<label>Seguro mensal (R$)</label>
+<input type="number" id="seguro" value="118" step="0.01">
+
+<label>IPVA mensal (R$)</label>
+<input type="number" id="ipva" value="54" step="0.01">
+
+<label>KM rodados por mês</label>
+<input type="number" id="kmMes" value="3000" step="100">
+
+<button onclick="salvarCustos()">
+💾 SALVAR CUSTOS
+</button>
+
+<p id="custoKmTexto" class="pequeno">
+Custo adicional estimado: R$ 0,00/km
+</p>
 
 </div>
 
@@ -229,10 +271,6 @@ oninput="salvarMeta()"
 
 <h2>⚡ Decisão rápida</h2>
 
-<p class="pequeno">
-Digite os dados da corrida para saber se ela compensa.
-</p>
-
 <label>Valor da corrida (R$)</label>
 <input type="number" id="valor" placeholder="Ex: 18.50" step="0.01">
 
@@ -279,6 +317,7 @@ LIMPAR HISTÓRICO
 let historico =
 JSON.parse(localStorage.getItem("historicoCorridas") || "[]");
 
+
 let metaSalva =
 localStorage.getItem("metaMotorista");
 
@@ -287,14 +326,106 @@ document.getElementById("meta").value=metaSalva;
 }
 
 
+let custosSalvos =
+JSON.parse(localStorage.getItem("custosVeiculo") || "null");
+
+
+if(custosSalvos){
+
+document.getElementById("manutencao").value=custosSalvos.manutencao;
+document.getElementById("pneus").value=custosSalvos.pneus;
+document.getElementById("oleo").value=custosSalvos.oleo;
+document.getElementById("seguro").value=custosSalvos.seguro;
+document.getElementById("ipva").value=custosSalvos.ipva;
+document.getElementById("kmMes").value=custosSalvos.kmMes;
+
+}
+
+
 function salvarMeta(){
 
 let meta=
 Number(document.getElementById("meta").value);
 
-localStorage.setItem("metaMotorista",meta);
+localStorage.setItem(
+"metaMotorista",
+meta
+);
 
 atualizarPainel();
+
+}
+
+
+function salvarCustos(){
+
+let custos={
+
+manutencao:Number(document.getElementById("manutencao").value)||0,
+
+pneus:Number(document.getElementById("pneus").value)||0,
+
+oleo:Number(document.getElementById("oleo").value)||0,
+
+seguro:Number(document.getElementById("seguro").value)||0,
+
+ipva:Number(document.getElementById("ipva").value)||0,
+
+kmMes:Number(document.getElementById("kmMes").value)||1
+
+};
+
+
+localStorage.setItem(
+"custosVeiculo",
+JSON.stringify(custos)
+);
+
+
+mostrarCustoKm();
+
+}
+
+
+function obterCustoKm(){
+
+let manutencao=
+Number(document.getElementById("manutencao").value)||0;
+
+let pneus=
+Number(document.getElementById("pneus").value)||0;
+
+let oleo=
+Number(document.getElementById("oleo").value)||0;
+
+let seguro=
+Number(document.getElementById("seguro").value)||0;
+
+let ipva=
+Number(document.getElementById("ipva").value)||0;
+
+let kmMes=
+Number(document.getElementById("kmMes").value)||1;
+
+
+let totalMensal=
+manutencao+pneus+oleo+seguro+ipva;
+
+
+return totalMensal/kmMes;
+
+}
+
+
+function mostrarCustoKm(){
+
+let custoKm=obterCustoKm();
+
+document.getElementById("custoKmTexto").innerText=
+
+"Custo adicional estimado: R$ "+
+custoKm.toFixed(2)+
+"/km";
 
 }
 
@@ -327,19 +458,35 @@ return;
 }
 
 
-let litros=distancia/consumo;
+let litros=
+distancia/consumo;
 
-let combustivel=litros*gasolina;
+let combustivel=
+litros*gasolina;
 
-let lucro=valor-combustivel;
+let custoKm=
+obterCustoKm();
 
-let reaisKm=valor/distancia;
+let outrosCustos=
+distancia*custoKm;
 
-let horas=tempo/60;
+let custoTotal=
+combustivel+outrosCustos;
 
-let reaisHora=valor/horas;
+let lucro=
+valor-custoTotal;
 
-let lucroHora=lucro/horas;
+let reaisKm=
+valor/distancia;
+
+let horas=
+tempo/60;
+
+let reaisHora=
+valor/horas;
+
+let lucroHora=
+lucro/horas;
 
 
 let classe;
@@ -351,7 +498,7 @@ if(lucroHora>=40 && reaisKm>=2){
 
 classe="bom";
 mensagem="🟢 ACEITAR";
-explicacao="Boa relação entre tempo e distância.";
+explicacao="Boa relação entre valor, distância e tempo.";
 
 }
 
@@ -367,7 +514,7 @@ else{
 
 classe="ruim";
 mensagem="🔴 RECUSAR";
-explicacao="Baixo retorno para o tempo ou distância.";
+explicacao="Baixo retorno considerando tempo, distância e custos.";
 
 }
 
@@ -399,8 +546,20 @@ ${mensagem}
 </div>
 
 <div class="linha">
-<strong>💵 Lucro</strong>
-<span>R$ ${lucro.toFixed(2)}</span>
+<strong>🔧 Outros custos</strong>
+<span>R$ ${outrosCustos.toFixed(2)}</span>
+</div>
+
+<div class="linha">
+<strong>💵 Custo total</strong>
+<span>R$ ${custoTotal.toFixed(2)}</span>
+</div>
+
+<div class="linha">
+<strong>💰 Lucro real estimado</strong>
+<span class="destaque">
+R$ ${lucro.toFixed(2)}
+</span>
 </div>
 
 <div class="linha">
@@ -421,23 +580,34 @@ ${explicacao}
 }
 
 
-function adicionarCorrida(valor,distancia,tempo,combustivel,lucro){
+function adicionarCorrida(
+valor,
+distancia,
+tempo,
+combustivel,
+lucro
+){
 
 historico.push({
+
 valor:valor,
 distancia:distancia,
 tempo:tempo,
 combustivel:combustivel,
 lucro:lucro
+
 });
+
 
 localStorage.setItem(
 "historicoCorridas",
 JSON.stringify(historico)
 );
 
+
 document.getElementById("resultado").innerHTML=
 "<div class='veredito bom'>✅ Corrida adicionada!</div>";
+
 
 atualizarPainel();
 
@@ -475,7 +645,8 @@ Number(document.getElementById("meta").value)||200;
 let percentual=
 meta>0 ? (ganhos/meta)*100 : 0;
 
-if(percentual>100) percentual=100;
+if(percentual>100)
+percentual=100;
 
 
 document.getElementById("totalGanhos").innerText=
@@ -503,7 +674,9 @@ document.getElementById("progressoTexto").innerText=
 "R$ "+ganhos.toFixed(2)+
 " de R$ "+meta.toFixed(2);
 
+
 mostrarHistorico();
+mostrarCustoKm();
 
 }
 
@@ -516,7 +689,8 @@ document.getElementById("historico");
 
 if(historico.length===0){
 
-div.innerHTML="Nenhuma corrida registrada.";
+div.innerHTML=
+"Nenhuma corrida registrada.";
 
 return;
 
@@ -548,7 +722,7 @@ div.innerHTML+=`
 
 <br>
 
-⛽ R$ ${c.combustivel.toFixed(2)} combustível
+⛽ R$ ${c.combustivel.toFixed(2)}
 
 <br>
 
@@ -565,11 +739,15 @@ div.innerHTML+=`
 
 function limparHistorico(){
 
-if(confirm("Deseja realmente apagar o histórico?")){
+if(confirm(
+"Deseja realmente apagar o histórico?"
+)){
 
 historico=[];
 
-localStorage.removeItem("historicoCorridas");
+localStorage.removeItem(
+"historicoCorridas"
+);
 
 atualizarPainel();
 
