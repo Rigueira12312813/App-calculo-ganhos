@@ -1,8 +1,12 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
 <title>Meu Ganho - Motorista</title>
 
@@ -28,7 +32,7 @@ text-align:center;
 
 header h1{
 margin:0;
-font-size:26px;
+font-size:27px;
 }
 
 header p{
@@ -104,10 +108,6 @@ button.perigo{
 background:#dc2626;
 }
 
-button.secundario{
-background:#374151;
-}
-
 .veredito{
 text-align:center;
 font-size:25px;
@@ -170,10 +170,28 @@ padding:12px;
 margin-top:10px;
 }
 
+.barra-fundo{
+height:15px;
+background:#e5e7eb;
+border-radius:20px;
+overflow:hidden;
+margin-top:8px;
+}
+
+.barra{
+height:100%;
+width:0%;
+background:#16a34a;
+transition:width .3s;
+}
+
 </style>
+
 </head>
 
+
 <body>
+
 
 <header>
 
@@ -187,13 +205,108 @@ margin-top:10px;
 <div class="container">
 
 
+<!-- PAINEL DO MOTORISTA -->
+
+<div class="card">
+
+<h2>📊 PAINEL DO MOTORISTA</h2>
+
+<div class="grid">
+
+<div class="box">
+
+💰 Faturamento
+
+<strong id="painelFaturamento">
+R$ 0,00
+</strong>
+
+</div>
+
+
+<div class="box">
+
+💵 Lucro
+
+<strong id="painelLucro">
+R$ 0,00
+</strong>
+
+</div>
+
+
+<div class="box">
+
+📈 Lucro/hora
+
+<strong id="painelHora">
+R$ 0,00
+</strong>
+
+</div>
+
+
+<div class="box">
+
+📍 Lucro/km
+
+<strong id="painelKm">
+R$ 0,00
+</strong>
+
+</div>
+
+</div>
+
+
+<div class="resultado-final">
+
+<strong>
+🎯 Falta para a meta:
+</strong>
+
+<br>
+
+<span
+id="painelFalta"
+class="destaque">
+
+R$ 200,00
+
+</span>
+
+<br><br>
+
+<strong id="painelPercentual">
+
+0% da meta
+
+</strong>
+
+
+<div class="barra-fundo">
+
+<div
+id="barraPainel"
+class="barra">
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
 <!-- META -->
 
 <div class="card">
 
 <h2>🎯 Meta do dia</h2>
 
-<label>Meta diária (R$)</label>
+<label>
+Meta diária (R$)
+</label>
 
 <input
 type="number"
@@ -206,26 +319,19 @@ oninput="salvarMeta()"
 <div style="margin-top:12px">
 
 <strong id="progressoTexto">
+
 R$ 0,00 de R$ 200,00
+
 </strong>
 
 </div>
 
-<div style="
-height:15px;
-background:#e5e7eb;
-border-radius:20px;
-overflow:hidden;
-margin-top:8px;
-">
+
+<div class="barra-fundo">
 
 <div
 id="barra"
-style="
-height:100%;
-width:0%;
-background:#16a34a;
-">
+class="barra">
 </div>
 
 </div>
@@ -240,10 +346,15 @@ background:#16a34a;
 <h2>🚗 Custos do veículo</h2>
 
 <p class="pequeno">
+
 Informe seus custos mensais para estimar o custo real por km.
+
 </p>
 
-<label>Manutenção mensal (R$)</label>
+
+<label>
+Manutenção mensal (R$)
+</label>
 
 <input
 type="number"
@@ -252,7 +363,10 @@ value="150"
 step="0.01"
 >
 
-<label>Pneus / reserva mensal (R$)</label>
+
+<label>
+Pneus / reserva mensal (R$)
+</label>
 
 <input
 type="number"
@@ -261,7 +375,10 @@ value="50"
 step="0.01"
 >
 
-<label>Óleo e revisões mensais (R$)</label>
+
+<label>
+Óleo e revisões mensais (R$)
+</label>
 
 <input
 type="number"
@@ -270,7 +387,10 @@ value="50"
 step="0.01"
 >
 
-<label>Seguro mensal (R$)</label>
+
+<label>
+Seguro mensal (R$)
+</label>
 
 <input
 type="number"
@@ -279,7 +399,10 @@ value="118"
 step="0.01"
 >
 
-<label>IPVA mensal (R$)</label>
+
+<label>
+IPVA mensal (R$)
+</label>
 
 <input
 type="number"
@@ -288,7 +411,10 @@ value="54"
 step="0.01"
 >
 
-<label>KM rodados por mês</label>
+
+<label>
+KM rodados por mês
+</label>
 
 <input
 type="number"
@@ -297,14 +423,21 @@ value="3000"
 step="100"
 >
 
+
 <button onclick="salvarCustos()">
+
 💾 SALVAR CUSTOS
+
 </button>
+
 
 <p
 id="custoKmTexto"
 class="pequeno">
-Custo adicional estimado: R$ 0,00/km
+
+Custo adicional estimado:
+R$ 0,00/km
+
 </p>
 
 </div>
@@ -318,47 +451,72 @@ Custo adicional estimado: R$ 0,00/km
 
 <div class="grid">
 
+
 <div class="box">
+
 💰 Ganhos
+
 <strong id="totalGanhos">
 R$ 0,00
 </strong>
+
 </div>
 
+
 <div class="box">
+
 🚗 Corridas
+
 <strong id="totalCorridas">
 0
 </strong>
+
 </div>
 
+
 <div class="box">
+
 📍 KM
+
 <strong id="totalKm">
 0,00
 </strong>
+
 </div>
 
+
 <div class="box">
+
 ⛽ Combustível
+
 <strong id="totalCombustivel">
 R$ 0,00
 </strong>
+
 </div>
 
+
 <div class="box">
+
 💵 Lucro
+
 <strong id="totalLucro">
 R$ 0,00
 </strong>
+
 </div>
 
+
 <div class="box">
+
 📈 R$/hora
+
 <strong id="mediaHora">
 R$ 0,00
 </strong>
+
 </div>
+
 
 </div>
 
@@ -369,9 +527,14 @@ R$ 0,00
 
 <div class="card">
 
-<h2>⚡ Decisão rápida</h2>
+<h2>
+⚡ Decisão rápida
+</h2>
 
-<label>Valor da corrida (R$)</label>
+
+<label>
+Valor da corrida (R$)
+</label>
 
 <input
 type="number"
@@ -380,7 +543,10 @@ placeholder="Ex: 18.50"
 step="0.01"
 >
 
-<label>Distância total (km)</label>
+
+<label>
+Distância total (km)
+</label>
 
 <input
 type="number"
@@ -389,7 +555,10 @@ placeholder="Ex: 7.2"
 step="0.1"
 >
 
-<label>Tempo estimado (minutos)</label>
+
+<label>
+Tempo estimado (minutos)
+</label>
 
 <input
 type="number"
@@ -397,7 +566,10 @@ id="tempo"
 placeholder="Ex: 18"
 >
 
-<label>Gasolina (R$/L)</label>
+
+<label>
+Gasolina (R$/L)
+</label>
 
 <input
 type="number"
@@ -406,7 +578,10 @@ value="6.95"
 step="0.01"
 >
 
-<label>Consumo (km/L)</label>
+
+<label>
+Consumo (km/L)
+</label>
 
 <input
 type="number"
@@ -415,9 +590,13 @@ value="10"
 step="0.1"
 >
 
+
 <button onclick="analisar()">
+
 ⚡ ANALISAR CORRIDA
+
 </button>
+
 
 <div
 id="resultado"
@@ -431,17 +610,26 @@ style="margin-top:15px">
 
 <div class="card">
 
-<h2>📊 Fechamento do Dia</h2>
+<h2>
+📊 Fechamento do Dia
+</h2>
 
 <p class="pequeno">
+
 Veja o resultado acumulado das corridas registradas.
+
 </p>
 
+
 <button onclick="mostrarFechamento()">
+
 📊 VER FECHAMENTO DO DIA
+
 </button>
 
-<div id="fechamento"></div>
+
+<div id="fechamento">
+</div>
 
 </div>
 
@@ -450,11 +638,17 @@ Veja o resultado acumulado das corridas registradas.
 
 <div class="card">
 
-<h2>📋 Histórico de hoje</h2>
+<h2>
+📋 Histórico de hoje
+</h2>
+
 
 <div id="historico">
+
 Nenhuma corrida registrada.
+
 </div>
+
 
 <button
 class="perigo"
@@ -473,77 +667,100 @@ LIMPAR HISTÓRICO
 <script>
 
 
-/* HISTÓRICO */
-
 let historico =
+
 JSON.parse(
-localStorage.getItem("historicoCorridas") || "[]"
+
+localStorage.getItem(
+"historicoCorridas"
+) || "[]"
+
 );
 
 
-/* META */
-
 let metaSalva =
-localStorage.getItem("metaMotorista");
+
+localStorage.getItem(
+"metaMotorista"
+);
+
 
 if(metaSalva){
 
-document.getElementById("meta").value =
-metaSalva;
+document.getElementById(
+"meta"
+).value = metaSalva;
 
 }
 
 
-/* CUSTOS */
-
 let custosSalvos =
+
 JSON.parse(
-localStorage.getItem("custosVeiculo") || "null"
+
+localStorage.getItem(
+"custosVeiculo"
+) || "null"
+
 );
+
 
 if(custosSalvos){
 
-document.getElementById("manutencao").value =
+document.getElementById(
+"manutencao"
+).value =
 custosSalvos.manutencao;
 
-document.getElementById("pneus").value =
+document.getElementById(
+"pneus"
+).value =
 custosSalvos.pneus;
 
-document.getElementById("oleo").value =
+document.getElementById(
+"oleo"
+).value =
 custosSalvos.oleo;
 
-document.getElementById("seguro").value =
+document.getElementById(
+"seguro"
+).value =
 custosSalvos.seguro;
 
-document.getElementById("ipva").value =
+document.getElementById(
+"ipva"
+).value =
 custosSalvos.ipva;
 
-document.getElementById("kmMes").value =
+document.getElementById(
+"kmMes"
+).value =
 custosSalvos.kmMes;
 
 }
 
 
-/* SALVAR META */
-
 function salvarMeta(){
 
 let meta =
+
 Number(
-document.getElementById("meta").value
+document.getElementById(
+"meta"
+).value
 );
+
 
 localStorage.setItem(
 "metaMotorista",
 meta
 );
 
+
 atualizarPainel();
 
 }
 
-
-/* SALVAR CUSTOS */
 
 function salvarCustos(){
 
@@ -551,32 +768,44 @@ let custos={
 
 manutencao:
 Number(
-document.getElementById("manutencao").value
+document.getElementById(
+"manutencao"
+).value
 )||0,
 
 pneus:
 Number(
-document.getElementById("pneus").value
+document.getElementById(
+"pneus"
+).value
 )||0,
 
 oleo:
 Number(
-document.getElementById("oleo").value
+document.getElementById(
+"oleo"
+).value
 )||0,
 
 seguro:
 Number(
-document.getElementById("seguro").value
+document.getElementById(
+"seguro"
+).value
 )||0,
 
 ipva:
 Number(
-document.getElementById("ipva").value
+document.getElementById(
+"ipva"
+).value
 )||0,
 
 kmMes:
 Number(
-document.getElementById("kmMes").value
+document.getElementById(
+"kmMes"
+).value
 )||1
 
 };
@@ -587,47 +816,70 @@ localStorage.setItem(
 JSON.stringify(custos)
 );
 
+
 mostrarCustoKm();
 
 }
 
 
-/* CUSTO POR KM */
-
 function obterCustoKm(){
 
 let manutencao =
+
 Number(
-document.getElementById("manutencao").value
+document.getElementById(
+"manutencao"
+).value
 )||0;
+
 
 let pneus =
+
 Number(
-document.getElementById("pneus").value
+document.getElementById(
+"pneus"
+).value
 )||0;
+
 
 let oleo =
+
 Number(
-document.getElementById("oleo").value
+document.getElementById(
+"oleo"
+).value
 )||0;
+
 
 let seguro =
+
 Number(
-document.getElementById("seguro").value
+document.getElementById(
+"seguro"
+).value
 )||0;
+
 
 let ipva =
+
 Number(
-document.getElementById("ipva").value
+document.getElementById(
+"ipva"
+).value
 )||0;
 
+
 let kmMes =
+
 Number(
-document.getElementById("kmMes").value
+document.getElementById(
+"kmMes"
+).value
 )||1;
 
 
 let totalMensal =
+
 manutencao +
 pneus +
 oleo +
@@ -640,12 +892,11 @@ return totalMensal/kmMes;
 }
 
 
-/* MOSTRAR CUSTO */
-
 function mostrarCustoKm(){
 
 let custo =
 obterCustoKm();
+
 
 document.getElementById(
 "custoKmTexto"
@@ -658,33 +909,50 @@ custo.toFixed(2) +
 }
 
 
-/* ANALISAR */
-
 function analisar(){
 
 let valor =
+
 Number(
-document.getElementById("valor").value
+document.getElementById(
+"valor"
+).value
 );
+
 
 let distancia =
+
 Number(
-document.getElementById("distancia").value
+document.getElementById(
+"distancia"
+).value
 );
+
 
 let tempo =
+
 Number(
-document.getElementById("tempo").value
+document.getElementById(
+"tempo"
+).value
 );
+
 
 let gasolina =
+
 Number(
-document.getElementById("gasolina").value
+document.getElementById(
+"gasolina"
+).value
 );
 
+
 let consumo =
+
 Number(
-document.getElementById("consumo").value
+document.getElementById(
+"consumo"
+).value
 );
 
 
@@ -712,29 +980,38 @@ return;
 let litros =
 distancia / consumo;
 
+
 let combustivel =
 litros * gasolina;
+
 
 let custoKm =
 obterCustoKm();
 
+
 let outrosCustos =
 distancia * custoKm;
+
 
 let custoTotal =
 combustivel + outrosCustos;
 
+
 let lucro =
 valor - custoTotal;
+
 
 let reaisKm =
 valor / distancia;
 
+
 let horas =
 tempo / 60;
 
+
 let reaisHora =
 valor / horas;
+
 
 let lucroHora =
 lucro / horas;
@@ -853,8 +1130,7 @@ R$ ${lucroHora.toFixed(2)}
 ${explicacao}
 </p>
 
-<button
-onclick="adicionarCorrida(
+<button onclick="adicionarCorrida(
 ${valor},
 ${distancia},
 ${tempo},
@@ -870,8 +1146,6 @@ ${lucro}
 
 }
 
-
-/* ADICIONAR CORRIDA */
 
 function adicionarCorrida(
 valor,
@@ -912,8 +1186,6 @@ atualizarPainel();
 }
 
 
-/* PAINEL */
-
 function atualizarPainel(){
 
 let ganhos=0;
@@ -943,18 +1215,23 @@ minutos / 60;
 
 
 let mediaHora =
+
 horas > 0
 ? ganhos / horas
 : 0;
 
 
 let meta =
+
 Number(
-document.getElementById("meta").value
+document.getElementById(
+"meta"
+).value
 )||200;
 
 
 let percentual =
+
 meta > 0
 ? (ganhos/meta)*100
 : 0;
@@ -967,6 +1244,7 @@ percentual=100;
 document.getElementById(
 "totalGanhos"
 ).innerText =
+
 "R$ " +
 ganhos.toFixed(2);
 
@@ -974,18 +1252,21 @@ ganhos.toFixed(2);
 document.getElementById(
 "totalCorridas"
 ).innerText =
+
 historico.length;
 
 
 document.getElementById(
 "totalKm"
 ).innerText =
+
 km.toFixed(2);
 
 
 document.getElementById(
 "totalCombustivel"
 ).innerText =
+
 "R$ " +
 combustivel.toFixed(2);
 
@@ -993,6 +1274,7 @@ combustivel.toFixed(2);
 document.getElementById(
 "totalLucro"
 ).innerText =
+
 "R$ " +
 lucro.toFixed(2);
 
@@ -1000,6 +1282,7 @@ lucro.toFixed(2);
 document.getElementById(
 "mediaHora"
 ).innerText =
+
 "R$ " +
 mediaHora.toFixed(2);
 
@@ -1007,6 +1290,7 @@ mediaHora.toFixed(2);
 document.getElementById(
 "barra"
 ).style.width =
+
 percentual+"%";
 
 
@@ -1020,14 +1304,88 @@ ganhos.toFixed(2) +
 meta.toFixed(2);
 
 
+/* PAINEL NOVO */
+
+document.getElementById(
+"painelFaturamento"
+).innerText =
+
+"R$ " +
+ganhos.toFixed(2);
+
+
+document.getElementById(
+"painelLucro"
+).innerText =
+
+"R$ " +
+lucro.toFixed(2);
+
+
+document.getElementById(
+"painelHora"
+).innerText =
+
+"R$ " +
+(
+horas > 0
+? lucro/horas
+: 0
+).toFixed(2);
+
+
+let lucroKm =
+
+km > 0
+? lucro/km
+: 0;
+
+
+document.getElementById(
+"painelKm"
+).innerText =
+
+"R$ " +
+lucroKm.toFixed(2);
+
+
+let falta =
+meta - ganhos;
+
+
+if(falta<0)
+falta=0;
+
+
+document.getElementById(
+"painelFalta"
+).innerText =
+
+"R$ " +
+falta.toFixed(2);
+
+
+document.getElementById(
+"painelPercentual"
+).innerText =
+
+percentual.toFixed(0) +
+"% da meta";
+
+
+document.getElementById(
+"barraPainel"
+).style.width =
+
+percentual+"%";
+
+
 mostrarHistorico();
 
 mostrarCustoKm();
 
 }
 
-
-/* FECHAMENTO DO DIA */
 
 function mostrarFechamento(){
 
@@ -1058,20 +1416,25 @@ minutos / 60;
 
 
 let lucroHora =
+
 horas > 0
-? lucro / horas
+? lucro/horas
 : 0;
 
 
 let lucroKm =
+
 km > 0
-? lucro / km
+? lucro/km
 : 0;
 
 
 let meta =
+
 Number(
-document.getElementById("meta").value
+document.getElementById(
+"meta"
+).value
 )||200;
 
 
@@ -1080,6 +1443,7 @@ ganhos >= meta;
 
 
 let percentual =
+
 meta > 0
 ? (ganhos/meta)*100
 : 0;
@@ -1107,75 +1471,136 @@ atingiu
 
 </div>
 
+
 <div class="linha">
-<strong>💰 Faturamento</strong>
+
+<strong>
+💰 Faturamento
+</strong>
+
 <span>
 R$ ${ganhos.toFixed(2)}
 </span>
+
 </div>
 
+
 <div class="linha">
-<strong>🚗 Corridas</strong>
+
+<strong>
+🚗 Corridas
+</strong>
+
 <span>
 ${historico.length}
 </span>
+
 </div>
 
+
 <div class="linha">
-<strong>📍 KM rodados</strong>
+
+<strong>
+📍 KM rodados
+</strong>
+
 <span>
 ${km.toFixed(2)} km
 </span>
+
 </div>
 
+
 <div class="linha">
-<strong>⏰ Tempo registrado</strong>
+
+<strong>
+⏰ Tempo
+</strong>
+
 <span>
 ${horas.toFixed(2)} h
 </span>
+
 </div>
 
+
 <div class="linha">
-<strong>⛽ Combustível</strong>
+
+<strong>
+⛽ Combustível
+</strong>
+
 <span>
 R$ ${combustivel.toFixed(2)}
 </span>
+
 </div>
 
+
 <div class="linha">
-<strong>💵 Lucro estimado</strong>
+
+<strong>
+💵 Lucro estimado
+</strong>
+
 <span class="destaque">
 R$ ${lucro.toFixed(2)}
 </span>
+
 </div>
 
+
 <div class="linha">
-<strong>📈 Lucro por hora</strong>
+
+<strong>
+📈 Lucro por hora
+</strong>
+
 <span>
 R$ ${lucroHora.toFixed(2)}
 </span>
+
 </div>
 
+
 <div class="linha">
-<strong>📍 Lucro por km</strong>
+
+<strong>
+📍 Lucro por km
+</strong>
+
 <span>
 R$ ${lucroKm.toFixed(2)}
 </span>
+
 </div>
 
+
 <div class="linha">
-<strong>🎯 Meta</strong>
+
+<strong>
+🎯 Meta
+</strong>
+
 <span>
 R$ ${meta.toFixed(2)}
 </span>
+
 </div>
 
+
 <div class="linha">
-<strong>📊 Progresso</strong>
+
+<strong>
+📊 Progresso
+</strong>
+
 <span>
 ${percentual.toFixed(0)}%
 </span>
+
 </div>
+
 
 <p class="pequeno">
 
@@ -1194,11 +1619,10 @@ atingiu
 }
 
 
-/* HISTÓRICO */
-
 function mostrarHistorico(){
 
 let div =
+
 document.getElementById(
 "historico"
 );
@@ -1247,11 +1671,9 @@ div.innerHTML += `
 <br>
 
 💵
-
 <strong>
 R$ ${c.lucro.toFixed(2)}
 </strong>
-
 de lucro
 
 </div>
@@ -1262,8 +1684,6 @@ de lucro
 
 }
 
-
-/* LIMPAR */
 
 function limparHistorico(){
 
@@ -1279,7 +1699,9 @@ localStorage.removeItem(
 "historicoCorridas"
 );
 
+
 atualizarPainel();
+
 
 document.getElementById(
 "fechamento"
@@ -1290,11 +1712,11 @@ document.getElementById(
 }
 
 
-/* INICIALIZAR */
-
 atualizarPainel();
 
 </script>
 
+
 </body>
+
 </html>
