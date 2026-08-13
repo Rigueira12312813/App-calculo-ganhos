@@ -281,7 +281,6 @@ button:disabled{
   justify-content:space-between;
   font-weight:bold;
   margin-bottom:8px;
-  gap:8px;
 }
 
 .history-info{
@@ -396,8 +395,6 @@ Seu controle inteligente de corridas
 </header>
 
 
-<!-- LOGIN -->
-
 <section class="card auth" id="authCard">
 
 <h2>🔐 Minha conta</h2>
@@ -479,8 +476,6 @@ id="syncStatus"
 
 </section>
 
-
-<!-- RESUMO -->
 
 <section class="card">
 
@@ -600,8 +595,6 @@ onclick="alternarTimer()"
 
 </section>
 
-
-<!-- ANALISAR -->
 
 <section class="card quick">
 
@@ -761,8 +754,6 @@ onclick="limparAnalise()"
 </section>
 
 
-<!-- REGISTRAR -->
-
 <section class="card">
 
 <h2>
@@ -853,8 +844,6 @@ onclick="registrarCorrida()"
 </section>
 
 
-<!-- PROJEÇÃO -->
-
 <section class="card">
 
 <h2>
@@ -914,8 +903,6 @@ Registre algumas corridas para criar sua projeção.
 </section>
 
 
-<!-- ROTAS -->
-
 <section class="card">
 
 <h2>
@@ -932,8 +919,6 @@ Registre corridas para descobrir suas melhores rotas.
 
 </section>
 
-
-<!-- APPS -->
 
 <section class="card">
 
@@ -952,8 +937,6 @@ Registre corridas para comparar.
 </section>
 
 
-<!-- HISTÓRICO -->
-
 <section class="card">
 
 <h2>
@@ -970,8 +953,6 @@ Nenhuma corrida registrada hoje.
 
 </section>
 
-
-<!-- CONFIGURAÇÕES -->
 
 <section class="card">
 
@@ -1050,8 +1031,6 @@ onclick="salvarConfiguracoes()"
 </section>
 
 
-<!-- CONTROLE -->
-
 <section class="card">
 
 <h2>
@@ -1077,16 +1056,10 @@ Ganhos Drive • Controle de ganhos para motorista
 </div>
 
 
-<!-- SUPABASE -->
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 
 <script>
-
-/* =====================================================
-   SUPABASE
-===================================================== */
 
 const SUPABASE_URL =
 "https://beiattgdvpsltdhenpoy.supabase.co";
@@ -1100,10 +1073,6 @@ window.supabase.createClient(
   SUPABASE_PUBLISHABLE_KEY
 );
 
-
-/* =====================================================
-   CONFIGURAÇÃO PADRÃO
-===================================================== */
 
 const PADRAO = {
 
@@ -1120,14 +1089,10 @@ const PADRAO = {
 };
 
 
-/* =====================================================
-   VARIÁVEIS LOCAIS
-===================================================== */
-
 let config =
 JSON.parse(
   localStorage.getItem("ganhosConfig")
-) || {...PADRAO};
+) || PADRAO;
 
 
 let corridas =
@@ -1154,12 +1119,8 @@ Number(
 ) || 0;
 
 
-let usuarioAtual = null;
+let usuarioAtual=null;
 
-
-/* =====================================================
-   DINHEIRO
-===================================================== */
 
 function dinheiro(valor){
 
@@ -1175,35 +1136,24 @@ function dinheiro(valor){
 }
 
 
-/* =====================================================
-   DATA LOCAL DO BRASIL
-===================================================== */
-
 function hoje(){
 
-  const d = new Date();
+  const d=new Date();
 
-  const ano =
-  d.getFullYear();
+  const ano=d.getFullYear();
 
-  const mes =
-  String(
+  const mes=String(
     d.getMonth()+1
   ).padStart(2,"0");
 
-  const dia =
-  String(
+  const dia=String(
     d.getDate()
   ).padStart(2,"0");
 
-  return `${ano}-${mes}-${dia}`;
+  return ano+"-"+mes+"-"+dia;
 
 }
 
-
-/* =====================================================
-   SALVAR LOCAL
-===================================================== */
 
 function salvarDados(){
 
@@ -1226,15 +1176,13 @@ function salvarDados(){
 
 async function criarConta(){
 
-  const email =
-  document.getElementById("email")
-  .value
-  .trim();
+  const email=document
+  .getElementById("email")
+  .value.trim();
 
-  const senha =
-  document.getElementById("senha")
+  const senha=document
+  .getElementById("senha")
   .value;
-
 
   if(!email || !senha){
 
@@ -1247,8 +1195,7 @@ async function criarConta(){
 
   }
 
-
-  if(senha.length < 6){
+  if(senha.length<6){
 
     mostrarAuthMensagem(
       "A senha precisa ter pelo menos 6 caracteres.",
@@ -1259,72 +1206,63 @@ async function criarConta(){
 
   }
 
-
   bloquearAuth(true);
 
+  const {data,error} =
+  await supabaseClient.auth.signUp({
 
-  try{
+    email,
+    password:senha
 
-    const {data,error} =
-    await supabaseClient.auth.signUp({
+  });
 
-      email:email,
+  bloquearAuth(false);
 
-      password:senha
-
-    });
-
-
-    if(error){
-
-      throw error;
-
-    }
-
-
-    if(data.session){
-
-      mostrarAuthMensagem(
-        "Conta criada e conectada!",
-        "online"
-      );
-
-    }else{
-
-      mostrarAuthMensagem(
-        "Conta criada! Sua conta já foi registrada no Supabase.",
-        "online"
-      );
-
-    }
-
-  }catch(error){
+  if(error){
 
     mostrarAuthMensagem(
-      "Erro ao criar conta: "+
-      error.message,
+      "Erro: "+error.message,
       "offline"
     );
 
+    return;
+
   }
 
+  if(data.session){
 
-  bloquearAuth(false);
+    usuarioAtual=data.user;
+
+    atualizarInterfaceUsuario();
+
+    mostrarAuthMensagem(
+      "Conta criada e conectada!",
+      "online"
+    );
+
+    await sincronizar();
+
+  }else{
+
+    mostrarAuthMensagem(
+      "Conta criada! Verifique seu e-mail se o Supabase solicitar confirmação.",
+      "online"
+    );
+
+  }
 
 }
 
 
 async function entrar(){
 
-  const email =
-  document.getElementById("email")
-  .value
-  .trim();
+  const email=document
+  .getElementById("email")
+  .value.trim();
 
-  const senha =
-  document.getElementById("senha")
+  const senha=document
+  .getElementById("senha")
   .value;
-
 
   if(!email || !senha){
 
@@ -1337,78 +1275,45 @@ async function entrar(){
 
   }
 
-
   bloquearAuth(true);
 
+  const {data,error} =
+  await supabaseClient.auth.signInWithPassword({
 
-  try{
+    email,
+    password:senha
 
-    const {data,error} =
-    await supabaseClient.auth.signInWithPassword({
+  });
 
-      email:email,
+  bloquearAuth(false);
 
-      password:senha
-
-    });
-
-
-    if(error){
-
-      throw error;
-
-    }
-
-
-    usuarioAtual =
-    data.user;
-
-
-    atualizarInterfaceUsuario();
-
+  if(error){
 
     mostrarAuthMensagem(
-      "✅ Login realizado com sucesso.",
-      "online"
-    );
-
-
-    await sincronizar();
-
-
-  }catch(error){
-
-    mostrarAuthMensagem(
-      "Erro ao entrar: "+
-      error.message,
+      "Erro ao entrar: "+error.message,
       "offline"
     );
 
+    return;
+
   }
 
+  usuarioAtual=data.user;
 
-  bloquearAuth(false);
+  atualizarInterfaceUsuario();
+
+  await sincronizar();
 
 }
 
 
 async function sair(){
 
-  try{
-
-    await supabaseClient.auth.signOut();
-
-  }catch(error){
-
-    console.error(error);
-
-  }
-
+  await supabaseClient.auth.signOut();
 
   usuarioAtual=null;
 
   atualizarInterfaceUsuario();
-
 
   atualizarStatus(
     "📱 Você saiu da conta. O aplicativo continua funcionando offline.",
@@ -1436,60 +1341,42 @@ function mostrarAuthMensagem(
   tipo
 ){
 
-  const el =
-  document.getElementById(
-    "authMensagem"
-  );
+  const el=document
+  .getElementById("authMensagem");
 
   el.textContent=texto;
 
   el.className=
-  "auth-status "+
-  tipo;
+  "auth-status "+tipo;
 
 }
 
 
 function atualizarInterfaceUsuario(){
 
-  const loginArea =
-  document.getElementById(
-    "loginArea"
-  );
+  const loginArea=document
+  .getElementById("loginArea");
 
-  const usuarioArea =
-  document.getElementById(
-    "usuarioArea"
-  );
+  const usuarioArea=document
+  .getElementById("usuarioArea");
 
-  const email =
-  document.getElementById(
-    "usuarioEmail"
-  );
-
+  const email=document
+  .getElementById("usuarioEmail");
 
   if(usuarioAtual){
 
-    loginArea.classList.add(
-      "hidden"
-    );
+    loginArea.classList.add("hidden");
 
-    usuarioArea.classList.remove(
-      "hidden"
-    );
+    usuarioArea.classList.remove("hidden");
 
-    email.textContent =
+    email.textContent=
     usuarioAtual.email || "";
 
   }else{
 
-    loginArea.classList.remove(
-      "hidden"
-    );
+    loginArea.classList.remove("hidden");
 
-    usuarioArea.classList.add(
-      "hidden"
-    );
+    usuarioArea.classList.add("hidden");
 
     email.textContent="";
 
@@ -1507,16 +1394,13 @@ function atualizarStatus(
   tipo
 ){
 
-  const el =
-  document.getElementById(
-    "syncStatus"
-  );
+  const el=document
+  .getElementById("syncStatus");
 
   el.textContent=texto;
 
   el.className=
-  "sync-status "+
-  tipo;
+  "sync-status "+tipo;
 
 }
 
@@ -1567,132 +1451,7 @@ function(){
 
 
 /* =====================================================
-   CONVERTER LINHA DO SUPABASE
-   PARA FORMATO DO APLICATIVO
-===================================================== */
-
-function linhaParaCorrida(row){
-
-  return {
-
-    localId:
-    row.local_id ||
-    row.id,
-
-    data:
-    row.data ||
-    hoje(),
-
-    criadoEm:
-    row.created_at ||
-    new Date().toISOString(),
-
-    app:
-    row.app || "Outro",
-
-    origem:
-    row.origem || "",
-
-    destino:
-    row.destino || "",
-
-    valor:
-    Number(row.valor)||0,
-
-    km:
-    Number(row.km)||0,
-
-    tempo:
-    Number(row.tempo)||0,
-
-    comb:
-    Number(row.combustivel)||0,
-
-    lucro:
-    Number(row.lucro)||0,
-
-    rkm:
-    Number(row.rkm)||0,
-
-    rhora:
-    Number(row.rhora)||0,
-
-    decisao:
-    row.decisao || "",
-
-    hora:
-    row.hora || ""
-
-  };
-
-}
-
-
-/* =====================================================
-   CONVERTER CORRIDA
-   PARA LINHA DO SUPABASE
-===================================================== */
-
-function corridaParaLinha(corrida){
-
-  return {
-
-    user_id:
-    usuarioAtual.id,
-
-    local_id:
-    corrida.localId,
-
-    app:
-    corrida.app,
-
-    origem:
-    corrida.origem,
-
-    destino:
-    corrida.destino,
-
-    valor:
-    Number(corrida.valor)||0,
-
-    km:
-    Number(corrida.km)||0,
-
-    tempo:
-    Number(corrida.tempo)||0,
-
-    combustivel:
-    Number(corrida.comb)||0,
-
-    lucro:
-    Number(corrida.lucro)||0,
-
-    rkm:
-    Number(corrida.rkm)||0,
-
-    rhora:
-    Number(corrida.rhora)||0,
-
-    data:
-    corrida.data,
-
-    hora:
-    corrida.hora,
-
-    decisao:
-    corrida.decisao,
-
-    created_at:
-    corrida.criadoEm ||
-    new Date().toISOString()
-
-  };
-
-}
-
-
-/* =====================================================
-   SINCRONIZAÇÃO
+   SINCRONIZAÇÃO CORRIGIDA
 ===================================================== */
 
 async function sincronizar(){
@@ -1708,7 +1467,6 @@ async function sincronizar(){
 
   }
 
-
   if(!navigator.onLine){
 
     atualizarStatus(
@@ -1720,23 +1478,21 @@ async function sincronizar(){
 
   }
 
-
   atualizarStatus(
     "☁️ Sincronizando...",
     "online"
   );
 
-
   try{
 
     /*
-      1. Busca todas as corridas
-      do usuário na nuvem.
+      Busca as corridas do usuário
+      diretamente nas colunas da tabela.
     */
 
     const {
-      data,
-      error
+      data:nuvem,
+      error:erroBusca
     } =
     await supabaseClient
     .from("corridas")
@@ -1746,135 +1502,281 @@ async function sincronizar(){
       usuarioAtual.id
     );
 
+    if(erroBusca){
 
-    if(error){
-
-      throw error;
+      throw erroBusca;
 
     }
 
 
-    const nuvem =
-    data || [];
+    const corridasNuvem =
+    nuvem || [];
 
 
     /*
-      2. Descobre os IDs existentes
-      na nuvem.
+      IDs locais que já foram enviados.
     */
 
-    const idsNuvem =
+    const chavesNuvem =
     new Set(
-      nuvem.map(
-        row=>row.local_id
+      corridasNuvem.map(
+        c=>
+        c.user_id+
+        "|" +
+        c.app+
+        "|" +
+        c.origem+
+        "|" +
+        c.destino+
+        "|" +
+        Number(c.valor)+
+        "|" +
+        Number(c.km)+
+        "|" +
+        Number(c.tempo)
       )
     );
 
 
     /*
-      3. Envia somente corridas
-      locais que ainda não existem.
+      Envia as corridas locais
+      que ainda não estão na nuvem.
     */
 
-    const novas =
-    corridas.filter(
-      corrida=>
-      corrida.localId &&
-      !idsNuvem.has(
-        corrida.localId
-      )
-    );
+    for(
+      const corrida of corridas
+    ){
+
+      const chave =
+      usuarioAtual.id+
+      "|" +
+      corrida.app+
+      "|" +
+      corrida.origem+
+      "|" +
+      corrida.destino+
+      "|" +
+      Number(corrida.valor)+
+      "|" +
+      Number(corrida.km)+
+      "|" +
+      Number(corrida.tempo);
 
 
-    if(novas.length){
+      if(
+        chavesNuvem.has(chave)
+      ){
 
-      const linhas =
-      novas.map(
-        corrida=>
-        corridaParaLinha(
-          corrida
-        )
-      );
+        continue;
+
+      }
 
 
       const {
-        error:insertError
+        error:erroInsert
       } =
       await supabaseClient
       .from("corridas")
-      .insert(
-        linhas
-      );
+      .insert({
+
+        user_id:
+        usuarioAtual.id,
+
+        app:
+        corrida.app,
+
+        origem:
+        corrida.origem,
+
+        destino:
+        corrida.destino,
+
+        valor:
+        Number(corrida.valor),
+
+        km:
+        Number(corrida.km),
+
+        tempo:
+        Number(corrida.tempo),
+
+        combustivel:
+        Number(corrida.comb),
+
+        lucro:
+        Number(corrida.lucro),
+
+        rkm:
+        Number(corrida.rkm),
+
+        rhora:
+        Number(corrida.rhora)
+
+      });
 
 
-      if(insertError){
+      if(erroInsert){
 
-        throw insertError;
+        throw erroInsert;
 
       }
+
+
+      chavesNuvem.add(chave);
 
     }
 
 
     /*
-      4. Junta nuvem + aparelho.
+      Busca novamente depois dos inserts.
     */
 
-    const mapa =
-    new Map();
-
-
-    nuvem.forEach(
-      row=>{
-
-        const corrida =
-        linhaParaCorrida(row);
-
-        mapa.set(
-          corrida.localId,
-          corrida
-        );
-
-      }
+    const {
+      data:finalNuvem,
+      error:erroFinal
+    } =
+    await supabaseClient
+    .from("corridas")
+    .select("*")
+    .eq(
+      "user_id",
+      usuarioAtual.id
     );
 
+    if(erroFinal){
 
-    corridas.forEach(
-      corrida=>{
+      throw erroFinal;
 
-        mapa.set(
-          corrida.localId,
-          corrida
-        );
+    }
 
-      }
+
+    /*
+      Converte os registros da nuvem
+      para o formato usado pelo aplicativo.
+    */
+
+    const locaisDaNuvem =
+    (finalNuvem || [])
+    .map(
+      c=>({
+
+        localId:
+        "cloud-"+String(c.id),
+
+        data:
+        hoje(),
+
+        criadoEm:
+        c.created_at ||
+        new Date().toISOString(),
+
+        app:
+        c.app || "",
+
+        origem:
+        c.origem || "",
+
+        destino:
+        c.destino || "",
+
+        valor:
+        Number(c.valor)||0,
+
+        km:
+        Number(c.km)||0,
+
+        tempo:
+        Number(c.tempo)||0,
+
+        comb:
+        Number(c.combustivel)||0,
+
+        lucro:
+        Number(c.lucro)||0,
+
+        rkm:
+        Number(c.rkm)||0,
+
+        rhora:
+        Number(c.rhora)||0,
+
+        decisao:
+        "☁️ SINCRONIZADA",
+
+        hora:
+        c.created_at
+        ?new Date(
+          c.created_at
+        ).toLocaleTimeString(
+          "pt-BR",
+          {
+            hour:"2-digit",
+            minute:"2-digit"
+          }
+        )
+        :""
+
+      })
     );
 
 
     /*
-      5. Mantém os dados do dia atual.
+      Mantém as corridas locais de hoje
+      e evita duplicação.
     */
 
-    corridas =
-    Array.from(
-      mapa.values()
-    )
-    .filter(
-      corrida=>
-      corrida.data===hoje()
+    const locaisHoje =
+    corridas.filter(
+      c=>c.data===hoje()
     );
 
+
+    const resultado=[];
+
+
+    locaisDaNuvem.forEach(
+      c=>{
+
+        resultado.push(c);
+
+      }
+    );
+
+
+    locaisHoje.forEach(
+      c=>{
+
+        const existe =
+        resultado.some(
+          x=>
+          x.app===c.app &&
+          x.origem===c.origem &&
+          x.destino===c.destino &&
+          Number(x.valor)===Number(c.valor) &&
+          Number(x.km)===Number(c.km) &&
+          Number(x.tempo)===Number(c.tempo)
+        );
+
+        if(!existe){
+
+          resultado.push(c);
+
+        }
+
+      }
+    );
+
+
+    corridas=resultado;
 
     salvarDados();
 
     atualizar();
 
-
     atualizarStatus(
       "☁️ Sincronizado com sucesso.",
       "online"
     );
-
 
   }catch(error){
 
@@ -1885,7 +1787,11 @@ async function sincronizar(){
 
 
     atualizarStatus(
-      "⚠️ Não foi possível sincronizar agora. Os dados continuam salvos no aparelho.",
+      "⚠️ Erro ao sincronizar: "+
+      (
+        error.message ||
+        "erro desconhecido"
+      ),
       "offline"
     );
 
@@ -1928,12 +1834,11 @@ function atualizar(){
   );
 
 
-  const lucro =
-  faturamento-
-  combustivel;
+  let lucro=
+  faturamento-combustivel;
 
 
-  const hora =
+  let hora=
   minutos>0
   ?faturamento/(minutos/60)
   :0;
@@ -1975,7 +1880,7 @@ function atualizar(){
   dinheiro(config.meta);
 
 
-  const percentual =
+  let percentual=
   config.meta>0
   ?(faturamento/config.meta)*100
   :0;
@@ -1990,7 +1895,7 @@ function atualizar(){
   )+"%";
 
 
-  const falta =
+  let falta=
   Math.max(
     config.meta-faturamento,
     0
@@ -2003,7 +1908,7 @@ function atualizar(){
   dinheiro(falta);
 
 
-  const metaMensagem =
+  let metaMensagem=
   document.getElementById(
     "metaMensagem"
   );
@@ -2057,56 +1962,65 @@ function atualizar(){
   }
 
 
+  let ritmo=hora;
+
+
   document.getElementById(
     "ritmo"
   ).textContent=
-  dinheiro(hora);
-
-
-  const estimativa =
-  hora*6;
+  dinheiro(ritmo);
 
 
   document.getElementById(
     "estimativa"
   ).textContent=
-  dinheiro(estimativa);
-
-
-  const projecao =
-  document.getElementById(
-    "projecaoMensagem"
+  dinheiro(
+    ritmo*6
   );
 
 
-  if(!corridas.length){
+  if(
+    corridas.length===0
+  ){
 
-    projecao.className=
+    document.getElementById(
+      "projecaoMensagem"
+    ).className=
     "alert";
 
-    projecao.textContent=
+    document.getElementById(
+      "projecaoMensagem"
+    ).textContent=
     "Registre algumas corridas para criar sua projeção.";
 
   }else if(
-    hora>=config.meta/6
+    ritmo>=config.meta/6
   ){
 
-    projecao.className=
+    document.getElementById(
+      "projecaoMensagem"
+    ).className=
     "alert good";
 
-    projecao.innerHTML=
+    document.getElementById(
+      "projecaoMensagem"
+    ).innerHTML=
     "🚀 Seu ritmo atual é "+
-    dinheiro(hora)+
+    dinheiro(ritmo)+
     "/hora. Mantendo esse ritmo, você está em uma boa velocidade para sua meta.";
 
   }else{
 
-    projecao.className=
+    document.getElementById(
+      "projecaoMensagem"
+    ).className=
     "alert medium";
 
-    projecao.innerHTML=
+    document.getElementById(
+      "projecaoMensagem"
+    ).innerHTML=
     "⚠️ Seu ritmo atual é "+
-    dinheiro(hora)+
+    dinheiro(ritmo)+
     "/hora. Para fazer "+
     dinheiro(config.meta)+
     " em 6 horas, a média seria "+
@@ -2128,28 +2042,26 @@ function atualizar(){
 
 
 /* =====================================================
-   ANALISAR CORRIDA
+   ANALISADOR
 ===================================================== */
 
 function analisarRapido(){
 
-  const valor =
+  let valor=
   Number(
     document.getElementById(
       "qValor"
     ).value
   );
 
-
-  const km =
+  let km=
   Number(
     document.getElementById(
       "qKm"
     ).value
   );
 
-
-  const tempo =
+  let tempo=
   Number(
     document.getElementById(
       "qTempo"
@@ -2172,36 +2084,36 @@ function analisarRapido(){
   }
 
 
-  const comb =
+  let comb=
   (km/config.consumo)*
   config.gasolina;
 
 
-  const lucro =
+  let lucro=
   valor-comb;
 
 
-  const rkm =
+  let rkm=
   valor/km;
 
 
-  const rhora =
+  let rhora=
   valor/(tempo/60);
 
 
-  const caixa =
+  let caixa=
   document.getElementById(
     "quickDecision"
   );
 
 
-  const status =
+  let status=
   document.getElementById(
     "quickStatus"
   );
 
 
-  const motivo =
+  let motivo=
   document.getElementById(
     "quickMotivo"
   );
@@ -2254,24 +2166,20 @@ function analisarRapido(){
   ).textContent=
   dinheiro(rkm);
 
-
   document.getElementById(
     "qRhora"
   ).textContent=
   dinheiro(rhora);
-
 
   document.getElementById(
     "qComb"
   ).textContent=
   dinheiro(comb);
 
-
   document.getElementById(
     "qLucro"
   ).textContent=
   dinheiro(lucro);
-
 
   document.getElementById(
     "quickResult"
@@ -2309,41 +2217,36 @@ function limparAnalise(){
 
 async function registrarCorrida(){
 
-  const app =
+  let app=
   document.getElementById(
     "app"
   ).value;
 
-
-  const origem =
+  let origem=
   document.getElementById(
     "origem"
   ).value.trim();
 
-
-  const destino =
+  let destino=
   document.getElementById(
     "destino"
   ).value.trim();
 
-
-  const valor =
+  let valor=
   Number(
     document.getElementById(
       "valor"
     ).value
   );
 
-
-  const km =
+  let km=
   Number(
     document.getElementById(
       "km"
     ).value
   );
 
-
-  const tempo =
+  let tempo=
   Number(
     document.getElementById(
       "tempo"
@@ -2368,20 +2271,20 @@ async function registrarCorrida(){
   }
 
 
-  const comb =
+  let comb=
   (km/config.consumo)*
   config.gasolina;
 
 
-  const lucro =
+  let lucro=
   valor-comb;
 
 
-  const rkm =
+  let rkm=
   valor/km;
 
 
-  const rhora =
+  let rhora=
   valor/(tempo/60);
 
 
@@ -2412,11 +2315,11 @@ async function registrarCorrida(){
   }
 
 
-  const agora =
+  let agora=
   new Date();
 
 
-  const hora =
+  let hora=
   agora.toLocaleTimeString(
     "pt-BR",
     {
@@ -2478,21 +2381,17 @@ async function registrarCorrida(){
     "origem"
   ).value="";
 
-
   document.getElementById(
     "destino"
   ).value="";
-
 
   document.getElementById(
     "valor"
   ).value="";
 
-
   document.getElementById(
     "km"
   ).value="";
-
 
   document.getElementById(
     "tempo"
@@ -2519,7 +2418,7 @@ async function registrarCorrida(){
 
 function mostrarHistorico(){
 
-  const el =
+  let el=
   document.getElementById(
     "historico"
   );
@@ -2544,7 +2443,7 @@ function mostrarHistorico(){
   .forEach(
     (c,index)=>{
 
-      const item =
+      let item=
       document.createElement(
         "div"
       );
@@ -2601,9 +2500,7 @@ function mostrarHistorico(){
       `;
 
 
-      el.appendChild(
-        item
-      );
+      el.appendChild(item);
 
     }
   );
@@ -2617,7 +2514,7 @@ function mostrarHistorico(){
 
 function mostrarRotas(){
 
-  const el =
+  let el=
   document.getElementById(
     "rotas"
   );
@@ -2633,13 +2530,13 @@ function mostrarRotas(){
   }
 
 
-  const rotas={};
+  let rotas={};
 
 
   corridas.forEach(
     c=>{
 
-      const chave =
+      let chave=
       c.origem+
       " → "+
       c.destino;
@@ -2666,39 +2563,35 @@ function mostrarRotas(){
 
       rotas[chave].q++;
 
-      rotas[chave].valor +=
+      rotas[chave].valor+=
       Number(c.valor)||0;
 
-      rotas[chave].lucro +=
+      rotas[chave].lucro+=
       Number(c.lucro)||0;
 
-      rotas[chave].tempo +=
+      rotas[chave].tempo+=
       Number(c.tempo)||0;
 
     }
   );
 
 
-  const lista =
-  Object.values(
-    rotas
-  );
+  let lista=
+  Object.values(rotas);
 
 
   lista.sort(
     (a,b)=>{
 
-      const horaA =
+      let horaA=
       a.tempo
       ?a.valor/(a.tempo/60)
       :0;
 
-
-      const horaB =
+      let horaB=
       b.tempo
       ?b.valor/(b.tempo/60)
       :0;
-
 
       return horaB-horaA;
 
@@ -2714,13 +2607,13 @@ function mostrarRotas(){
   .forEach(
     (r,i)=>{
 
-      const hora =
+      let hora=
       r.tempo
       ?r.valor/(r.tempo/60)
       :0;
 
 
-      const item =
+      let item=
       document.createElement(
         "div"
       );
@@ -2764,9 +2657,7 @@ function mostrarRotas(){
       `;
 
 
-      el.appendChild(
-        item
-      );
+      el.appendChild(item);
 
     }
   );
@@ -2780,7 +2671,7 @@ function mostrarRotas(){
 
 function mostrarApps(){
 
-  const el =
+  let el=
   document.getElementById(
     "apps"
   );
@@ -2796,7 +2687,7 @@ function mostrarApps(){
   }
 
 
-  const apps={};
+  let apps={};
 
 
   corridas.forEach(
@@ -2821,25 +2712,25 @@ function mostrarApps(){
 
       apps[c.app].q++;
 
-      apps[c.app].valor +=
+      apps[c.app].valor+=
       Number(c.valor)||0;
 
-      apps[c.app].lucro +=
+      apps[c.app].lucro+=
       Number(c.lucro)||0;
 
-      apps[c.app].tempo +=
+      apps[c.app].tempo+=
       Number(c.tempo)||0;
 
     }
   );
 
 
-  const lista =
+  let lista=
   Object.keys(apps)
   .map(
     nome=>{
 
-      const a =
+      let a=
       apps[nome];
 
 
@@ -2876,7 +2767,7 @@ function mostrarApps(){
   lista.forEach(
     (a,i)=>{
 
-      const item =
+      let item=
       document.createElement(
         "div"
       );
@@ -2917,9 +2808,7 @@ function mostrarApps(){
       `;
 
 
-      el.appendChild(
-        item
-      );
+      el.appendChild(item);
 
     }
   );
@@ -2933,44 +2822,44 @@ function mostrarApps(){
 
 function salvarConfiguracoes(){
 
-  config.meta =
+  config.meta=
   Number(
     document.getElementById(
       "cfgMeta"
     ).value
-  ) || 300;
+  )||300;
 
 
-  config.minKm =
+  config.minKm=
   Number(
     document.getElementById(
       "cfgKm"
     ).value
-  ) || 2;
+  )||2;
 
 
-  config.minHora =
+  config.minHora=
   Number(
     document.getElementById(
       "cfgHora"
     ).value
-  ) || 40;
+  )||40;
 
 
-  config.gasolina =
+  config.gasolina=
   Number(
     document.getElementById(
       "cfgGas"
     ).value
-  ) || 6.95;
+  )||6.95;
 
 
-  config.consumo =
+  config.consumo=
   Number(
     document.getElementById(
       "cfgCons"
     ).value
-  ) || 9;
+  )||9;
 
 
   salvarDados();
@@ -2992,24 +2881,20 @@ function carregarConfiguracoes(){
   ).value=
   config.meta;
 
-
   document.getElementById(
     "cfgKm"
   ).value=
   config.minKm;
-
 
   document.getElementById(
     "cfgHora"
   ).value=
   config.minHora;
 
-
   document.getElementById(
     "cfgGas"
   ).value=
   config.gasolina;
-
 
   document.getElementById(
     "cfgCons"
@@ -3047,14 +2932,10 @@ async function zerarDia(){
       } =
       await supabaseClient
       .from("corridas")
-      .select("id,data")
+      .select("id,created_at")
       .eq(
         "user_id",
         usuarioAtual.id
-      )
-      .eq(
-        "data",
-        hoje()
       );
 
 
@@ -3065,8 +2946,35 @@ async function zerarDia(){
       }
 
 
-      const ids =
-      (data || [])
+      const ids=
+      (data||[])
+      .filter(
+        row=>{
+
+          if(!row.created_at){
+
+            return false;
+
+          }
+
+          const d=
+          new Date(row.created_at);
+
+          return hoje()===
+          (
+            d.getFullYear()+
+            "-"+
+            String(
+              d.getMonth()+1
+            ).padStart(2,"0")+
+            "-"+
+            String(
+              d.getDate()
+            ).padStart(2,"0")
+          );
+
+        }
+      )
       .map(
         row=>row.id
       );
@@ -3094,17 +3002,12 @@ async function zerarDia(){
 
       }
 
-
     }catch(error){
 
-      console.error(
-        "Erro ao apagar nuvem:",
-        error
-      );
-
+      console.error(error);
 
       alert(
-        "⚠️ Não foi possível apagar as corridas da nuvem. Os dados do aparelho não foram apagados."
+        "⚠️ Não foi possível apagar os dados da nuvem."
       );
 
       return;
@@ -3127,18 +3030,15 @@ async function zerarDia(){
     "ganhosCorridas"
   );
 
-
   localStorage.setItem(
     "ganhosTempo",
     "0"
   );
 
-
   localStorage.setItem(
     "ganhosTrabalhando",
     "0"
   );
-
 
   localStorage.removeItem(
     "ganhosInicio"
@@ -3173,8 +3073,7 @@ function alternarTimer(){
 
     trabalhando=true;
 
-    inicio =
-    Date.now();
+    inicio=Date.now();
 
 
     localStorage.setItem(
@@ -3239,7 +3138,7 @@ function alternarTimer(){
 
 function atualizarTimer(){
 
-  let total =
+  let total=
   tempoAcumulado;
 
 
@@ -3256,19 +3155,19 @@ function atualizarTimer(){
   }
 
 
-  const h =
+  let h=
   Math.floor(
     total/3600
   );
 
 
-  const m =
+  let m=
   Math.floor(
     (total%3600)/60
   );
 
 
-  const s =
+  let s=
   total%60;
 
 
@@ -3276,16 +3175,11 @@ function atualizarTimer(){
     "timer"
   ).textContent=
 
-  String(h)
-  .padStart(2,"0")+
+  String(h).padStart(2,"0")+
   ":"+
-
-  String(m)
-  .padStart(2,"0")+
+  String(m).padStart(2,"0")+
   ":"+
-
-  String(s)
-  .padStart(2,"0");
+  String(s).padStart(2,"0");
 
 }
 
@@ -3301,41 +3195,18 @@ async function iniciarAplicativo(){
   verificarInternet();
 
 
-  try{
-
-    const {
-      data,
-      error
-    } =
-    await supabaseClient
-    .auth
-    .getSession();
+  const {
+    data
+  } =
+  await supabaseClient
+  .auth
+  .getSession();
 
 
-    if(error){
-
-      console.error(
-        "Erro ao recuperar sessão:",
-        error
-      );
-
-    }
-
-
-    usuarioAtual =
-    data &&
-    data.session
-    ?data.session.user
-    :null;
-
-
-  }catch(error){
-
-    console.error(error);
-
-    usuarioAtual=null;
-
-  }
+  usuarioAtual=
+  data.session
+  ?data.session.user
+  :null;
 
 
   atualizarInterfaceUsuario();
@@ -3363,16 +3234,15 @@ async function iniciarAplicativo(){
 }
 
 
-/* =====================================================
-   OBSERVADOR DE LOGIN
-===================================================== */
-
 supabaseClient
 .auth
 .onAuthStateChange(
-  (event,session)=>{
+  async(
+    event,
+    session
+  )=>{
 
-    usuarioAtual =
+    usuarioAtual=
     session
     ?session.user
     :null;
@@ -3383,22 +3253,13 @@ supabaseClient
 
     if(usuarioAtual){
 
-      setTimeout(
-        ()=>{
-          sincronizar();
-        },
-        0
-      );
+      await sincronizar();
 
     }
 
   }
 );
 
-
-/* =====================================================
-   INICIAR
-===================================================== */
 
 iniciarAplicativo();
 
