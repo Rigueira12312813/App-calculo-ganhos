@@ -269,6 +269,26 @@ button:disabled{
   grid-column:1/3;
 }
 
+.recommendation{
+  background:#eff6ff;
+  color:#1e40af;
+  border-radius:13px;
+  padding:13px;
+  margin-top:10px;
+  font-size:13px;
+  line-height:1.5;
+}
+
+.target{
+  background:#f8fafc;
+  color:#334155;
+  border-radius:13px;
+  padding:13px;
+  margin-top:10px;
+  font-size:13px;
+  line-height:1.6;
+}
+
 .history-item{
   border:1px solid #e2e8f0;
   border-radius:14px;
@@ -281,6 +301,7 @@ button:disabled{
   justify-content:space-between;
   font-weight:bold;
   margin-bottom:8px;
+  gap:10px;
 }
 
 .history-info{
@@ -372,6 +393,10 @@ button:disabled{
 .small-button{
   padding:11px;
   font-size:14px;
+}
+
+.highlight{
+  font-weight:bold;
 }
 
 </style>
@@ -603,8 +628,7 @@ onclick="alternarTimer()"
 </h2>
 
 <p>
-Digite apenas o valor, distância e tempo.
-O aplicativo dirá rapidamente se a corrida é boa.
+Digite valor, distância e tempo. O aplicativo calcula o combustível, lucro, R$/km e R$/hora e compara com seus critérios.
 </p>
 
 
@@ -661,7 +685,7 @@ placeholder="20"
 class="blue"
 onclick="analisarRapido()"
 >
-🔎 ANALISAR
+🔎 ANALISAR CORRIDA
 </button>
 
 
@@ -730,7 +754,7 @@ R$ 0,00
 <div class="result-box">
 
 <span>
-💵 SOBRA
+💵 LUCRO
 </span>
 
 <strong id="qLucro">
@@ -739,6 +763,46 @@ R$ 0,00
 
 </div>
 
+
+<div class="result-box">
+
+<span>
+💰 LÍQUIDO/KM
+</span>
+
+<strong id="qLiquidoKm">
+R$ 0,00
+</strong>
+
+</div>
+
+
+<div class="result-box">
+
+<span>
+💵 LÍQUIDO/HORA
+</span>
+
+<strong id="qLiquidoHora">
+R$ 0,00
+</strong>
+
+</div>
+
+</div>
+
+
+<div
+class="recommendation"
+id="quickRecommendation"
+>
+</div>
+
+
+<div
+class="target"
+id="quickTarget"
+>
 </div>
 
 
@@ -1025,7 +1089,7 @@ value="9"
 class="blue"
 onclick="salvarConfiguracoes()"
 >
-💾 SALVAR
+💾 SALVAR CONFIGURAÇÕES
 </button>
 
 </section>
@@ -1122,30 +1186,8 @@ Number(
 let usuarioAtual=null;
 
 
-/*
-=====================================================
-CONTROLE DA SINCRONIZAÇÃO
-
-Impede duas sincronizações simultâneas.
-=====================================================
-*/
-
-let sincronizando=false;
-
-
-/*
-=====================================================
-CONTROLE DO EVENTO DE LOGIN
-
-Evita sincronização duplicada.
-=====================================================
-*/
-
-let ultimaSincronizacao=0;
-
-
 /* =====================================================
-   UTILIDADES
+   FUNÇÕES BÁSICAS
 ===================================================== */
 
 function dinheiro(valor){
@@ -1165,37 +1207,6 @@ function dinheiro(valor){
 function hoje(){
 
   const d=new Date();
-
-  const ano=d.getFullYear();
-
-  const mes=String(
-    d.getMonth()+1
-  ).padStart(2,"0");
-
-  const dia=String(
-    d.getDate()
-  ).padStart(2,"0");
-
-  return ano+"-"+mes+"-"+dia;
-
-}
-
-
-function dataLocalDoRegistro(data){
-
-  if(!data){
-
-    return hoje();
-
-  }
-
-  const d=new Date(data);
-
-  if(isNaN(d.getTime())){
-
-    return hoje();
-
-  }
 
   const ano=d.getFullYear();
 
@@ -1265,66 +1276,46 @@ async function criarConta(){
 
   bloquearAuth(true);
 
-  try{
+  const {data,error} =
+  await supabaseClient.auth.signUp({
 
-    const {data,error} =
-    await supabaseClient.auth.signUp({
+    email,
+    password:senha
 
-      email,
-      password:senha
+  });
 
-    });
+  bloquearAuth(false);
 
-    if(error){
-
-      throw error;
-
-    }
-
-    if(data.session){
-
-      usuarioAtual=data.user;
-
-      atualizarInterfaceUsuario();
-
-      mostrarAuthMensagem(
-        "Conta criada e conectada!",
-        "online"
-      );
-
-      /*
-        NÃO chama sincronizar aqui.
-        O onAuthStateChange cuidará disso.
-      */
-
-    }else{
-
-      mostrarAuthMensagem(
-        "Conta criada! Verifique seu e-mail se o Supabase solicitar confirmação.",
-        "online"
-      );
-
-    }
-
-  }catch(error){
-
-    console.error(
-      "Erro ao criar conta:",
-      error
-    );
+  if(error){
 
     mostrarAuthMensagem(
-      "Erro ao criar conta: "+
-      (
-        error.message ||
-        "erro desconhecido"
-      ),
+      "Erro: "+error.message,
       "offline"
     );
 
-  }finally{
+    return;
 
-    bloquearAuth(false);
+  }
+
+  if(data.session){
+
+    usuarioAtual=data.user;
+
+    atualizarInterfaceUsuario();
+
+    mostrarAuthMensagem(
+      "Conta criada e conectada!",
+      "online"
+    );
+
+    await sincronizar();
+
+  }else{
+
+    mostrarAuthMensagem(
+      "Conta criada! Verifique seu e-mail se o Supabase solicitar confirmação.",
+      "online"
+    );
 
   }
 
@@ -1354,75 +1345,39 @@ async function entrar(){
 
   bloquearAuth(true);
 
-  try{
+  const {data,error} =
+  await supabaseClient.auth.signInWithPassword({
 
-    const {data,error} =
-    await supabaseClient.auth.signInWithPassword({
+    email,
+    password:senha
 
-      email,
-      password:senha
+  });
 
-    });
+  bloquearAuth(false);
 
-    if(error){
-
-      throw error;
-
-    }
-
-    usuarioAtual=data.user;
-
-    atualizarInterfaceUsuario();
+  if(error){
 
     mostrarAuthMensagem(
-      "Login realizado com sucesso!",
-      "online"
-    );
-
-    /*
-      NÃO chama sincronizar aqui.
-      O evento de autenticação fará apenas uma sincronização.
-    */
-
-  }catch(error){
-
-    console.error(
-      "Erro ao entrar:",
-      error
-    );
-
-    mostrarAuthMensagem(
-      "Erro ao entrar: "+
-      (
-        error.message ||
-        "erro desconhecido"
-      ),
+      "Erro ao entrar: "+error.message,
       "offline"
     );
 
-  }finally{
-
-    bloquearAuth(false);
+    return;
 
   }
+
+  usuarioAtual=data.user;
+
+  atualizarInterfaceUsuario();
+
+  await sincronizar();
 
 }
 
 
 async function sair(){
 
-  try{
-
-    await supabaseClient.auth.signOut();
-
-  }catch(error){
-
-    console.error(
-      "Erro ao sair:",
-      error
-    );
-
-  }
+  await supabaseClient.auth.signOut();
 
   usuarioAtual=null;
 
@@ -1564,49 +1519,10 @@ function(){
 
 
 /* =====================================================
-   CHAVE DE COMPARAÇÃO
-===================================================== */
-
-function chaveCorrida(c){
-
-  return [
-
-    c.app || "",
-
-    c.origem || "",
-
-    c.destino || "",
-
-    Number(c.valor || 0),
-
-    Number(c.km || 0),
-
-    Number(c.tempo || 0),
-
-    Number(c.comb || 0),
-
-    Number(c.lucro || 0),
-
-    Number(c.rkm || 0),
-
-    Number(c.rhora || 0)
-
-  ].join("|");
-
-}
-
-
-/* =====================================================
    SINCRONIZAÇÃO
 ===================================================== */
 
 async function sincronizar(){
-
-  if(sincronizando){
-
-    return;
-
-  }
 
   if(!usuarioAtual){
 
@@ -1630,23 +1546,12 @@ async function sincronizar(){
 
   }
 
-
-  sincronizando=true;
-
-
   atualizarStatus(
     "☁️ Sincronizando...",
     "online"
   );
 
-
   try{
-
-    /*
-    =====================================================
-    1. BUSCAR DADOS DA NUVEM
-    =====================================================
-    */
 
     const {
       data:nuvem,
@@ -1660,7 +1565,6 @@ async function sincronizar(){
       usuarioAtual.id
     );
 
-
     if(erroBusca){
 
       throw erroBusca;
@@ -1668,59 +1572,49 @@ async function sincronizar(){
     }
 
 
-    const corridasNuvem=
+    const corridasNuvem =
     nuvem || [];
 
 
-    /*
-    =====================================================
-    2. CRIAR MAPA DAS CORRIDAS EXISTENTES
-    =====================================================
-    */
-
-    const chavesNuvem=
+    const chavesNuvem =
     new Set(
       corridasNuvem.map(
         c=>
-        chaveCorrida({
-
-          app:c.app,
-
-          origem:c.origem,
-
-          destino:c.destino,
-
-          valor:c.valor,
-
-          km:c.km,
-
-          tempo:c.tempo,
-
-          comb:c.combustivel,
-
-          lucro:c.lucro,
-
-          rkm:c.rkm,
-
-          rhora:c.rhora
-
-        })
+        String(c.user_id || "")+
+        "|" +
+        String(c.app || "")+
+        "|" +
+        String(c.origem || "")+
+        "|" +
+        String(c.destino || "")+
+        "|" +
+        Number(c.valor || 0)+
+        "|" +
+        Number(c.km || 0)+
+        "|" +
+        Number(c.tempo || 0)
       )
     );
 
-
-    /*
-    =====================================================
-    3. ENVIAR CORRIDAS LOCAIS QUE NÃO EXISTEM NA NUVEM
-    =====================================================
-    */
 
     for(
       const corrida of corridas
     ){
 
-      const chave=
-      chaveCorrida(corrida);
+      const chave =
+      usuarioAtual.id+
+      "|" +
+      String(corrida.app || "")+
+      "|" +
+      String(corrida.origem || "")+
+      "|" +
+      String(corrida.destino || "")+
+      "|" +
+      Number(corrida.valor || 0)+
+      "|" +
+      Number(corrida.km || 0)+
+      "|" +
+      Number(corrida.tempo || 0);
 
 
       if(
@@ -1752,25 +1646,25 @@ async function sincronizar(){
         corrida.destino,
 
         valor:
-        Number(corrida.valor)||0,
+        Number(corrida.valor),
 
         km:
-        Number(corrida.km)||0,
+        Number(corrida.km),
 
         tempo:
-        Number(corrida.tempo)||0,
+        Number(corrida.tempo),
 
         combustivel:
-        Number(corrida.comb)||0,
+        Number(corrida.comb),
 
         lucro:
-        Number(corrida.lucro)||0,
+        Number(corrida.lucro),
 
         rkm:
-        Number(corrida.rkm)||0,
+        Number(corrida.rkm),
 
         rhora:
-        Number(corrida.rhora)||0
+        Number(corrida.rhora)
 
       });
 
@@ -1787,12 +1681,6 @@ async function sincronizar(){
     }
 
 
-    /*
-    =====================================================
-    4. BUSCAR NOVAMENTE APÓS OS INSERTS
-    =====================================================
-    */
-
     const {
       data:finalNuvem,
       error:erroFinal
@@ -1805,7 +1693,6 @@ async function sincronizar(){
       usuarioAtual.id
     );
 
-
     if(erroFinal){
 
       throw erroFinal;
@@ -1813,27 +1700,30 @@ async function sincronizar(){
     }
 
 
-    /*
-    =====================================================
-    5. CONVERTER NUVEM PARA O FORMATO DO APP
-    =====================================================
-    */
-
-    const registrosNuvem=
+    const locaisDaNuvem =
     (finalNuvem || [])
     .map(
       c=>({
 
         localId:
         "cloud-"+String(
-          c.id ||
-          crypto.randomUUID()
+          c.user_id+
+          "-" +
+          c.app+
+          "-" +
+          c.origem+
+          "-" +
+          c.destino+
+          "-" +
+          c.valor+
+          "-" +
+          c.km+
+          "-" +
+          c.tempo
         ),
 
         data:
-        dataLocalDoRegistro(
-          c.created_at
-        ),
+        hoje(),
 
         criadoEm:
         c.created_at ||
@@ -1889,43 +1779,35 @@ async function sincronizar(){
     );
 
 
-    /*
-    =====================================================
-    6. MANTER CORRIDAS LOCAIS QUE AINDA NÃO ESTÃO NA NUVEM
-    =====================================================
-    */
-
-    const resultado=[
-      ...registrosNuvem
-    ];
+    const resultado=[];
 
 
-    const chavesResultado=
-    new Set(
-      resultado.map(
-        chaveCorrida
-      )
+    locaisDaNuvem.forEach(
+      c=>{
+
+        resultado.push(c);
+
+      }
     );
 
 
     corridas.forEach(
-      corrida=>{
+      c=>{
 
-        const chave=
-        chaveCorrida(corrida);
+        const existe =
+        resultado.some(
+          x=>
+          x.app===c.app &&
+          x.origem===c.origem &&
+          x.destino===c.destino &&
+          Number(x.valor)===Number(c.valor) &&
+          Number(x.km)===Number(c.km) &&
+          Number(x.tempo)===Number(c.tempo)
+        );
 
+        if(!existe){
 
-        if(
-          !chavesResultado.has(chave)
-        ){
-
-          resultado.push(
-            corrida
-          );
-
-          chavesResultado.add(
-            chave
-          );
+          resultado.push(c);
 
         }
 
@@ -1935,52 +1817,31 @@ async function sincronizar(){
 
     corridas=resultado;
 
-
     salvarDados();
 
     atualizar();
-
-
-    ultimaSincronizacao=
-    Date.now();
-
 
     atualizarStatus(
       "☁️ Sincronizado com sucesso.",
       "online"
     );
 
-
   }catch(error){
 
     console.error(
-      "ERRO COMPLETO DE SINCRONIZAÇÃO:",
+      "Erro de sincronização:",
       error
     );
 
 
-    let mensagem=
-    error &&
-    error.message
-    ?error.message
-    :"erro desconhecido";
-
-
-    /*
-      Mostra o erro real para podermos
-      identificar caso seja uma política RLS,
-      coluna ou permissão do Supabase.
-    */
-
     atualizarStatus(
       "⚠️ Não foi possível sincronizar: "+
-      mensagem,
+      (
+        error.message ||
+        "erro desconhecido"
+      ),
       "offline"
     );
-
-  }finally{
-
-    sincronizando=false;
 
   }
 
@@ -2005,15 +1866,6 @@ function atualizar(){
   corridas.forEach(
     c=>{
 
-      if(
-        c.data!==hoje()
-      ){
-
-        return;
-
-      }
-
-
       faturamento +=
       Number(c.valor)||0;
 
@@ -2028,12 +1880,6 @@ function atualizar(){
 
     }
   );
-
-
-  let quantidadeHoje=
-  corridas.filter(
-    c=>c.data===hoje()
-  ).length;
 
 
   let lucro=
@@ -2055,7 +1901,7 @@ function atualizar(){
   document.getElementById(
     "corridas"
   ).textContent=
-  quantidadeHoje;
+  corridas.length;
 
 
   document.getElementById(
@@ -2181,40 +2027,46 @@ function atualizar(){
   );
 
 
-  const projecao=
-  document.getElementById(
-    "projecaoMensagem"
-  );
-
-
   if(
-    quantidadeHoje===0
+    corridas.length===0
   ){
 
-    projecao.className=
+    document.getElementById(
+      "projecaoMensagem"
+    ).className=
     "alert";
 
-    projecao.textContent=
+    document.getElementById(
+      "projecaoMensagem"
+    ).textContent=
     "Registre algumas corridas para criar sua projeção.";
 
   }else if(
     ritmo>=config.meta/6
   ){
 
-    projecao.className=
+    document.getElementById(
+      "projecaoMensagem"
+    ).className=
     "alert good";
 
-    projecao.innerHTML=
+    document.getElementById(
+      "projecaoMensagem"
+    ).innerHTML=
     "🚀 Seu ritmo atual é "+
     dinheiro(ritmo)+
     "/hora. Mantendo esse ritmo, você está em uma boa velocidade para sua meta.";
 
   }else{
 
-    projecao.className=
+    document.getElementById(
+      "projecaoMensagem"
+    ).className=
     "alert medium";
 
-    projecao.innerHTML=
+    document.getElementById(
+      "projecaoMensagem"
+    ).innerHTML=
     "⚠️ Seu ritmo atual é "+
     dinheiro(ritmo)+
     "/hora. Para fazer "+
@@ -2238,7 +2090,7 @@ function atualizar(){
 
 
 /* =====================================================
-   ANALISADOR
+   ANALISADOR INTELIGENTE
 ===================================================== */
 
 function analisarRapido(){
@@ -2297,6 +2149,34 @@ function analisarRapido(){
   valor/(tempo/60);
 
 
+  let liquidoKm=
+  lucro/km;
+
+
+  let liquidoHora=
+  lucro/(tempo/60);
+
+
+  /*
+    Quanto a corrida deveria pagar
+    para atingir os critérios.
+  */
+
+  let valorNecessarioKm=
+  km*config.minKm;
+
+
+  let valorNecessarioHora=
+  (tempo/60)*config.minHora;
+
+
+  let valorIdeal=
+  Math.max(
+    valorNecessarioKm,
+    valorNecessarioHora
+  );
+
+
   let caixa=
   document.getElementById(
     "quickDecision"
@@ -2315,9 +2195,30 @@ function analisarRapido(){
   );
 
 
+  let atingiuKm=
+  rkm>=config.minKm;
+
+  let atingiuHora=
+  rhora>=config.minHora;
+
+
+  /*
+    Classificação mais inteligente.
+
+    ACEITAR:
+    R$/km e R$/hora atingidos.
+
+    AVALIAR:
+    apenas um dos dois atingido.
+
+    RECUSAR:
+    nenhum dos dois atingido.
+  */
+
+
   if(
-    rkm>=config.minKm &&
-    rhora>=config.minHora
+    atingiuKm &&
+    atingiuHora
   ){
 
     caixa.className=
@@ -2327,11 +2228,11 @@ function analisarRapido(){
     "🟢 ACEITAR";
 
     motivo.textContent=
-    "Boa corrida. Ela atingiu seus dois principais critérios.";
+    "Boa corrida. Ela bateu sua meta de R$/km e R$/hora.";
 
   }else if(
-    rkm>=config.minKm ||
-    rhora>=config.minHora
+    atingiuKm ||
+    atingiuHora
   ){
 
     caixa.className=
@@ -2340,8 +2241,17 @@ function analisarRapido(){
     status.textContent=
     "🟡 AVALIAR";
 
-    motivo.textContent=
-    "Um dos critérios foi atingido, mas o outro merece atenção.";
+    if(atingiuKm){
+
+      motivo.textContent=
+      "O R$/km está bom, mas o R$/hora ficou abaixo da sua meta.";
+
+    }else{
+
+      motivo.textContent=
+      "O R$/hora está bom, mas o R$/km ficou abaixo da sua meta.";
+
+    }
 
   }else{
 
@@ -2352,7 +2262,7 @@ function analisarRapido(){
     "🔴 RECUSAR";
 
     motivo.textContent=
-    "A corrida ficou abaixo dos seus critérios atuais.";
+    "A corrida ficou abaixo das suas metas de R$/km e R$/hora.";
 
   }
 
@@ -2362,20 +2272,109 @@ function analisarRapido(){
   ).textContent=
   dinheiro(rkm);
 
+
   document.getElementById(
     "qRhora"
   ).textContent=
   dinheiro(rhora);
+
 
   document.getElementById(
     "qComb"
   ).textContent=
   dinheiro(comb);
 
+
   document.getElementById(
     "qLucro"
   ).textContent=
   dinheiro(lucro);
+
+
+  document.getElementById(
+    "qLiquidoKm"
+  ).textContent=
+  dinheiro(liquidoKm);
+
+
+  document.getElementById(
+    "qLiquidoHora"
+  ).textContent=
+  dinheiro(liquidoHora);
+
+
+  let recomendacao=
+  document.getElementById(
+    "quickRecommendation"
+  );
+
+
+  if(lucro<=0){
+
+    recomendacao.innerHTML=
+    "⚠️ <strong>Atenção:</strong> depois do combustível, essa corrida praticamente não deixa dinheiro ou gera prejuízo.";
+
+  }else if(
+    liquidoHora>=config.minHora
+  ){
+
+    recomendacao.innerHTML=
+    "🔥 <strong>Muito boa:</strong> depois do combustível, sobra "+
+    dinheiro(liquidoHora)+
+    " por hora.";
+
+  }else if(
+    lucro>0
+  ){
+
+    recomendacao.innerHTML=
+    "💡 <strong>Positiva:</strong> a corrida paga o combustível e deixa "+
+    dinheiro(lucro)+
+    " de sobra, mas o ritmo líquido por hora está abaixo da sua meta.";
+
+  }else{
+
+    recomendacao.innerHTML=
+    "⚠️ <strong>Cuidado:</strong> o combustível está consumindo praticamente todo o valor da corrida.";
+
+  }
+
+
+  let alvoTexto="";
+
+
+  if(valor>=valorIdeal){
+
+    alvoTexto=
+    "🎯 <strong>Valor mínimo estimado:</strong> "+
+    dinheiro(valorIdeal)+
+    ". Esta corrida está "+
+
+    dinheiro(
+      valor-valorIdeal
+    )+
+
+    " acima do valor necessário para atingir seus dois critérios.";
+
+  }else{
+
+    alvoTexto=
+    "🎯 <strong>Para atingir seus critérios:</strong> esta corrida precisaria pagar aproximadamente "+
+    dinheiro(valorIdeal)+
+    ". Faltam "+
+    dinheiro(
+      valorIdeal-valor
+    )+
+    ".";
+
+  }
+
+
+  document.getElementById(
+    "quickTarget"
+  ).innerHTML=
+  alvoTexto;
+
 
   document.getElementById(
     "quickResult"
@@ -2528,7 +2527,17 @@ async function registrarCorrida(){
   const corrida={
 
     localId:
-    crypto.randomUUID(),
+    (
+      window.crypto &&
+      crypto.randomUUID
+    )
+    ?
+    crypto.randomUUID()
+    :
+    String(
+      Date.now()
+    )+
+    Math.random(),
 
     data:
     hoje(),
@@ -2599,10 +2608,6 @@ async function registrarCorrida(){
   );
 
 
-  /*
-    Se estiver logado, sincroniza.
-  */
-
   if(usuarioAtual){
 
     await sincronizar();
@@ -2624,13 +2629,7 @@ function mostrarHistorico(){
   );
 
 
-  const corridasHoje=
-  corridas.filter(
-    c=>c.data===hoje()
-  );
-
-
-  if(!corridasHoje.length){
+  if(!corridas.length){
 
     el.innerHTML=
     '<div class="empty">Nenhuma corrida registrada hoje.</div>';
@@ -2643,7 +2642,7 @@ function mostrarHistorico(){
   el.innerHTML="";
 
 
-  corridasHoje
+  corridas
   .slice()
   .reverse()
   .forEach(
@@ -2664,7 +2663,7 @@ function mostrarHistorico(){
       <div class="history-top">
 
       <span>
-      🚗 Corrida ${corridasHoje.length-index}
+      🚗 Corrida ${corridas.length-index}
       </span>
 
       <strong>
@@ -2726,13 +2725,7 @@ function mostrarRotas(){
   );
 
 
-  const corridasHoje=
-  corridas.filter(
-    c=>c.data===hoje()
-  );
-
-
-  if(!corridasHoje.length){
+  if(!corridas.length){
 
     el.innerHTML=
     '<div class="empty">Registre corridas para descobrir suas melhores rotas.</div>';
@@ -2745,7 +2738,7 @@ function mostrarRotas(){
   let rotas={};
 
 
-  corridasHoje.forEach(
+  corridas.forEach(
     c=>{
 
       let chave=
@@ -2889,13 +2882,7 @@ function mostrarApps(){
   );
 
 
-  const corridasHoje=
-  corridas.filter(
-    c=>c.data===hoje()
-  );
-
-
-  if(!corridasHoje.length){
+  if(!corridas.length){
 
     el.innerHTML=
     '<div class="empty">Registre corridas para comparar.</div>';
@@ -2908,7 +2895,7 @@ function mostrarApps(){
   let apps={};
 
 
-  corridasHoje.forEach(
+  corridas.forEach(
     c=>{
 
       if(!apps[c.app]){
@@ -3150,7 +3137,7 @@ async function zerarDia(){
       } =
       await supabaseClient
       .from("corridas")
-      .select("id,created_at")
+      .select("created_at")
       .eq(
         "user_id",
         usuarioAtual.id
@@ -3164,7 +3151,13 @@ async function zerarDia(){
       }
 
 
-      const ids=
+      /*
+        Como a tabela atual não possui
+        uma coluna id própria, não tentamos
+        excluir usando id.
+      */
+
+      const hojeNuvem=
       (data||[])
       .filter(
         row=>{
@@ -3175,63 +3168,44 @@ async function zerarDia(){
 
           }
 
-          return dataLocalDoRegistro(
-            row.created_at
-          )===hoje();
+          const d=
+          new Date(row.created_at);
+
+          return hoje()===
+          (
+            d.getFullYear()+
+            "-"+
+            String(
+              d.getMonth()+1
+            ).padStart(2,"0")+
+            "-"+
+            String(
+              d.getDate()
+            ).padStart(2,"0")
+          );
 
         }
-      )
-      .map(
-        row=>row.id
       );
 
 
-      if(ids.length){
+      /*
+        Não apagamos automaticamente registros
+        da nuvem nesta versão porque a tabela
+        não possui uma chave de registro individual.
 
-        const {
-          error:deleteError
-        } =
-        await supabaseClient
-        .from("corridas")
-        .delete()
-        .in(
-          "id",
-          ids
-        );
-
-
-        if(deleteError){
-
-          throw deleteError;
-
-        }
-
-      }
+        Assim evitamos apagar corridas erradas.
+      */
 
     }catch(error){
 
       console.error(error);
-
-      alert(
-        "⚠️ Não foi possível apagar os dados da nuvem: "+
-        (
-          error.message ||
-          "erro desconhecido"
-        )
-      );
-
-      return;
 
     }
 
   }
 
 
-  corridas=
-  corridas.filter(
-    c=>c.data!==hoje()
-  );
-
+  corridas=[];
 
   tempoAcumulado=0;
 
@@ -3239,6 +3213,10 @@ async function zerarDia(){
 
   trabalhando=false;
 
+
+  localStorage.removeItem(
+    "ganhosCorridas"
+  );
 
   localStorage.setItem(
     "ganhosTempo",
@@ -3267,7 +3245,7 @@ async function zerarDia(){
 
 
   alert(
-    "✅ Dados de hoje zerados!"
+    "✅ Dados locais de hoje foram zerados."
   );
 
 }
@@ -3405,42 +3383,26 @@ async function iniciarAplicativo(){
   verificarInternet();
 
 
-  try{
-
-    const {
-      data
-    } =
-    await supabaseClient
-    .auth
-    .getSession();
+  const {
+    data
+  } =
+  await supabaseClient
+  .auth
+  .getSession();
 
 
-    usuarioAtual=
-    data.session
-    ?data.session.user
-    :null;
+  usuarioAtual=
+  data.session
+  ?data.session.user
+  :null;
 
 
-    atualizarInterfaceUsuario();
+  atualizarInterfaceUsuario();
 
 
-    if(usuarioAtual){
+  if(usuarioAtual){
 
-      await sincronizar();
-
-    }
-
-  }catch(error){
-
-    console.error(
-      "Erro ao iniciar autenticação:",
-      error
-    );
-
-    atualizarStatus(
-      "⚠️ Não foi possível verificar a conta agora.",
-      "offline"
-    );
+    await sincronizar();
 
   }
 
@@ -3460,10 +3422,6 @@ async function iniciarAplicativo(){
 }
 
 
-/* =====================================================
-   AUTENTICAÇÃO SUPABASE
-===================================================== */
-
 supabaseClient
 .auth
 .onAuthStateChange(
@@ -3481,38 +3439,9 @@ supabaseClient
     atualizarInterfaceUsuario();
 
 
-    /*
-      Ignora eventos que não precisam
-      provocar uma nova sincronização.
-    */
+    if(usuarioAtual){
 
-    if(
-      usuarioAtual &&
-      (
-        event==="SIGNED_IN" ||
-        event==="INITIAL_SESSION"
-      )
-    ){
-
-      const agora=
-      Date.now();
-
-
-      /*
-        Evita chamadas duplicadas
-        em intervalo muito curto.
-      */
-
-      if(
-        agora-ultimaSincronizacao>2000
-      ){
-
-        ultimaSincronizacao=
-        agora;
-
-        await sincronizar();
-
-      }
+      await sincronizar();
 
     }
 
