@@ -174,6 +174,10 @@ button:disabled{
   background:#64748b;
 }
 
+.dark{
+  background:#111827;
+}
+
 .quick{
   background:#111827;
   color:white;
@@ -241,6 +245,25 @@ button:disabled{
   color:#991b1b;
 }
 
+.score{
+  text-align:center;
+  background:#f8fafc;
+  border-radius:14px;
+  padding:12px;
+  margin-bottom:10px;
+}
+
+.score strong{
+  font-size:30px;
+}
+
+.score span{
+  display:block;
+  font-size:11px;
+  color:#64748b;
+  margin-top:3px;
+}
+
 .result-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
@@ -269,26 +292,6 @@ button:disabled{
   grid-column:1/3;
 }
 
-.recommendation{
-  background:#eff6ff;
-  color:#1e40af;
-  border-radius:13px;
-  padding:13px;
-  margin-top:10px;
-  font-size:13px;
-  line-height:1.5;
-}
-
-.target{
-  background:#f8fafc;
-  color:#334155;
-  border-radius:13px;
-  padding:13px;
-  margin-top:10px;
-  font-size:13px;
-  line-height:1.6;
-}
-
 .history-item{
   border:1px solid #e2e8f0;
   border-radius:14px;
@@ -301,7 +304,7 @@ button:disabled{
   justify-content:space-between;
   font-weight:bold;
   margin-bottom:8px;
-  gap:10px;
+  gap:8px;
 }
 
 .history-info{
@@ -395,8 +398,40 @@ button:disabled{
   font-size:14px;
 }
 
-.highlight{
+.section-note{
+  color:#64748b;
+  font-size:12px;
+  line-height:1.5;
+  margin-top:-6px;
+  margin-bottom:10px;
+}
+
+.route-title{
   font-weight:bold;
+  font-size:15px;
+}
+
+.badge{
+  display:inline-block;
+  padding:5px 8px;
+  border-radius:8px;
+  font-size:11px;
+  font-weight:bold;
+}
+
+.badge-good{
+  background:#dcfce7;
+  color:#166534;
+}
+
+.badge-medium{
+  background:#fef3c7;
+  color:#92400e;
+}
+
+.badge-bad{
+  background:#fee2e2;
+  color:#991b1b;
 }
 
 </style>
@@ -419,6 +454,10 @@ Seu controle inteligente de corridas
 
 </header>
 
+
+<!-- =====================================================
+     CONTA
+===================================================== -->
 
 <section class="card auth" id="authCard">
 
@@ -469,7 +508,6 @@ Você pode usar o aplicativo offline. O login é necessário para sincronizar su
 
 </div>
 
-
 <div
 id="usuarioArea"
 class="hidden"
@@ -502,6 +540,10 @@ id="syncStatus"
 </section>
 
 
+<!-- =====================================================
+     RESUMO
+===================================================== -->
+
 <section class="card">
 
 <h2>📊 Resumo de hoje</h2>
@@ -518,7 +560,6 @@ R$ 0,00
 
 </div>
 
-
 <div class="metric">
 
 <span>🚗 CORRIDAS</span>
@@ -528,7 +569,6 @@ R$ 0,00
 </strong>
 
 </div>
-
 
 <div class="metric full">
 
@@ -540,7 +580,6 @@ R$ 0,00
 
 </div>
 
-
 <div class="metric">
 
 <span>📍 KM</span>
@@ -550,7 +589,6 @@ R$ 0,00
 </strong>
 
 </div>
-
 
 <div class="metric">
 
@@ -577,7 +615,6 @@ R$ 300,00
 
 </div>
 
-
 <div class="bar">
 
 <div
@@ -587,7 +624,6 @@ id="progress"
 </div>
 
 </div>
-
 
 <div
 id="metaMensagem"
@@ -621,14 +657,20 @@ onclick="alternarTimer()"
 </section>
 
 
+<!-- =====================================================
+     ANALISADOR INTELIGENTE
+===================================================== -->
+
 <section class="card quick">
 
 <h2>
-⚡ Analisar corrida
+⚡ Analisador inteligente
 </h2>
 
 <p>
-Digite valor, distância e tempo. O aplicativo calcula o combustível, lucro, R$/km e R$/hora e compara com seus critérios.
+Digite valor, distância e tempo. O sistema calcula R$/km,
+R$/hora, combustível, lucro e uma pontuação para ajudar
+na decisão.
 </p>
 
 
@@ -648,7 +690,6 @@ placeholder="25"
 
 </div>
 
-
 <div>
 
 <label>📍 KM</label>
@@ -662,7 +703,6 @@ placeholder="10"
 >
 
 </div>
-
 
 <div>
 
@@ -706,6 +746,19 @@ id="quickDecision"
 <p id="quickMotivo">
 -
 </p>
+
+</div>
+
+
+<div class="score">
+
+<strong id="qScore">
+0
+</strong>
+
+<span>
+PONTUAÇÃO DA CORRIDA — 0 A 100
+</span>
 
 </div>
 
@@ -763,46 +816,18 @@ R$ 0,00
 
 </div>
 
-
-<div class="result-box">
+<div class="result-box full">
 
 <span>
-💰 LÍQUIDO/KM
+💰 VALOR NECESSÁRIO PARA ATINGIR SEUS CRITÉRIOS
 </span>
 
-<strong id="qLiquidoKm">
+<strong id="qMinValor">
 R$ 0,00
 </strong>
 
 </div>
 
-
-<div class="result-box">
-
-<span>
-💵 LÍQUIDO/HORA
-</span>
-
-<strong id="qLiquidoHora">
-R$ 0,00
-</strong>
-
-</div>
-
-</div>
-
-
-<div
-class="recommendation"
-id="quickRecommendation"
->
-</div>
-
-
-<div
-class="target"
-id="quickTarget"
->
 </div>
 
 
@@ -818,12 +843,15 @@ onclick="limparAnalise()"
 </section>
 
 
+<!-- =====================================================
+     REGISTRAR
+===================================================== -->
+
 <section class="card">
 
 <h2>
 🚗 Registrar corrida
 </h2>
-
 
 <label>
 📱 Aplicativo
@@ -832,11 +860,8 @@ onclick="limparAnalise()"
 <select id="app">
 
 <option>99</option>
-
 <option>Uber</option>
-
 <option>InDrive</option>
-
 <option>Outro</option>
 
 </select>
@@ -908,6 +933,10 @@ onclick="registrarCorrida()"
 </section>
 
 
+<!-- =====================================================
+     PROJEÇÃO
+===================================================== -->
+
 <section class="card">
 
 <h2>
@@ -967,11 +996,21 @@ Registre algumas corridas para criar sua projeção.
 </section>
 
 
+<!-- =====================================================
+     ROTAS
+===================================================== -->
+
 <section class="card">
 
 <h2>
 🏆 Melhores rotas
 </h2>
+
+<div
+class="section-note"
+>
+As rotas são classificadas pelo faturamento médio por hora.
+</div>
 
 <div id="rotas">
 
@@ -983,6 +1022,10 @@ Registre corridas para descobrir suas melhores rotas.
 
 </section>
 
+
+<!-- =====================================================
+     APLICATIVOS
+===================================================== -->
 
 <section class="card">
 
@@ -1001,6 +1044,10 @@ Registre corridas para comparar.
 </section>
 
 
+<!-- =====================================================
+     HISTÓRICO
+===================================================== -->
+
 <section class="card">
 
 <h2>
@@ -1018,12 +1065,15 @@ Nenhuma corrida registrada hoje.
 </section>
 
 
+<!-- =====================================================
+     CONFIGURAÇÕES
+===================================================== -->
+
 <section class="card">
 
 <h2>
 ⚙️ Configurações
 </h2>
-
 
 <label>
 🎯 Meta diária
@@ -1089,11 +1139,15 @@ value="9"
 class="blue"
 onclick="salvarConfiguracoes()"
 >
-💾 SALVAR CONFIGURAÇÕES
+💾 SALVAR
 </button>
 
 </section>
 
+
+<!-- =====================================================
+     CONTROLE
+===================================================== -->
 
 <section class="card">
 
@@ -1113,7 +1167,7 @@ onclick="zerarDia()"
 
 <div class="footer">
 
-Ganhos Drive • Controle de ganhos para motorista
+Ganhos Drive • Modo inteligente de análise
 
 </div>
 
@@ -1124,6 +1178,10 @@ Ganhos Drive • Controle de ganhos para motorista
 
 
 <script>
+
+/* =====================================================
+   SUPABASE
+===================================================== */
 
 const SUPABASE_URL =
 "https://beiattgdvpsltdhenpoy.supabase.co";
@@ -1137,6 +1195,10 @@ window.supabase.createClient(
   SUPABASE_PUBLISHABLE_KEY
 );
 
+
+/* =====================================================
+   CONFIGURAÇÃO
+===================================================== */
 
 const PADRAO = {
 
@@ -1156,7 +1218,7 @@ const PADRAO = {
 let config =
 JSON.parse(
   localStorage.getItem("ganhosConfig")
-) || PADRAO;
+) || {...PADRAO};
 
 
 let corridas =
@@ -1187,7 +1249,7 @@ let usuarioAtual=null;
 
 
 /* =====================================================
-   FUNÇÕES BÁSICAS
+   UTILIDADES
 ===================================================== */
 
 function dinheiro(valor){
@@ -1208,17 +1270,9 @@ function hoje(){
 
   const d=new Date();
 
-  const ano=d.getFullYear();
-
-  const mes=String(
-    d.getMonth()+1
-  ).padStart(2,"0");
-
-  const dia=String(
-    d.getDate()
-  ).padStart(2,"0");
-
-  return ano+"-"+mes+"-"+dia;
+  return d.getFullYear()+"-"+
+    String(d.getMonth()+1).padStart(2,"0")+"-"+
+    String(d.getDate()).padStart(2,"0");
 
 }
 
@@ -1234,6 +1288,145 @@ function salvarDados(){
     "ganhosConfig",
     JSON.stringify(config)
   );
+
+}
+
+
+function calcularCorrida(valor,km,tempo){
+
+  const combustivel =
+    (km/config.consumo)*
+    config.gasolina;
+
+  const lucro =
+    valor-combustivel;
+
+  const rkm =
+    km>0 ? valor/km : 0;
+
+  const rhora =
+    tempo>0
+    ?valor/(tempo/60)
+    :0;
+
+  return {
+    combustivel,
+    lucro,
+    rkm,
+    rhora
+  };
+
+}
+
+
+function calcularScore(rkm,rhora,combustivel,valor){
+
+  let pontosKm=0;
+  let pontosHora=0;
+  let pontosLucro=0;
+
+  if(rkm>=config.minKm){
+
+    pontosKm=35;
+
+    if(rkm>=config.minKm*1.25){
+      pontosKm=40;
+    }
+
+  }else{
+
+    pontosKm=
+    Math.max(
+      0,
+      35*(rkm/config.minKm)
+    );
+
+  }
+
+
+  if(rhora>=config.minHora){
+
+    pontosHora=35;
+
+    if(rhora>=config.minHora*1.25){
+      pontosHora=40;
+    }
+
+  }else{
+
+    pontosHora=
+    Math.max(
+      0,
+      35*(rhora/config.minHora)
+    );
+
+  }
+
+
+  const lucroPercentual =
+    valor>0
+    ?(valor-combustivel)/valor
+    :0;
+
+
+  pontosLucro=
+  Math.min(
+    20,
+    Math.max(
+      0,
+      lucroPercentual*20
+    )
+  );
+
+
+  return Math.round(
+    Math.min(
+      100,
+      pontosKm+
+      pontosHora+
+      pontosLucro
+    )
+  );
+
+}
+
+
+function decidir(rkm,rhora){
+
+  if(
+    rkm>=config.minKm &&
+    rhora>=config.minHora
+  ){
+
+    return "good";
+
+  }
+
+  if(
+    rkm>=config.minKm ||
+    rhora>=config.minHora
+  ){
+
+    return "medium";
+
+  }
+
+  return "bad";
+
+}
+
+
+function textoDecisao(classe){
+
+  if(classe==="good"){
+    return "🟢 ACEITAR";
+  }
+
+  if(classe==="medium"){
+    return "🟡 AVALIAR";
+  }
+
+  return "🔴 RECUSAR";
 
 }
 
@@ -1278,10 +1471,8 @@ async function criarConta(){
 
   const {data,error} =
   await supabaseClient.auth.signUp({
-
     email,
     password:senha
-
   });
 
   bloquearAuth(false);
@@ -1347,10 +1538,8 @@ async function entrar(){
 
   const {data,error} =
   await supabaseClient.auth.signInWithPassword({
-
     email,
     password:senha
-
   });
 
   bloquearAuth(false);
@@ -1404,10 +1593,7 @@ function bloquearAuth(valor){
 }
 
 
-function mostrarAuthMensagem(
-  texto,
-  tipo
-){
+function mostrarAuthMensagem(texto,tipo){
 
   const el=document
   .getElementById("authMensagem");
@@ -1457,10 +1643,7 @@ function atualizarInterfaceUsuario(){
    STATUS
 ===================================================== */
 
-function atualizarStatus(
-  texto,
-  tipo
-){
+function atualizarStatus(texto,tipo){
 
   const el=document
   .getElementById("syncStatus");
@@ -1566,9 +1749,7 @@ async function sincronizar(){
     );
 
     if(erroBusca){
-
       throw erroBusca;
-
     }
 
 
@@ -1580,13 +1761,13 @@ async function sincronizar(){
     new Set(
       corridasNuvem.map(
         c=>
-        String(c.user_id || "")+
+        usuarioAtual.id+
         "|" +
-        String(c.app || "")+
+        (c.app || "")+
         "|" +
-        String(c.origem || "")+
+        (c.origem || "")+
         "|" +
-        String(c.destino || "")+
+        (c.destino || "")+
         "|" +
         Number(c.valor || 0)+
         "|" +
@@ -1604,25 +1785,23 @@ async function sincronizar(){
       const chave =
       usuarioAtual.id+
       "|" +
-      String(corrida.app || "")+
+      corrida.app+
       "|" +
-      String(corrida.origem || "")+
+      corrida.origem+
       "|" +
-      String(corrida.destino || "")+
+      corrida.destino+
       "|" +
-      Number(corrida.valor || 0)+
+      Number(corrida.valor)+
       "|" +
-      Number(corrida.km || 0)+
+      Number(corrida.km)+
       "|" +
-      Number(corrida.tempo || 0);
+      Number(corrida.tempo);
 
 
       if(
         chavesNuvem.has(chave)
       ){
-
         continue;
-
       }
 
 
@@ -1670,9 +1849,7 @@ async function sincronizar(){
 
 
       if(erroInsert){
-
         throw erroInsert;
-
       }
 
 
@@ -1694,9 +1871,7 @@ async function sincronizar(){
     );
 
     if(erroFinal){
-
       throw erroFinal;
-
     }
 
 
@@ -1706,21 +1881,7 @@ async function sincronizar(){
       c=>({
 
         localId:
-        "cloud-"+String(
-          c.user_id+
-          "-" +
-          c.app+
-          "-" +
-          c.origem+
-          "-" +
-          c.destino+
-          "-" +
-          c.valor+
-          "-" +
-          c.km+
-          "-" +
-          c.tempo
-        ),
+        "cloud-"+String(c.id || crypto.randomUUID()),
 
         data:
         hoje(),
@@ -1764,9 +1925,8 @@ async function sincronizar(){
 
         hora:
         c.created_at
-        ?new Date(
-          c.created_at
-        ).toLocaleTimeString(
+        ?new Date(c.created_at)
+        .toLocaleTimeString(
           "pt-BR",
           {
             hour:"2-digit",
@@ -1779,22 +1939,21 @@ async function sincronizar(){
     );
 
 
-    const resultado=[];
-
-
-    locaisDaNuvem.forEach(
-      c=>{
-
-        resultado.push(c);
-
-      }
+    const locaisHoje =
+    corridas.filter(
+      c=>c.data===hoje()
     );
 
 
-    corridas.forEach(
+    const resultado=[
+      ...locaisDaNuvem
+    ];
+
+
+    locaisHoje.forEach(
       c=>{
 
-        const existe =
+        const existe=
         resultado.some(
           x=>
           x.app===c.app &&
@@ -1805,10 +1964,9 @@ async function sincronizar(){
           Number(x.tempo)===Number(c.tempo)
         );
 
+
         if(!existe){
-
           resultado.push(c);
-
         }
 
       }
@@ -1835,7 +1993,7 @@ async function sincronizar(){
 
 
     atualizarStatus(
-      "⚠️ Não foi possível sincronizar: "+
+      "⚠️ Erro ao sincronizar: "+
       (
         error.message ||
         "erro desconhecido"
@@ -1855,38 +2013,35 @@ async function sincronizar(){
 function atualizar(){
 
   let faturamento=0;
-
   let combustivel=0;
-
   let km=0;
-
   let minutos=0;
 
 
   corridas.forEach(
     c=>{
 
-      faturamento +=
+      faturamento+=
       Number(c.valor)||0;
 
-      combustivel +=
+      combustivel+=
       Number(c.comb)||0;
 
-      km +=
+      km+=
       Number(c.km)||0;
 
-      minutos +=
+      minutos+=
       Number(c.tempo)||0;
 
     }
   );
 
 
-  let lucro=
+  const lucro=
   faturamento-combustivel;
 
 
-  let hora=
+  const hora=
   minutos>0
   ?faturamento/(minutos/60)
   :0;
@@ -1928,7 +2083,7 @@ function atualizar(){
   dinheiro(config.meta);
 
 
-  let percentual=
+  const percentual=
   config.meta>0
   ?(faturamento/config.meta)*100
   :0;
@@ -1943,7 +2098,7 @@ function atualizar(){
   )+"%";
 
 
-  let falta=
+  const falta=
   Math.max(
     config.meta-faturamento,
     0
@@ -1956,15 +2111,13 @@ function atualizar(){
   dinheiro(falta);
 
 
-  let metaMensagem=
+  const metaMensagem=
   document.getElementById(
     "metaMensagem"
   );
 
 
-  if(
-    faturamento>=config.meta
-  ){
+  if(faturamento>=config.meta){
 
     metaMensagem.className=
     "alert good";
@@ -1973,9 +2126,7 @@ function atualizar(){
     "🎉 <strong>Meta atingida!</strong> Você já chegou a "+
     dinheiro(faturamento)+".";
 
-  }else if(
-    percentual>=70
-  ){
+  }else if(percentual>=70){
 
     metaMensagem.className=
     "alert good";
@@ -1985,9 +2136,7 @@ function atualizar(){
     percentual.toFixed(0)+
     "% da meta. Continue assim!";
 
-  }else if(
-    percentual>=40
-  ){
+  }else if(percentual>=40){
 
     metaMensagem.className=
     "alert medium";
@@ -2010,68 +2159,54 @@ function atualizar(){
   }
 
 
-  let ritmo=hora;
-
-
   document.getElementById(
     "ritmo"
   ).textContent=
-  dinheiro(ritmo);
+  dinheiro(hora);
 
 
   document.getElementById(
     "estimativa"
   ).textContent=
-  dinheiro(
-    ritmo*6
+  dinheiro(hora*6);
+
+
+  const projecao=
+  document.getElementById(
+    "projecaoMensagem"
   );
 
 
-  if(
-    corridas.length===0
-  ){
+  if(!corridas.length){
 
-    document.getElementById(
-      "projecaoMensagem"
-    ).className=
-    "alert";
+    projecao.className="alert";
 
-    document.getElementById(
-      "projecaoMensagem"
-    ).textContent=
+    projecao.textContent=
     "Registre algumas corridas para criar sua projeção.";
 
-  }else if(
-    ritmo>=config.meta/6
-  ){
+  }else if(hora>=config.meta/6){
 
-    document.getElementById(
-      "projecaoMensagem"
-    ).className=
+    projecao.className=
     "alert good";
 
-    document.getElementById(
-      "projecaoMensagem"
-    ).innerHTML=
+    projecao.innerHTML=
     "🚀 Seu ritmo atual é "+
-    dinheiro(ritmo)+
-    "/hora. Mantendo esse ritmo, você está em uma boa velocidade para sua meta.";
+    dinheiro(hora)+
+    "/hora. Você está acima do ritmo necessário para fazer "+
+    dinheiro(config.meta)+
+    " em 6 horas.";
 
   }else{
 
-    document.getElementById(
-      "projecaoMensagem"
-    ).className=
+    projecao.className=
     "alert medium";
 
-    document.getElementById(
-      "projecaoMensagem"
-    ).innerHTML=
+    projecao.innerHTML=
     "⚠️ Seu ritmo atual é "+
-    dinheiro(ritmo)+
+    dinheiro(hora)+
     "/hora. Para fazer "+
     dinheiro(config.meta)+
-    " em 6 horas, a média seria "+
+    " em 6 horas, a média necessária seria "+
     dinheiro(config.meta/6)+
     "/hora.";
 
@@ -2095,21 +2230,23 @@ function atualizar(){
 
 function analisarRapido(){
 
-  let valor=
+  const valor=
   Number(
     document.getElementById(
       "qValor"
     ).value
   );
 
-  let km=
+
+  const km=
   Number(
     document.getElementById(
       "qKm"
     ).value
   );
 
-  let tempo=
+
+  const tempo=
   Number(
     document.getElementById(
       "qTempo"
@@ -2132,248 +2269,123 @@ function analisarRapido(){
   }
 
 
-  let comb=
-  (km/config.consumo)*
-  config.gasolina;
-
-
-  let lucro=
-  valor-comb;
-
-
-  let rkm=
-  valor/km;
-
-
-  let rhora=
-  valor/(tempo/60);
-
-
-  let liquidoKm=
-  lucro/km;
-
-
-  let liquidoHora=
-  lucro/(tempo/60);
-
-
-  /*
-    Quanto a corrida deveria pagar
-    para atingir os critérios.
-  */
-
-  let valorNecessarioKm=
-  km*config.minKm;
-
-
-  let valorNecessarioHora=
-  (tempo/60)*config.minHora;
-
-
-  let valorIdeal=
-  Math.max(
-    valorNecessarioKm,
-    valorNecessarioHora
+  const calculo=
+  calcularCorrida(
+    valor,
+    km,
+    tempo
   );
 
 
-  let caixa=
-  document.getElementById(
-    "quickDecision"
+  const score=
+  calcularScore(
+    calculo.rkm,
+    calculo.rhora,
+    calculo.combustivel,
+    valor
   );
 
 
-  let status=
+  const classe=
+  decidir(
+    calculo.rkm,
+    calculo.rhora
+  );
+
+
+  const status=
   document.getElementById(
     "quickStatus"
   );
 
 
-  let motivo=
+  const motivo=
   document.getElementById(
     "quickMotivo"
   );
 
 
-  let atingiuKm=
-  rkm>=config.minKm;
-
-  let atingiuHora=
-  rhora>=config.minHora;
-
-
-  /*
-    Classificação mais inteligente.
-
-    ACEITAR:
-    R$/km e R$/hora atingidos.
-
-    AVALIAR:
-    apenas um dos dois atingido.
-
-    RECUSAR:
-    nenhum dos dois atingido.
-  */
+  const caixa=
+  document.getElementById(
+    "quickDecision"
+  );
 
 
-  if(
-    atingiuKm &&
-    atingiuHora
-  ){
+  caixa.className=
+  "decision "+classe;
 
-    caixa.className=
-    "decision good";
 
-    status.textContent=
-    "🟢 ACEITAR";
+  status.textContent=
+  textoDecisao(classe);
 
-    motivo.textContent=
-    "Boa corrida. Ela bateu sua meta de R$/km e R$/hora.";
 
-  }else if(
-    atingiuKm ||
-    atingiuHora
-  ){
+  if(classe==="good"){
 
-    caixa.className=
-    "decision medium";
+    motivo.innerHTML=
+    "Excelente equilíbrio entre <strong>R$/km</strong> e <strong>R$/hora</strong>.";
 
-    status.textContent=
-    "🟡 AVALIAR";
+  }else if(classe==="medium"){
 
-    if(atingiuKm){
-
-      motivo.textContent=
-      "O R$/km está bom, mas o R$/hora ficou abaixo da sua meta.";
-
-    }else{
-
-      motivo.textContent=
-      "O R$/hora está bom, mas o R$/km ficou abaixo da sua meta.";
-
-    }
+    motivo.innerHTML=
+    "A corrida atende apenas parte dos seus critérios. Avalie trânsito, retorno e destino.";
 
   }else{
 
-    caixa.className=
-    "decision bad";
-
-    status.textContent=
-    "🔴 RECUSAR";
-
-    motivo.textContent=
-    "A corrida ficou abaixo das suas metas de R$/km e R$/hora.";
+    motivo.innerHTML=
+    "A corrida está abaixo dos seus critérios de R$/km e R$/hora.";
 
   }
+
+
+  document.getElementById(
+    "qScore"
+  ).textContent=
+  score;
 
 
   document.getElementById(
     "qRkm"
   ).textContent=
-  dinheiro(rkm);
+  dinheiro(calculo.rkm);
 
 
   document.getElementById(
     "qRhora"
   ).textContent=
-  dinheiro(rhora);
+  dinheiro(calculo.rhora);
 
 
   document.getElementById(
     "qComb"
   ).textContent=
-  dinheiro(comb);
+  dinheiro(calculo.combustivel);
 
 
   document.getElementById(
     "qLucro"
   ).textContent=
-  dinheiro(lucro);
+  dinheiro(calculo.lucro);
 
 
-  document.getElementById(
-    "qLiquidoKm"
-  ).textContent=
-  dinheiro(liquidoKm);
+  const valorMinKm=
+  config.minKm*km;
 
 
-  document.getElementById(
-    "qLiquidoHora"
-  ).textContent=
-  dinheiro(liquidoHora);
+  const valorMinHora=
+  config.minHora*(tempo/60);
 
 
-  let recomendacao=
-  document.getElementById(
-    "quickRecommendation"
+  const valorNecessario=
+  Math.max(
+    valorMinKm,
+    valorMinHora
   );
 
 
-  if(lucro<=0){
-
-    recomendacao.innerHTML=
-    "⚠️ <strong>Atenção:</strong> depois do combustível, essa corrida praticamente não deixa dinheiro ou gera prejuízo.";
-
-  }else if(
-    liquidoHora>=config.minHora
-  ){
-
-    recomendacao.innerHTML=
-    "🔥 <strong>Muito boa:</strong> depois do combustível, sobra "+
-    dinheiro(liquidoHora)+
-    " por hora.";
-
-  }else if(
-    lucro>0
-  ){
-
-    recomendacao.innerHTML=
-    "💡 <strong>Positiva:</strong> a corrida paga o combustível e deixa "+
-    dinheiro(lucro)+
-    " de sobra, mas o ritmo líquido por hora está abaixo da sua meta.";
-
-  }else{
-
-    recomendacao.innerHTML=
-    "⚠️ <strong>Cuidado:</strong> o combustível está consumindo praticamente todo o valor da corrida.";
-
-  }
-
-
-  let alvoTexto="";
-
-
-  if(valor>=valorIdeal){
-
-    alvoTexto=
-    "🎯 <strong>Valor mínimo estimado:</strong> "+
-    dinheiro(valorIdeal)+
-    ". Esta corrida está "+
-
-    dinheiro(
-      valor-valorIdeal
-    )+
-
-    " acima do valor necessário para atingir seus dois critérios.";
-
-  }else{
-
-    alvoTexto=
-    "🎯 <strong>Para atingir seus critérios:</strong> esta corrida precisaria pagar aproximadamente "+
-    dinheiro(valorIdeal)+
-    ". Faltam "+
-    dinheiro(
-      valorIdeal-valor
-    )+
-    ".";
-
-  }
-
-
   document.getElementById(
-    "quickTarget"
-  ).innerHTML=
-  alvoTexto;
+    "qMinValor"
+  ).textContent=
+  dinheiro(valorNecessario);
 
 
   document.getElementById(
@@ -2412,36 +2424,41 @@ function limparAnalise(){
 
 async function registrarCorrida(){
 
-  let app=
+  const app=
   document.getElementById(
     "app"
   ).value;
 
-  let origem=
+
+  const origem=
   document.getElementById(
     "origem"
   ).value.trim();
 
-  let destino=
+
+  const destino=
   document.getElementById(
     "destino"
   ).value.trim();
 
-  let valor=
+
+  const valor=
   Number(
     document.getElementById(
       "valor"
     ).value
   );
 
-  let km=
+
+  const km=
   Number(
     document.getElementById(
       "km"
     ).value
   );
 
-  let tempo=
+
+  const tempo=
   Number(
     document.getElementById(
       "tempo"
@@ -2466,55 +2483,30 @@ async function registrarCorrida(){
   }
 
 
-  let comb=
-  (km/config.consumo)*
-  config.gasolina;
+  const calculo=
+  calcularCorrida(
+    valor,
+    km,
+    tempo
+  );
 
 
-  let lucro=
-  valor-comb;
+  const classe=
+  decidir(
+    calculo.rkm,
+    calculo.rhora
+  );
 
 
-  let rkm=
-  valor/km;
+  const decisao=
+  textoDecisao(classe);
 
 
-  let rhora=
-  valor/(tempo/60);
-
-
-  let decisao;
-
-
-  if(
-    rkm>=config.minKm &&
-    rhora>=config.minHora
-  ){
-
-    decisao=
-    "🟢 ACEITAR";
-
-  }else if(
-    rkm>=config.minKm ||
-    rhora>=config.minHora
-  ){
-
-    decisao=
-    "🟡 AVALIAR";
-
-  }else{
-
-    decisao=
-    "🔴 RECUSAR";
-
-  }
-
-
-  let agora=
+  const agora=
   new Date();
 
 
-  let hora=
+  const hora=
   agora.toLocaleTimeString(
     "pt-BR",
     {
@@ -2527,17 +2519,7 @@ async function registrarCorrida(){
   const corrida={
 
     localId:
-    (
-      window.crypto &&
-      crypto.randomUUID
-    )
-    ?
-    crypto.randomUUID()
-    :
-    String(
-      Date.now()
-    )+
-    Math.random(),
+    crypto.randomUUID(),
 
     data:
     hoje(),
@@ -2557,13 +2539,17 @@ async function registrarCorrida(){
 
     tempo,
 
-    comb,
+    comb:
+    calculo.combustivel,
 
-    lucro,
+    lucro:
+    calculo.lucro,
 
-    rkm,
+    rkm:
+    calculo.rkm,
 
-    rhora,
+    rhora:
+    calculo.rhora,
 
     decisao,
 
@@ -2586,17 +2572,21 @@ async function registrarCorrida(){
     "origem"
   ).value="";
 
+
   document.getElementById(
     "destino"
   ).value="";
+
 
   document.getElementById(
     "valor"
   ).value="";
 
+
   document.getElementById(
     "km"
   ).value="";
+
 
   document.getElementById(
     "tempo"
@@ -2623,7 +2613,7 @@ async function registrarCorrida(){
 
 function mostrarHistorico(){
 
-  let el=
+  const el=
   document.getElementById(
     "historico"
   );
@@ -2648,7 +2638,7 @@ function mostrarHistorico(){
   .forEach(
     (c,index)=>{
 
-      let item=
+      const item=
       document.createElement(
         "div"
       );
@@ -2719,7 +2709,7 @@ function mostrarHistorico(){
 
 function mostrarRotas(){
 
-  let el=
+  const el=
   document.getElementById(
     "rotas"
   );
@@ -2735,13 +2725,13 @@ function mostrarRotas(){
   }
 
 
-  let rotas={};
+  const rotas={};
 
 
   corridas.forEach(
     c=>{
 
-      let chave=
+      const chave=
       c.origem+
       " → "+
       c.destino;
@@ -2781,22 +2771,24 @@ function mostrarRotas(){
   );
 
 
-  let lista=
+  const lista=
   Object.values(rotas);
 
 
   lista.sort(
     (a,b)=>{
 
-      let horaA=
+      const horaA=
       a.tempo
       ?a.valor/(a.tempo/60)
       :0;
 
-      let horaB=
+
+      const horaB=
       b.tempo
       ?b.valor/(b.tempo/60)
       :0;
+
 
       return horaB-horaA;
 
@@ -2812,13 +2804,13 @@ function mostrarRotas(){
   .forEach(
     (r,i)=>{
 
-      let hora=
+      const hora=
       r.tempo
       ?r.valor/(r.tempo/60)
       :0;
 
 
-      let item=
+      const item=
       document.createElement(
         "div"
       );
@@ -2832,7 +2824,7 @@ function mostrarRotas(){
 
       <div class="history-top">
 
-      <span>
+      <span class="route-title">
       ${i===0?"🏆 ":"📍 "}
       ${r.nome}
       </span>
@@ -2876,7 +2868,7 @@ function mostrarRotas(){
 
 function mostrarApps(){
 
-  let el=
+  const el=
   document.getElementById(
     "apps"
   );
@@ -2892,7 +2884,7 @@ function mostrarApps(){
   }
 
 
-  let apps={};
+  const apps={};
 
 
   corridas.forEach(
@@ -2930,12 +2922,12 @@ function mostrarApps(){
   );
 
 
-  let lista=
+  const lista=
   Object.keys(apps)
   .map(
     nome=>{
 
-      let a=
+      const a=
       apps[nome];
 
 
@@ -2972,7 +2964,7 @@ function mostrarApps(){
   lista.forEach(
     (a,i)=>{
 
-      let item=
+      const item=
       document.createElement(
         "div"
       );
@@ -3086,20 +3078,24 @@ function carregarConfiguracoes(){
   ).value=
   config.meta;
 
+
   document.getElementById(
     "cfgKm"
   ).value=
   config.minKm;
+
 
   document.getElementById(
     "cfgHora"
   ).value=
   config.minHora;
 
+
   document.getElementById(
     "cfgGas"
   ).value=
   config.gasolina;
+
 
   document.getElementById(
     "cfgCons"
@@ -3137,7 +3133,7 @@ async function zerarDia(){
       } =
       await supabaseClient
       .from("corridas")
-      .select("created_at")
+      .select("id,created_at")
       .eq(
         "user_id",
         usuarioAtual.id
@@ -3145,31 +3141,23 @@ async function zerarDia(){
 
 
       if(error){
-
         throw error;
-
       }
 
 
-      /*
-        Como a tabela atual não possui
-        uma coluna id própria, não tentamos
-        excluir usando id.
-      */
-
-      const hojeNuvem=
+      const ids=
       (data||[])
       .filter(
         row=>{
 
           if(!row.created_at){
-
             return false;
-
           }
+
 
           const d=
           new Date(row.created_at);
+
 
           return hoje()===
           (
@@ -3185,20 +3173,41 @@ async function zerarDia(){
           );
 
         }
+      )
+      .map(
+        row=>row.id
       );
 
 
-      /*
-        Não apagamos automaticamente registros
-        da nuvem nesta versão porque a tabela
-        não possui uma chave de registro individual.
+      if(ids.length){
 
-        Assim evitamos apagar corridas erradas.
-      */
+        const {
+          error:deleteError
+        } =
+        await supabaseClient
+        .from("corridas")
+        .delete()
+        .in(
+          "id",
+          ids
+        );
+
+
+        if(deleteError){
+          throw deleteError;
+        }
+
+      }
 
     }catch(error){
 
       console.error(error);
+
+      alert(
+        "⚠️ Não foi possível apagar os dados da nuvem."
+      );
+
+      return;
 
     }
 
@@ -3218,15 +3227,18 @@ async function zerarDia(){
     "ganhosCorridas"
   );
 
+
   localStorage.setItem(
     "ganhosTempo",
     "0"
   );
 
+
   localStorage.setItem(
     "ganhosTrabalhando",
     "0"
   );
+
 
   localStorage.removeItem(
     "ganhosInicio"
@@ -3245,7 +3257,7 @@ async function zerarDia(){
 
 
   alert(
-    "✅ Dados locais de hoje foram zerados."
+    "✅ Dados de hoje zerados!"
   );
 
 }
@@ -3283,7 +3295,7 @@ function alternarTimer(){
 
   }else{
 
-    tempoAcumulado +=
+    tempoAcumulado+=
     Math.floor(
       (Date.now()-inicio)/1000
     );
@@ -3335,7 +3347,7 @@ function atualizarTimer(){
     inicio
   ){
 
-    total +=
+    total+=
     Math.floor(
       (Date.now()-inicio)/1000
     );
@@ -3343,19 +3355,19 @@ function atualizarTimer(){
   }
 
 
-  let h=
+  const h=
   Math.floor(
     total/3600
   );
 
 
-  let m=
+  const m=
   Math.floor(
     (total%3600)/60
   );
 
 
-  let s=
+  const s=
   total%60;
 
 
