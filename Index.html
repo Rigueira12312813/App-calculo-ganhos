@@ -3,104 +3,275 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Calculadora de Ganhos</title>
+<title>Analisador de Corridas</title>
+
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial;background:#f2f4f7;color:#222}
-header{background:#111827;color:white;padding:20px;text-align:center}
-header h1{margin:0;font-size:24px}
-.container{max-width:500px;margin:auto;padding:15px}
-.card{background:white;border-radius:14px;padding:18px;margin-bottom:15px;box-shadow:0 3px 10px rgba(0,0,0,.08)}
-label{display:block;margin-top:12px;font-weight:bold}
-input{width:100%;padding:13px;margin-top:6px;border:1px solid #ccc;border-radius:8px;font-size:16px}
-button{width:100%;padding:15px;margin-top:18px;border:0;border-radius:9px;background:#16a34a;color:white;font-size:17px;font-weight:bold}
-.resultado{font-size:18px;line-height:1.8}
-.destaque{font-size:25px;font-weight:bold;color:#16a34a}
-.alerta{color:#dc2626;font-weight:bold}
+
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:#eef1f5;
+color:#222
+}
+
+header{
+background:#111827;
+color:white;
+padding:22px 15px;
+text-align:center
+}
+
+header h1{
+margin:0;
+font-size:25px
+}
+
+header p{
+margin:7px 0 0
+}
+
+.container{
+max-width:520px;
+margin:auto;
+padding:15px
+}
+
+.card{
+background:white;
+border-radius:15px;
+padding:18px;
+margin-bottom:15px;
+box-shadow:0 3px 12px rgba(0,0,0,.08)
+}
+
+h2{
+margin-top:0;
+font-size:20px
+}
+
+label{
+display:block;
+font-weight:bold;
+margin-top:13px
+}
+
+input{
+width:100%;
+padding:13px;
+margin-top:6px;
+border:1px solid #ccc;
+border-radius:9px;
+font-size:17px
+}
+
+button{
+width:100%;
+padding:15px;
+margin-top:20px;
+border:0;
+border-radius:9px;
+background:#16a34a;
+color:white;
+font-size:18px;
+font-weight:bold
+}
+
+.resultado{
+line-height:1.8;
+font-size:17px
+}
+
+.veredito{
+text-align:center;
+font-size:25px;
+font-weight:bold;
+padding:15px;
+border-radius:10px;
+margin-bottom:15px
+}
+
+.bom{
+background:#dcfce7;
+color:#15803d
+}
+
+.atencao{
+background:#fef3c7;
+color:#b45309
+}
+
+.ruim{
+background:#fee2e2;
+color:#dc2626
+}
+
+.numero{
+font-size:22px;
+font-weight:bold
+}
+
+.pequeno{
+font-size:13px;
+color:#666;
+margin-top:12px
+}
 </style>
 </head>
 
 <body>
 
 <header>
-<h1>🚗 Calculadora de Ganhos</h1>
-<p>Controle suas corridas</p>
+<h1>🚗 Analisador de Corridas</h1>
+<p>Descubra se a corrida vale a pena</p>
 </header>
 
 <div class="container">
 
 <div class="card">
 
-<label>Faturamento bruto (R$)</label>
-<input type="number" id="faturamento" placeholder="Ex: 200">
+<h2>📊 Dados da corrida</h2>
 
-<label>Quilômetros rodados</label>
-<input type="number" id="km" placeholder="Ex: 150">
+<label>Valor da corrida (R$)</label>
+<input type="number" id="valor" placeholder="Ex: 12.00" step="0.01">
 
-<label>Horas trabalhadas</label>
-<input type="number" id="horas" placeholder="Ex: 6">
+<label>Distância (km)</label>
+<input type="number" id="distancia" placeholder="Ex: 5" step="0.1">
 
-<label>Preço da gasolina (R$/L)</label>
-<input type="number" id="gasolina" placeholder="Ex: 6.95">
-
-<label>Consumo do carro (km/L)</label>
-<input type="number" id="consumo" placeholder="Ex: 10">
-
-<button onclick="calcular()">CALCULAR GANHOS</button>
+<label>Tempo estimado (minutos)</label>
+<input type="number" id="tempo" placeholder="Ex: 15">
 
 </div>
 
-<div class="card resultado" id="resultado">
-Preencha os dados acima para calcular.
+<div class="card">
+
+<h2>⛽ Dados do carro</h2>
+
+<label>Preço da gasolina (R$/L)</label>
+<input type="number" id="gasolina" value="6.95" step="0.01">
+
+<label>Consumo do carro (km/L)</label>
+<input type="number" id="consumo" value="10" step="0.1">
+
+<button onclick="analisar()">ANALISAR CORRIDA</button>
+
+</div>
+
+<div class="card" id="resultado">
+
+Preencha os dados da corrida e toque em analisar.
+
 </div>
 
 </div>
 
 <script>
-function calcular(){
 
-let faturamento=Number(document.getElementById("faturamento").value);
-let km=Number(document.getElementById("km").value);
-let horas=Number(document.getElementById("horas").value);
+function analisar(){
+
+let valor=Number(document.getElementById("valor").value);
+let distancia=Number(document.getElementById("distancia").value);
+let tempo=Number(document.getElementById("tempo").value);
 let gasolina=Number(document.getElementById("gasolina").value);
 let consumo=Number(document.getElementById("consumo").value);
 
-if(!faturamento||!km||!horas||!gasolina||!consumo){
+if(!valor || !distancia || !tempo || !gasolina || !consumo){
+
 document.getElementById("resultado").innerHTML=
-"<span class='alerta'>Preencha todos os campos.</span>";
+"<div class='ruim veredito'>⚠️ Preencha todos os campos</div>";
+
 return;
+
 }
 
-let litros=km/consumo;
-let gastoCombustivel=litros*gasolina;
-let lucro=faturamento-gastoCombustivel;
-let ganhoHora=lucro/horas;
-let ganhoKm=lucro/km;
+let litros=distancia/consumo;
+
+let custoCombustivel=litros*gasolina;
+
+let lucro=valor-custoCombustivel;
+
+let reaisKm=valor/distancia;
+
+let horas=tempo/60;
+
+let reaisHora=valor/horas;
+
+let lucroHora=lucro/horas;
+
+let percentualCombustivel=(custoCombustivel/valor)*100;
+
+let classe="";
+let mensagem="";
+
+if(lucroHora>=40){
+
+classe="bom";
+mensagem="🟢 VALE A PENA";
+
+}else if(lucroHora>=25){
+
+classe="atencao";
+mensagem="🟡 ATENÇÃO";
+
+}else{
+
+classe="ruim";
+mensagem="🔴 NÃO VALE A PENA";
+
+}
 
 document.getElementById("resultado").innerHTML=`
-<strong>📊 Resultado</strong><br><br>
 
-Faturamento bruto:<br>
-<strong>R$ ${faturamento.toFixed(2)}</strong><br><br>
+<div class="veredito ${classe}">
+${mensagem}
+</div>
 
-Combustível utilizado:<br>
-<strong>${litros.toFixed(2)} litros</strong><br><br>
+<strong>💰 Valor da corrida</strong><br>
+<span class="numero">R$ ${valor.toFixed(2)}</span>
 
-Gasto com combustível:<br>
-<strong>R$ ${gastoCombustivel.toFixed(2)}</strong><br><br>
+<br><br>
 
-<hr>
+<strong>📍 Valor por km</strong><br>
+<span class="numero">R$ ${reaisKm.toFixed(2)}/km</span>
 
-Lucro após combustível:<br>
-<span class="destaque">R$ ${lucro.toFixed(2)}</span><br><br>
+<br><br>
 
-Ganho líquido por hora:<br>
-<strong>R$ ${ganhoHora.toFixed(2)}/hora</strong><br><br>
+<strong>⏰ Faturamento por hora</strong><br>
+<span class="numero">R$ ${reaisHora.toFixed(2)}/hora</span>
 
-Ganho líquido por km:<br>
-<strong>R$ ${ganhoKm.toFixed(2)}/km</strong>
+<br><br>
+
+<strong>⛽ Combustível estimado</strong><br>
+${litros.toFixed(2)} litros
+
+<br><br>
+
+<strong>💵 Custo do combustível</strong><br>
+R$ ${custoCombustivel.toFixed(2)}
+
+<br><br>
+
+<strong>💰 Lucro estimado</strong><br>
+<span class="numero">R$ ${lucro.toFixed(2)}</span>
+
+<br><br>
+
+<strong>📈 Lucro por hora</strong><br>
+<span class="numero">R$ ${lucroHora.toFixed(2)}/hora</span>
+
+<br><br>
+
+<strong>⛽ Combustível consumindo:</strong><br>
+${percentualCombustivel.toFixed(1)}% do valor da corrida
+
+<div class="pequeno">
+A análise considera somente o combustível. Outros custos do veículo não estão incluídos.
+</div>
+
 `;
+
 }
+
 </script>
 
 </body>
