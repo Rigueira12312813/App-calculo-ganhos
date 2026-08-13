@@ -1122,6 +1122,32 @@ Number(
 let usuarioAtual=null;
 
 
+/*
+=====================================================
+CONTROLE DA SINCRONIZAÇÃO
+
+Impede duas sincronizações simultâneas.
+=====================================================
+*/
+
+let sincronizando=false;
+
+
+/*
+=====================================================
+CONTROLE DO EVENTO DE LOGIN
+
+Evita sincronização duplicada.
+=====================================================
+*/
+
+let ultimaSincronizacao=0;
+
+
+/* =====================================================
+   UTILIDADES
+===================================================== */
+
 function dinheiro(valor){
 
   return Number(valor || 0)
@@ -1139,6 +1165,37 @@ function dinheiro(valor){
 function hoje(){
 
   const d=new Date();
+
+  const ano=d.getFullYear();
+
+  const mes=String(
+    d.getMonth()+1
+  ).padStart(2,"0");
+
+  const dia=String(
+    d.getDate()
+  ).padStart(2,"0");
+
+  return ano+"-"+mes+"-"+dia;
+
+}
+
+
+function dataLocalDoRegistro(data){
+
+  if(!data){
+
+    return hoje();
+
+  }
+
+  const d=new Date(data);
+
+  if(isNaN(d.getTime())){
+
+    return hoje();
+
+  }
 
   const ano=d.getFullYear();
 
@@ -1208,46 +1265,66 @@ async function criarConta(){
 
   bloquearAuth(true);
 
-  const {data,error} =
-  await supabaseClient.auth.signUp({
+  try{
 
-    email,
-    password:senha
+    const {data,error} =
+    await supabaseClient.auth.signUp({
 
-  });
+      email,
+      password:senha
 
-  bloquearAuth(false);
+    });
 
-  if(error){
+    if(error){
+
+      throw error;
+
+    }
+
+    if(data.session){
+
+      usuarioAtual=data.user;
+
+      atualizarInterfaceUsuario();
+
+      mostrarAuthMensagem(
+        "Conta criada e conectada!",
+        "online"
+      );
+
+      /*
+        NÃO chama sincronizar aqui.
+        O onAuthStateChange cuidará disso.
+      */
+
+    }else{
+
+      mostrarAuthMensagem(
+        "Conta criada! Verifique seu e-mail se o Supabase solicitar confirmação.",
+        "online"
+      );
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "Erro ao criar conta:",
+      error
+    );
 
     mostrarAuthMensagem(
-      "Erro: "+error.message,
+      "Erro ao criar conta: "+
+      (
+        error.message ||
+        "erro desconhecido"
+      ),
       "offline"
     );
 
-    return;
+  }finally{
 
-  }
-
-  if(data.session){
-
-    usuarioAtual=data.user;
-
-    atualizarInterfaceUsuario();
-
-    mostrarAuthMensagem(
-      "Conta criada e conectada!",
-      "online"
-    );
-
-    await sincronizar();
-
-  }else{
-
-    mostrarAuthMensagem(
-      "Conta criada! Verifique seu e-mail se o Supabase solicitar confirmação.",
-      "online"
-    );
+    bloquearAuth(false);
 
   }
 
@@ -1277,39 +1354,75 @@ async function entrar(){
 
   bloquearAuth(true);
 
-  const {data,error} =
-  await supabaseClient.auth.signInWithPassword({
+  try{
 
-    email,
-    password:senha
+    const {data,error} =
+    await supabaseClient.auth.signInWithPassword({
 
-  });
+      email,
+      password:senha
 
-  bloquearAuth(false);
+    });
 
-  if(error){
+    if(error){
+
+      throw error;
+
+    }
+
+    usuarioAtual=data.user;
+
+    atualizarInterfaceUsuario();
 
     mostrarAuthMensagem(
-      "Erro ao entrar: "+error.message,
+      "Login realizado com sucesso!",
+      "online"
+    );
+
+    /*
+      NÃO chama sincronizar aqui.
+      O evento de autenticação fará apenas uma sincronização.
+    */
+
+  }catch(error){
+
+    console.error(
+      "Erro ao entrar:",
+      error
+    );
+
+    mostrarAuthMensagem(
+      "Erro ao entrar: "+
+      (
+        error.message ||
+        "erro desconhecido"
+      ),
       "offline"
     );
 
-    return;
+  }finally{
+
+    bloquearAuth(false);
 
   }
-
-  usuarioAtual=data.user;
-
-  atualizarInterfaceUsuario();
-
-  await sincronizar();
 
 }
 
 
 async function sair(){
 
-  await supabaseClient.auth.signOut();
+  try{
+
+    await supabaseClient.auth.signOut();
+
+  }catch(error){
+
+    console.error(
+      "Erro ao sair:",
+      error
+    );
+
+  }
 
   usuarioAtual=null;
 
@@ -1451,10 +1564,49 @@ function(){
 
 
 /* =====================================================
-   SINCRONIZAÇÃO CORRIGIDA
+   CHAVE DE COMPARAÇÃO
+===================================================== */
+
+function chaveCorrida(c){
+
+  return [
+
+    c.app || "",
+
+    c.origem || "",
+
+    c.destino || "",
+
+    Number(c.valor || 0),
+
+    Number(c.km || 0),
+
+    Number(c.tempo || 0),
+
+    Number(c.comb || 0),
+
+    Number(c.lucro || 0),
+
+    Number(c.rkm || 0),
+
+    Number(c.rhora || 0)
+
+  ].join("|");
+
+}
+
+
+/* =====================================================
+   SINCRONIZAÇÃO
 ===================================================== */
 
 async function sincronizar(){
+
+  if(sincronizando){
+
+    return;
+
+  }
 
   if(!usuarioAtual){
 
@@ -1478,16 +1630,22 @@ async function sincronizar(){
 
   }
 
+
+  sincronizando=true;
+
+
   atualizarStatus(
     "☁️ Sincronizando...",
     "online"
   );
 
+
   try{
 
     /*
-      Busca as corridas do usuário
-      diretamente nas colunas da tabela.
+    =====================================================
+    1. BUSCAR DADOS DA NUVEM
+    =====================================================
     */
 
     const {
@@ -1502,6 +1660,7 @@ async function sincronizar(){
       usuarioAtual.id
     );
 
+
     if(erroBusca){
 
       throw erroBusca;
@@ -1509,58 +1668,59 @@ async function sincronizar(){
     }
 
 
-    const corridasNuvem =
+    const corridasNuvem=
     nuvem || [];
 
 
     /*
-      IDs locais que já foram enviados.
+    =====================================================
+    2. CRIAR MAPA DAS CORRIDAS EXISTENTES
+    =====================================================
     */
 
-    const chavesNuvem =
+    const chavesNuvem=
     new Set(
       corridasNuvem.map(
         c=>
-        c.user_id+
-        "|" +
-        c.app+
-        "|" +
-        c.origem+
-        "|" +
-        c.destino+
-        "|" +
-        Number(c.valor)+
-        "|" +
-        Number(c.km)+
-        "|" +
-        Number(c.tempo)
+        chaveCorrida({
+
+          app:c.app,
+
+          origem:c.origem,
+
+          destino:c.destino,
+
+          valor:c.valor,
+
+          km:c.km,
+
+          tempo:c.tempo,
+
+          comb:c.combustivel,
+
+          lucro:c.lucro,
+
+          rkm:c.rkm,
+
+          rhora:c.rhora
+
+        })
       )
     );
 
 
     /*
-      Envia as corridas locais
-      que ainda não estão na nuvem.
+    =====================================================
+    3. ENVIAR CORRIDAS LOCAIS QUE NÃO EXISTEM NA NUVEM
+    =====================================================
     */
 
     for(
       const corrida of corridas
     ){
 
-      const chave =
-      usuarioAtual.id+
-      "|" +
-      corrida.app+
-      "|" +
-      corrida.origem+
-      "|" +
-      corrida.destino+
-      "|" +
-      Number(corrida.valor)+
-      "|" +
-      Number(corrida.km)+
-      "|" +
-      Number(corrida.tempo);
+      const chave=
+      chaveCorrida(corrida);
 
 
       if(
@@ -1592,25 +1752,25 @@ async function sincronizar(){
         corrida.destino,
 
         valor:
-        Number(corrida.valor),
+        Number(corrida.valor)||0,
 
         km:
-        Number(corrida.km),
+        Number(corrida.km)||0,
 
         tempo:
-        Number(corrida.tempo),
+        Number(corrida.tempo)||0,
 
         combustivel:
-        Number(corrida.comb),
+        Number(corrida.comb)||0,
 
         lucro:
-        Number(corrida.lucro),
+        Number(corrida.lucro)||0,
 
         rkm:
-        Number(corrida.rkm),
+        Number(corrida.rkm)||0,
 
         rhora:
-        Number(corrida.rhora)
+        Number(corrida.rhora)||0
 
       });
 
@@ -1628,7 +1788,9 @@ async function sincronizar(){
 
 
     /*
-      Busca novamente depois dos inserts.
+    =====================================================
+    4. BUSCAR NOVAMENTE APÓS OS INSERTS
+    =====================================================
     */
 
     const {
@@ -1643,6 +1805,7 @@ async function sincronizar(){
       usuarioAtual.id
     );
 
+
     if(erroFinal){
 
       throw erroFinal;
@@ -1651,20 +1814,26 @@ async function sincronizar(){
 
 
     /*
-      Converte os registros da nuvem
-      para o formato usado pelo aplicativo.
+    =====================================================
+    5. CONVERTER NUVEM PARA O FORMATO DO APP
+    =====================================================
     */
 
-    const locaisDaNuvem =
+    const registrosNuvem=
     (finalNuvem || [])
     .map(
       c=>({
 
         localId:
-        "cloud-"+String(c.id),
+        "cloud-"+String(
+          c.id ||
+          crypto.randomUUID()
+        ),
 
         data:
-        hoje(),
+        dataLocalDoRegistro(
+          c.created_at
+        ),
 
         criadoEm:
         c.created_at ||
@@ -1721,45 +1890,42 @@ async function sincronizar(){
 
 
     /*
-      Mantém as corridas locais de hoje
-      e evita duplicação.
+    =====================================================
+    6. MANTER CORRIDAS LOCAIS QUE AINDA NÃO ESTÃO NA NUVEM
+    =====================================================
     */
 
-    const locaisHoje =
-    corridas.filter(
-      c=>c.data===hoje()
+    const resultado=[
+      ...registrosNuvem
+    ];
+
+
+    const chavesResultado=
+    new Set(
+      resultado.map(
+        chaveCorrida
+      )
     );
 
 
-    const resultado=[];
+    corridas.forEach(
+      corrida=>{
+
+        const chave=
+        chaveCorrida(corrida);
 
 
-    locaisDaNuvem.forEach(
-      c=>{
+        if(
+          !chavesResultado.has(chave)
+        ){
 
-        resultado.push(c);
+          resultado.push(
+            corrida
+          );
 
-      }
-    );
-
-
-    locaisHoje.forEach(
-      c=>{
-
-        const existe =
-        resultado.some(
-          x=>
-          x.app===c.app &&
-          x.origem===c.origem &&
-          x.destino===c.destino &&
-          Number(x.valor)===Number(c.valor) &&
-          Number(x.km)===Number(c.km) &&
-          Number(x.tempo)===Number(c.tempo)
-        );
-
-        if(!existe){
-
-          resultado.push(c);
+          chavesResultado.add(
+            chave
+          );
 
         }
 
@@ -1769,31 +1935,52 @@ async function sincronizar(){
 
     corridas=resultado;
 
+
     salvarDados();
 
     atualizar();
+
+
+    ultimaSincronizacao=
+    Date.now();
+
 
     atualizarStatus(
       "☁️ Sincronizado com sucesso.",
       "online"
     );
 
+
   }catch(error){
 
     console.error(
-      "Erro de sincronização:",
+      "ERRO COMPLETO DE SINCRONIZAÇÃO:",
       error
     );
 
 
+    let mensagem=
+    error &&
+    error.message
+    ?error.message
+    :"erro desconhecido";
+
+
+    /*
+      Mostra o erro real para podermos
+      identificar caso seja uma política RLS,
+      coluna ou permissão do Supabase.
+    */
+
     atualizarStatus(
-      "⚠️ Erro ao sincronizar: "+
-      (
-        error.message ||
-        "erro desconhecido"
-      ),
+      "⚠️ Não foi possível sincronizar: "+
+      mensagem,
       "offline"
     );
+
+  }finally{
+
+    sincronizando=false;
 
   }
 
@@ -1818,6 +2005,15 @@ function atualizar(){
   corridas.forEach(
     c=>{
 
+      if(
+        c.data!==hoje()
+      ){
+
+        return;
+
+      }
+
+
       faturamento +=
       Number(c.valor)||0;
 
@@ -1832,6 +2028,12 @@ function atualizar(){
 
     }
   );
+
+
+  let quantidadeHoje=
+  corridas.filter(
+    c=>c.data===hoje()
+  ).length;
 
 
   let lucro=
@@ -1853,7 +2055,7 @@ function atualizar(){
   document.getElementById(
     "corridas"
   ).textContent=
-  corridas.length;
+  quantidadeHoje;
 
 
   document.getElementById(
@@ -1979,46 +2181,40 @@ function atualizar(){
   );
 
 
+  const projecao=
+  document.getElementById(
+    "projecaoMensagem"
+  );
+
+
   if(
-    corridas.length===0
+    quantidadeHoje===0
   ){
 
-    document.getElementById(
-      "projecaoMensagem"
-    ).className=
+    projecao.className=
     "alert";
 
-    document.getElementById(
-      "projecaoMensagem"
-    ).textContent=
+    projecao.textContent=
     "Registre algumas corridas para criar sua projeção.";
 
   }else if(
     ritmo>=config.meta/6
   ){
 
-    document.getElementById(
-      "projecaoMensagem"
-    ).className=
+    projecao.className=
     "alert good";
 
-    document.getElementById(
-      "projecaoMensagem"
-    ).innerHTML=
+    projecao.innerHTML=
     "🚀 Seu ritmo atual é "+
     dinheiro(ritmo)+
     "/hora. Mantendo esse ritmo, você está em uma boa velocidade para sua meta.";
 
   }else{
 
-    document.getElementById(
-      "projecaoMensagem"
-    ).className=
+    projecao.className=
     "alert medium";
 
-    document.getElementById(
-      "projecaoMensagem"
-    ).innerHTML=
+    projecao.innerHTML=
     "⚠️ Seu ritmo atual é "+
     dinheiro(ritmo)+
     "/hora. Para fazer "+
@@ -2403,6 +2599,10 @@ async function registrarCorrida(){
   );
 
 
+  /*
+    Se estiver logado, sincroniza.
+  */
+
   if(usuarioAtual){
 
     await sincronizar();
@@ -2424,7 +2624,13 @@ function mostrarHistorico(){
   );
 
 
-  if(!corridas.length){
+  const corridasHoje=
+  corridas.filter(
+    c=>c.data===hoje()
+  );
+
+
+  if(!corridasHoje.length){
 
     el.innerHTML=
     '<div class="empty">Nenhuma corrida registrada hoje.</div>';
@@ -2437,7 +2643,7 @@ function mostrarHistorico(){
   el.innerHTML="";
 
 
-  corridas
+  corridasHoje
   .slice()
   .reverse()
   .forEach(
@@ -2458,7 +2664,7 @@ function mostrarHistorico(){
       <div class="history-top">
 
       <span>
-      🚗 Corrida ${corridas.length-index}
+      🚗 Corrida ${corridasHoje.length-index}
       </span>
 
       <strong>
@@ -2520,7 +2726,13 @@ function mostrarRotas(){
   );
 
 
-  if(!corridas.length){
+  const corridasHoje=
+  corridas.filter(
+    c=>c.data===hoje()
+  );
+
+
+  if(!corridasHoje.length){
 
     el.innerHTML=
     '<div class="empty">Registre corridas para descobrir suas melhores rotas.</div>';
@@ -2533,7 +2745,7 @@ function mostrarRotas(){
   let rotas={};
 
 
-  corridas.forEach(
+  corridasHoje.forEach(
     c=>{
 
       let chave=
@@ -2677,7 +2889,13 @@ function mostrarApps(){
   );
 
 
-  if(!corridas.length){
+  const corridasHoje=
+  corridas.filter(
+    c=>c.data===hoje()
+  );
+
+
+  if(!corridasHoje.length){
 
     el.innerHTML=
     '<div class="empty">Registre corridas para comparar.</div>';
@@ -2690,7 +2908,7 @@ function mostrarApps(){
   let apps={};
 
 
-  corridas.forEach(
+  corridasHoje.forEach(
     c=>{
 
       if(!apps[c.app]){
@@ -2957,21 +3175,9 @@ async function zerarDia(){
 
           }
 
-          const d=
-          new Date(row.created_at);
-
-          return hoje()===
-          (
-            d.getFullYear()+
-            "-"+
-            String(
-              d.getMonth()+1
-            ).padStart(2,"0")+
-            "-"+
-            String(
-              d.getDate()
-            ).padStart(2,"0")
-          );
+          return dataLocalDoRegistro(
+            row.created_at
+          )===hoje();
 
         }
       )
@@ -3007,7 +3213,11 @@ async function zerarDia(){
       console.error(error);
 
       alert(
-        "⚠️ Não foi possível apagar os dados da nuvem."
+        "⚠️ Não foi possível apagar os dados da nuvem: "+
+        (
+          error.message ||
+          "erro desconhecido"
+        )
       );
 
       return;
@@ -3017,7 +3227,11 @@ async function zerarDia(){
   }
 
 
-  corridas=[];
+  corridas=
+  corridas.filter(
+    c=>c.data!==hoje()
+  );
+
 
   tempoAcumulado=0;
 
@@ -3025,10 +3239,6 @@ async function zerarDia(){
 
   trabalhando=false;
 
-
-  localStorage.removeItem(
-    "ganhosCorridas"
-  );
 
   localStorage.setItem(
     "ganhosTempo",
@@ -3195,26 +3405,42 @@ async function iniciarAplicativo(){
   verificarInternet();
 
 
-  const {
-    data
-  } =
-  await supabaseClient
-  .auth
-  .getSession();
+  try{
+
+    const {
+      data
+    } =
+    await supabaseClient
+    .auth
+    .getSession();
 
 
-  usuarioAtual=
-  data.session
-  ?data.session.user
-  :null;
+    usuarioAtual=
+    data.session
+    ?data.session.user
+    :null;
 
 
-  atualizarInterfaceUsuario();
+    atualizarInterfaceUsuario();
 
 
-  if(usuarioAtual){
+    if(usuarioAtual){
 
-    await sincronizar();
+      await sincronizar();
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "Erro ao iniciar autenticação:",
+      error
+    );
+
+    atualizarStatus(
+      "⚠️ Não foi possível verificar a conta agora.",
+      "offline"
+    );
 
   }
 
@@ -3234,6 +3460,10 @@ async function iniciarAplicativo(){
 }
 
 
+/* =====================================================
+   AUTENTICAÇÃO SUPABASE
+===================================================== */
+
 supabaseClient
 .auth
 .onAuthStateChange(
@@ -3251,9 +3481,38 @@ supabaseClient
     atualizarInterfaceUsuario();
 
 
-    if(usuarioAtual){
+    /*
+      Ignora eventos que não precisam
+      provocar uma nova sincronização.
+    */
 
-      await sincronizar();
+    if(
+      usuarioAtual &&
+      (
+        event==="SIGNED_IN" ||
+        event==="INITIAL_SESSION"
+      )
+    ){
+
+      const agora=
+      Date.now();
+
+
+      /*
+        Evita chamadas duplicadas
+        em intervalo muito curto.
+      */
+
+      if(
+        agora-ultimaSincronizacao>2000
+      ){
+
+        ultimaSincronizacao=
+        agora;
+
+        await sincronizar();
+
+      }
 
     }
 
