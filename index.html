@@ -105,10 +105,6 @@
       background: #dc2626;
     }
 
-    .botao-cinza {
-      background: #6b7280;
-    }
-
     .resultado {
       display: none;
     }
@@ -219,10 +215,76 @@
       text-align: center;
     }
 
+    .mini span {
+      display: block;
+      color: #666;
+      font-size: 13px;
+    }
+
     .mini strong {
       display: block;
       font-size: 21px;
       margin-top: 5px;
+    }
+
+    .painel {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .painel-item {
+      background: #f8fafc;
+      border-radius: 15px;
+      padding: 16px;
+      border: 1px solid #e5e7eb;
+    }
+
+    .painel-item span {
+      display: block;
+      color: #666;
+      font-size: 13px;
+      margin-bottom: 6px;
+    }
+
+    .painel-item strong {
+      font-size: 22px;
+    }
+
+    .painel-item.lucro-box {
+      grid-column: 1 / 3;
+      background: #ecfdf5;
+      border-color: #bbf7d0;
+    }
+
+    .lucro-box strong {
+      color: #166534;
+      font-size: 28px;
+    }
+
+    .ranking {
+      margin-top: 16px;
+    }
+
+    .ranking-item {
+      padding: 14px;
+      border-radius: 13px;
+      background: #f8fafc;
+      margin-bottom: 10px;
+      border: 1px solid #e5e7eb;
+    }
+
+    .ranking-topo {
+      display: flex;
+      justify-content: space-between;
+      font-weight: bold;
+      margin-bottom: 7px;
+    }
+
+    .ranking-info {
+      color: #555;
+      font-size: 13px;
+      line-height: 1.6;
     }
 
     .historico-item {
@@ -290,13 +352,6 @@
       margin-top: 12px;
     }
 
-    .aviso {
-      margin-top: 15px;
-      font-size: 13px;
-      color: #666;
-      line-height: 1.5;
-    }
-
     .rodape {
       text-align: center;
       color: #777;
@@ -309,6 +364,8 @@
 <body>
 
 <div class="app">
+
+  <!-- CABEÇALHO -->
 
   <div class="header">
     <h1>🚗 Calculador de Corridas</h1>
@@ -341,13 +398,13 @@
     <div class="configuracao">
 
       <label>
-        📍 R$/km mínimo para corrida boa
+        📍 R$/km mínimo
       </label>
 
       <input
         type="number"
         id="minPorKm"
-        value="2.00"
+        value="2"
         step="0.01"
       >
 
@@ -357,7 +414,7 @@
     <div class="configuracao">
 
       <label>
-        ⏱️ R$/hora mínimo para corrida boa
+        ⏱️ R$/hora mínimo
       </label>
 
       <input
@@ -389,7 +446,7 @@
     <div class="configuracao">
 
       <label>
-        🚗 Consumo do carro (km/l)
+        🚗 Consumo (km/l)
       </label>
 
       <input
@@ -402,15 +459,13 @@
     </div>
 
 
-    <button
-      onclick="salvarConfiguracoes()"
-    >
+    <button onclick="salvarConfiguracoes()">
       💾 SALVAR CONFIGURAÇÕES
     </button>
 
 
     <div class="info">
-      O aplicativo usará esses valores automaticamente
+      Esses valores serão usados automaticamente
       nas próximas análises.
     </div>
 
@@ -455,7 +510,7 @@
     <div class="grid">
 
       <div class="mini">
-        Corridas
+        <span>Corridas</span>
 
         <strong id="quantidade">
           0
@@ -464,7 +519,7 @@
 
 
       <div class="mini">
-        Média
+        <span>Média por corrida</span>
 
         <strong id="media">
           R$ 0,00
@@ -476,7 +531,131 @@
   </div>
 
 
-  <!-- ANALISAR CORRIDA -->
+  <!-- PAINEL DE DESEMPENHO -->
+
+  <div class="card">
+
+    <h2>📊 Desempenho de hoje</h2>
+
+    <div class="painel">
+
+      <div class="painel-item">
+
+        <span>
+          💰 Faturamento bruto
+        </span>
+
+        <strong id="painelBruto">
+          R$ 0,00
+        </strong>
+
+      </div>
+
+
+      <div class="painel-item">
+
+        <span>
+          ⛽ Combustível
+        </span>
+
+        <strong id="painelCombustivel">
+          R$ 0,00
+        </strong>
+
+      </div>
+
+
+      <div class="painel-item lucro-box">
+
+        <span>
+          💵 Lucro estimado
+        </span>
+
+        <strong id="painelLucro">
+          R$ 0,00
+        </strong>
+
+      </div>
+
+
+      <div class="painel-item">
+
+        <span>
+          🚗 Km rodados
+        </span>
+
+        <strong id="painelKm">
+          0 km
+        </strong>
+
+      </div>
+
+
+      <div class="painel-item">
+
+        <span>
+          📍 Média R$/km
+        </span>
+
+        <strong id="painelPorKm">
+          R$ 0,00
+        </strong>
+
+      </div>
+
+
+      <div class="painel-item">
+
+        <span>
+          ⏱️ Tempo em corridas
+        </span>
+
+        <strong id="painelTempo">
+          0 min
+        </strong>
+
+      </div>
+
+
+      <div class="painel-item">
+
+        <span>
+          🕐 Média R$/hora
+        </span>
+
+        <strong id="painelPorHora">
+          R$ 0,00
+        </strong>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- RANKING DOS APLICATIVOS -->
+
+  <div class="card">
+
+    <h2>🏆 Desempenho por aplicativo</h2>
+
+    <div
+      id="ranking"
+      class="ranking"
+    >
+
+      <div class="historico-vazio">
+        Registre algumas corridas para
+        comparar os aplicativos.
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- NOVA CORRIDA -->
 
   <div class="card">
 
@@ -736,7 +915,7 @@
   </div>
 
 
-  <!-- CONTROLE -->
+  <!-- ZERAR -->
 
   <div class="card">
 
@@ -755,7 +934,7 @@
 
 
   <div class="rodape">
-    Calculador de Corridas — versão 5
+    Calculador de Corridas — versão 6
   </div>
 
 </div>
@@ -763,9 +942,9 @@
 
 <script>
 
-/* =========================
+/* =====================================
    CONFIGURAÇÕES
-========================= */
+===================================== */
 
 let configuracoes =
   JSON.parse(
@@ -787,9 +966,9 @@ let configuracoes =
   };
 
 
-/* =========================
-   DADOS DO DIA
-========================= */
+/* =====================================
+   DADOS
+===================================== */
 
 let totalDia =
   parseFloat(
@@ -818,9 +997,9 @@ let historico =
 let ultimaCorrida = null;
 
 
-/* =========================
-   FORMATA DINHEIRO
-========================= */
+/* =====================================
+   DINHEIRO
+===================================== */
 
 function dinheiro(valor) {
 
@@ -835,9 +1014,9 @@ function dinheiro(valor) {
 }
 
 
-/* =========================
-   CARREGAR CONFIGURAÇÕES
-========================= */
+/* =====================================
+   CONFIGURAÇÕES
+===================================== */
 
 function carregarConfiguracoes() {
 
@@ -872,10 +1051,6 @@ function carregarConfiguracoes() {
 
 }
 
-
-/* =========================
-   SALVAR CONFIGURAÇÕES
-========================= */
 
 function salvarConfiguracoes() {
 
@@ -972,8 +1147,6 @@ function salvarConfiguracoes() {
   );
 
 
-  carregarConfiguracoes();
-
   atualizarTela();
 
 
@@ -984,9 +1157,9 @@ function salvarConfiguracoes() {
 }
 
 
-/* =========================
+/* =====================================
    SALVAR DADOS
-========================= */
+===================================== */
 
 function salvarDados() {
 
@@ -1012,9 +1185,9 @@ function salvarDados() {
 }
 
 
-/* =========================
+/* =====================================
    ATUALIZAR TELA
-========================= */
+===================================== */
 
 function atualizarTela() {
 
@@ -1032,18 +1205,10 @@ function atualizarTela() {
     quantidade;
 
 
-  let media = 0;
-
-
-  if (
+  let media =
     quantidade > 0
-  ) {
-
-    media =
-      totalDia /
-      quantidade;
-
-  }
+      ? totalDia / quantidade
+      : 0;
 
 
   document.getElementById(
@@ -1109,14 +1274,433 @@ function atualizarTela() {
   }
 
 
+  atualizarPainel();
+
   mostrarHistorico();
+
+  atualizarRanking();
 
 }
 
 
-/* =========================
+/* =====================================
+   PAINEL
+===================================== */
+
+function atualizarPainel() {
+
+  let bruto = 0;
+
+  let combustivel = 0;
+
+  let lucro = 0;
+
+  let kmTotal = 0;
+
+  let tempoTotal = 0;
+
+
+  historico.forEach(
+    function(corrida) {
+
+      bruto +=
+        Number(
+          corrida.valor
+        ) || 0;
+
+
+      combustivel +=
+        Number(
+          corrida.combustivel
+        ) || 0;
+
+
+      lucro +=
+        Number(
+          corrida.lucro
+        ) || 0;
+
+
+      kmTotal +=
+        Number(
+          corrida.km
+        ) || 0;
+
+
+      tempoTotal +=
+        Number(
+          corrida.tempo
+        ) || 0;
+
+    }
+  );
+
+
+  const porKm =
+    kmTotal > 0
+      ? bruto / kmTotal
+      : 0;
+
+
+  const porHora =
+    tempoTotal > 0
+      ? bruto /
+        (tempoTotal / 60)
+      : 0;
+
+
+  document.getElementById(
+    "painelBruto"
+  ).textContent =
+    dinheiro(
+      bruto
+    );
+
+
+  document.getElementById(
+    "painelCombustivel"
+  ).textContent =
+    dinheiro(
+      combustivel
+    );
+
+
+  document.getElementById(
+    "painelLucro"
+  ).textContent =
+    dinheiro(
+      lucro
+    );
+
+
+  document.getElementById(
+    "painelKm"
+  ).textContent =
+    kmTotal.toFixed(
+      1
+    ) +
+    " km";
+
+
+  document.getElementById(
+    "painelPorKm"
+  ).textContent =
+    dinheiro(
+      porKm
+    );
+
+
+  document.getElementById(
+    "painelTempo"
+  ).textContent =
+    formatarTempo(
+      tempoTotal
+    );
+
+
+  document.getElementById(
+    "painelPorHora"
+  ).textContent =
+    dinheiro(
+      porHora
+    );
+
+}
+
+
+/* =====================================
+   FORMATAR TEMPO
+===================================== */
+
+function formatarTempo(minutos) {
+
+  const horas =
+    Math.floor(
+      minutos / 60
+    );
+
+
+  const minutosRestantes =
+    minutos % 60;
+
+
+  if (
+    horas === 0
+  ) {
+
+    return (
+      minutosRestantes +
+      " min"
+    );
+
+  }
+
+
+  return (
+    horas +
+    "h " +
+    minutosRestantes +
+    "min"
+  );
+
+}
+
+
+/* =====================================
+   RANKING
+===================================== */
+
+function atualizarRanking() {
+
+  const ranking =
+    document.getElementById(
+      "ranking"
+    );
+
+
+  if (
+    historico.length === 0
+  ) {
+
+    ranking.innerHTML = `
+      <div class="historico-vazio">
+        Registre algumas corridas para
+        comparar os aplicativos.
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  const apps = {};
+
+
+  historico.forEach(
+    function(corrida) {
+
+      const app =
+        corrida.plataforma;
+
+
+      if (
+        !apps[app]
+      ) {
+
+        apps[app] = {
+
+          corridas: 0,
+
+          valor: 0,
+
+          lucro: 0,
+
+          km: 0,
+
+          tempo: 0
+
+        };
+
+      }
+
+
+      apps[app].corridas++;
+
+      apps[app].valor +=
+        Number(
+          corrida.valor
+        ) || 0;
+
+      apps[app].lucro +=
+        Number(
+          corrida.lucro
+        ) || 0;
+
+      apps[app].km +=
+        Number(
+          corrida.km
+        ) || 0;
+
+      apps[app].tempo +=
+        Number(
+          corrida.tempo
+        ) || 0;
+
+    }
+  );
+
+
+  const lista =
+    Object.keys(
+      apps
+    )
+    .map(
+      function(nome) {
+
+        const dados =
+          apps[nome];
+
+
+        dados.porKm =
+          dados.km > 0
+            ? dados.valor /
+              dados.km
+            : 0;
+
+
+        dados.porHora =
+          dados.tempo > 0
+            ? dados.valor /
+              (dados.tempo / 60)
+            : 0;
+
+
+        return {
+
+          nome:
+            nome,
+
+          dados:
+            dados
+
+        };
+
+      }
+    )
+    .sort(
+      function(a,b) {
+
+        return (
+          b.dados.porHora -
+          a.dados.porHora
+        );
+
+      }
+    );
+
+
+  ranking.innerHTML =
+    "";
+
+
+  lista.forEach(
+    function(item, index) {
+
+      const dados =
+        item.dados;
+
+
+      const div =
+        document.createElement(
+          "div"
+        );
+
+
+      div.className =
+        "ranking-item";
+
+
+      let medalha =
+        "📱";
+
+
+      if (
+        index === 0
+      ) {
+
+        medalha =
+          "🏆";
+
+      }
+
+      else if (
+        index === 1
+      ) {
+
+        medalha =
+          "🥈";
+
+      }
+
+      else if (
+        index === 2
+      ) {
+
+        medalha =
+          "🥉";
+
+      }
+
+
+      div.innerHTML = `
+
+        <div class="ranking-topo">
+
+          <span>
+            ${medalha}
+            ${item.nome}
+          </span>
+
+          <span>
+            ${dinheiro(
+              dados.valor
+            )}
+          </span>
+
+        </div>
+
+        <div class="ranking-info">
+
+          ${dados.corridas}
+          corrida(s)
+          •
+          ${dados.km.toFixed(1)}
+          km
+
+          <br>
+
+          Lucro:
+          <strong>
+            ${dinheiro(
+              dados.lucro
+            )}
+          </strong>
+
+          <br>
+
+          Média:
+          <strong>
+            ${dinheiro(
+              dados.porKm
+            )}/km
+          </strong>
+
+          •
+          <strong>
+            ${dinheiro(
+              dados.porHora
+            )}/h
+          </strong>
+
+        </div>
+
+      `;
+
+
+      ranking.appendChild(
+        div
+      );
+
+    }
+  );
+
+}
+
+
+/* =====================================
    ANALISAR CORRIDA
-========================= */
+===================================== */
 
 function calcular() {
 
@@ -1242,13 +1826,6 @@ function calcular() {
   );
 
 
-  /*
-    CORRIDA EXCELENTE
-
-    Precisa atingir os dois
-    critérios configurados.
-  */
-
   if (
 
     ganhoPorKm >= minKm &&
@@ -1270,14 +1847,6 @@ function calcular() {
 
   }
 
-
-  /*
-    CORRIDA RAZOÁVEL
-
-    Atingiu pelo menos um
-    dos critérios.
-  */
-
   else if (
 
     ganhoPorKm >= minKm ||
@@ -1295,14 +1864,9 @@ function calcular() {
 
 
     motivo.textContent =
-      "A corrida atingiu apenas um dos critérios. Observe trânsito e destino.";
+      "A corrida atingiu apenas um dos critérios.";
 
   }
-
-
-  /*
-    CORRIDA FRACA
-  */
 
   else {
 
@@ -1316,7 +1880,7 @@ function calcular() {
 
 
     motivo.textContent =
-      "A corrida ficou abaixo dos seus critérios mínimos.";
+      "A corrida ficou abaixo dos seus critérios.";
 
   }
 
@@ -1451,9 +2015,9 @@ function calcular() {
 }
 
 
-/* =========================
+/* =====================================
    ADICIONAR CORRIDA
-========================= */
+===================================== */
 
 function adicionarCorrida() {
 
@@ -1531,9 +2095,9 @@ function adicionarCorrida() {
 }
 
 
-/* =========================
+/* =====================================
    HISTÓRICO
-========================= */
+===================================== */
 
 function mostrarHistorico() {
 
@@ -1595,86 +2159,131 @@ function mostrarHistorico() {
 
           </div>
 
+
           <div class="historico-linha">
-            <span>📱 Aplicativo</span>
+
+            <span>
+              📱 Aplicativo
+            </span>
 
             <strong>
               ${corrida.plataforma}
             </strong>
+
           </div>
 
+
           <div class="historico-linha">
-            <span>🕐 Horário</span>
+
+            <span>
+              🕐 Horário
+            </span>
 
             <strong>
               ${corrida.horario}
             </strong>
+
           </div>
 
+
           <div class="historico-linha">
-            <span>📍 Distância</span>
+
+            <span>
+              📍 Distância
+            </span>
 
             <strong>
               ${corrida.km.toFixed(1)}
               km
             </strong>
+
           </div>
 
+
           <div class="historico-linha">
-            <span>⏱️ Tempo</span>
+
+            <span>
+              ⏱️ Tempo
+            </span>
 
             <strong>
               ${corrida.tempo}
               min
             </strong>
+
           </div>
 
+
           <div class="historico-linha">
-            <span>⛽ Combustível</span>
+
+            <span>
+              ⛽ Combustível
+            </span>
 
             <strong>
               ${dinheiro(
                 corrida.combustivel
               )}
             </strong>
+
           </div>
 
+
           <div class="historico-linha">
-            <span>💰 Lucro</span>
+
+            <span>
+              💰 Lucro
+            </span>
 
             <strong class="lucro">
               ${dinheiro(
                 corrida.lucro
               )}
             </strong>
+
           </div>
 
+
           <div class="historico-linha">
-            <span>📊 R$/km</span>
+
+            <span>
+              📊 R$/km
+            </span>
 
             <strong>
               ${dinheiro(
                 corrida.porKm
               )}
             </strong>
+
           </div>
 
+
           <div class="historico-linha">
-            <span>⏱️ R$/hora</span>
+
+            <span>
+              ⏱️ R$/hora
+            </span>
 
             <strong>
               ${dinheiro(
                 corrida.porHora
               )}
             </strong>
+
           </div>
 
+
           <div class="historico-linha">
-            <span>🎯 Decisão</span>
+
+            <span>
+              🎯 Decisão
+            </span>
 
             <strong>
               ${corrida.decisao}
             </strong>
+
           </div>
 
         `;
@@ -1690,9 +2299,9 @@ function mostrarHistorico() {
 }
 
 
-/* =========================
+/* =====================================
    ZERAR DIA
-========================= */
+===================================== */
 
 function zerarDia() {
 
@@ -1746,9 +2355,9 @@ function zerarDia() {
 }
 
 
-/* =========================
+/* =====================================
    INICIAR
-========================= */
+===================================== */
 
 carregarConfiguracoes();
 
